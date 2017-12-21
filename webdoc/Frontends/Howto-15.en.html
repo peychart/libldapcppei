@@ -1,0 +1,173 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html><head>
+
+  <meta name="GENERATOR" content="KompoZer-0.8a4"><title>LdapEasyInterface (libcppei) Mini Howto (Français)</title>
+  
+  <link href="LdapcppeiMiniHowto-1.fr.html" rel="next"></head><body><a href="file:///home/phil/Cdev/libldapcppei/webdoc/Frontends/Howto-16.en.html">Next</a> <a href="Howto-14.en.html">Previous</a> <a href="Howto.en.html">Summary</a>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; (<a href="Howto-15.fr.html"><span style="font-weight: bold;">Français</span></a> - English)
+<hr>
+<h2><a name="S15"><span style="text-decoration: underline;">15. The setup graphical interface for "crontabs":</span></a></h2>
+
+
+
+
+<h2><a name="ss15.1">15.1 Overview
+</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;"><span style="text-decoration: underline; font-weight: bold;">Input mask:</span>
+<div style="text-align: center;"><span style="text-decoration: underline; font-weight: bold;"></span><img style="width: 886px; height: 533px;" alt="images/crontabFrontend.png" src="images/crontabFrontend.png"><br>
+</div><br>
+</div>
+
+<h2><a name="ss15.2">15.2&nbsp; The systems setup interface "doCronConf"
+</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;"><span style="font-style: italic;"></span>Here is the "<span style="font-weight: bold;">crond</span>" setup interface: <a href="../archives/ldapEasyAdminFrontends/sources/getHostName/">doCronConf</a>. Code is shared with <a href="Howto-7.en.html#ss7.3">getHostName</a>. It can be used as follow:<br>
+
+
+
+<span style="font-style: italic;"><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; </span></span><span style="font-weight: bold; font-style: italic;">getHostName&nbsp; --cronConf</span><span style="font-style: italic;"></span><br>
+
+
+
+or:&nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp; &nbsp; <span style="font-style: italic;"></span><span style="font-weight: bold; font-style: italic;">ln&nbsp; -s&nbsp; /usr/local/bin/getHostName&nbsp; /usr/local/bin/</span><span style="font-weight: bold; font-style: italic;">doCronConf</span><span style="font-weight: bold; font-style: italic;">&nbsp; ;&nbsp; </span><span style="font-weight: bold; font-style: italic;">doCronConf</span><span style="font-weight: bold; font-style: italic;"></span><span style="font-style: italic;"></span><br>
+
+
+
+<br><span id="result_box" class="" lang="en"><span class="hps">This program</span> allows<span class="hps alt-low-conf"> the automatic generation</span></span> (<span id="result_box" class="" lang="en"><span class="">either</span> <span class="hps">triggered</span> <span class="hps">by</span></span> "<span style="font-weight: bold;">cron</span>", <span id="result_box" class="" lang="en"><span class="hps">either at</span> <span class="hps">start-up procedures</span> <span class="hps">of the destination system</span></span>) of the "<span style="font-weight: bold;">crontabs</span>" definitions for the "<span style="font-weight: bold;">crond</span>" daemon<span id="result_box" class="" lang="en"><span class="hps">from the information</span> <span class="hps">(if any</span><span class="">)</span> <span class="hps">contained</span> <span class="hps alt-low-conf">in the LDAP database</span> <span class="hps"></span><span class="hps">according to</span> <span class="hps">the MAC address</span> <span class="hps">of the current server</span> <span class="hps atn">(</span><span class="alt-low-conf">where</span> <span class="hps alt-low-conf">the command is issued</span><span class="">)</span><span class="">:</span></span>
+
+<div style="text-align: center;"><span style="font-weight: bold; font-style: italic;">doCronConf -v -U ldap://ldap...</span><br>
+</div>
+
+
+
+
+<br>
+
+
+
+<span style="text-decoration: underline; font-weight: bold;">Example for shell start</span><span style="text-decoration: underline; font-weight: bold;"> (/etc/init.d/) for each of the intranet servers to administrate:</span><span style="text-decoration: underline; font-weight: bold;"><br>
+</span><span style="text-decoration: underline; font-weight: bold;"></span><span style="font-weight: bold;"></span><small><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  ...</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; # </span><a style="font-style: italic;" href="Howto-14.en.html#ss14.2">previous setting...</a><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  ...<br>&nbsp;</span><span style="font-style: italic;">&nbsp;&nbsp; &nbsp;&nbsp; TMP=/tmp/.doCronConf.$$<br></span>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; <span style="font-style: italic;">2&gt;/dev/null ${BIN}/<a href="../archives/ldapEasyAdminFrontends/sources/getHostName/">getHostName</a> --cronConf&nbsp; &gt;$TMP<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  [ $? -eq 0 ] &amp;&amp; /bin/sh $TMP<br>
+</span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  </span><span style="font-style: italic;">rm -f&nbsp; $TMP</span><span style="font-style: italic;"></span><span style="font-style: italic;"></span><span style="font-style: italic;"></span><span style="font-style: italic;"></span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  ...<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  # </span></small><small><span style="font-style: italic;"><a href="Howto-16.en.html#ss16.2"><span style="text-decoration: underline;">next setting...</span></a></span></small><small><span style="font-style: italic;"><span style="text-decoration: underline; font-weight: bold;"></span><br>
+</span><span style="text-decoration: underline; font-weight: bold;"></span>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  ...</small>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+<br>
+
+
+
+<span style="text-decoration: underline; font-weight: bold;">Example of using this interface on the</span><span style="text-decoration: underline; font-weight: bold;"></span><span style="text-decoration: underline; font-weight: bold;"> "</span><a style="text-decoration: underline; font-weight: bold;" href="../archives/ldapEasyAdminFrontends/exportLDAP_example.LDIFF">test database</a><span style="text-decoration: underline; font-weight: bold;">":</span><br>
+
+
+
+<small><span style="font-style: italic; font-weight: bold;">root@me:~/Cdev#&nbsp; <a href="../archives/ldapEasyAdminFrontends/sources/getHostName/">doCronConf</a>&nbsp; -v --forceMacAddress&nbsp; 11:22:33:44:55:66</span><span style="font-style: italic;"></span><span style="font-style: italic; font-weight: bold;"><br style="font-style: italic;">
+</span><span style="font-style: italic;"></span><span style="font-style: italic;"></span><span style="font-style: italic;">[ ! -d "/var/spool/cron/scripts/openldap" ] &amp;&amp; mkdir -p "/var/spool/cron/scripts/openldap"<br>
+echo '#!/bin/sh -e<br>
+# @(#) ldapExport<br>
+ldapsearch -x -LLL -h ldap -D "cn=Manager,dc=mydomain" -w mydomain &gt;~/exports/$(date).ldiff<br>
+' &gt;"/var/spool/cron/scripts/openldap/ldapExport"<br>
+chmod 500 "/var/spool/cron/scripts/openldap/ldapExport" ; chown openldap "/var/spool/cron/scripts/openldap/ldapExport"<br>
+(echo "1 0 * * 1,2,3,4,5 \"/var/spool/cron/scripts/openldap/ldapExport\"") | crontab -u openldap -<br>
+<br>
+[ ! -d "/var/spool/cron/scripts/root" ] &amp;&amp; mkdir -p "/var/spool/cron/scripts/root"<br>
+echo '#!/bin/sh<br>
+# @(#) ldapEasyAdmin<br>
+TMP=/tmp/.doCronConf.$$<br>
+getHostName --cronConf&nbsp; &gt;$TMP 2&gt;/dev/null<br>
+[ $? -eq 0 ] &amp;&amp; /bin/sh $TMP<br>
+rm -f&nbsp; $TMP<br>
+' &gt;"/var/spool/cron/scripts/root/ldapEasyAdmin"<br>
+chmod 500 "/var/spool/cron/scripts/root/ldapEasyAdmin" ; chown root "/var/spool/cron/scripts/root/ldapEasyAdmin"<br>
+(echo "0 1 * * 1,2,3,4,5 \"/var/spool/cron/scripts/root/ldapEasyAdmin\"") | crontab -u root -<br>
+<br>
+[ ! -d "/var/spool/cron/scripts/root" ] &amp;&amp; mkdir -p "/var/spool/cron/scripts/root"<br>
+echo '# !/bin/sh -e<br>
+# @(#) No description available<br>
+' &gt;"/var/spool/cron/scripts/root/No description available"<br>
+chmod 500 "/var/spool/cron/scripts/root/No description available" ;
+chown root "/var/spool/cron/scripts/root/No description available"<br>
+(echo "0,10,20,30,40,50 * * * 1 \"/var/spool/cron/scripts/root/No
+description available\"";crontab -u root -l) | crontab -u root -<br>
+<br>
+[ ! -d "/var/spool/cron/scripts/root" ] &amp;&amp; mkdir -p "/var/spool/cron/scripts/root"<br>
+echo '#!/bin/sh -e<br>
+# @(#) test<br>
+echo &gt;/dev/null<br>
+' &gt;"/var/spool/cron/scripts/root/test"<br>
+chmod 500 "/var/spool/cron/scripts/root/test" ; chown root "/var/spool/cron/scripts/root/test"<br>
+(echo "0 0 * * 0 \"/var/spool/cron/scripts/root/test\"";crontab -u root -l) | crontab -u root -<br>
+<br>
+</span><span style="font-style: italic; font-weight: bold;">root@me:~/Cdev#&nbsp; echo $?<br>
+</span><span style="font-style: italic;">0
+</span></small>
+
+
+
+<span style="font-style: italic; font-weight: bold;"><small><br>
+
+root@me:~/Cdev#</small><br>
+<br>
+</span>
+<span style="font-style: italic; font-weight: bold;">
+
+</span>
+</div>
+
+<h2><a name="ss15.3"></a>15.3 <a href="../archives/ldapEasyAdminFrontends/">The C++ source</a><br>
+</h2>
+
+
+<div style="text-align: justify; margin-left: 40px;">Latest version (<span style="font-weight: bold;">20110913</span>) <a href="../archives/ldapEasyAdminFrontends/sources/crontab.so">here</a>...<br>
+
+<br>
+After compiling:<br>
+<div style="margin-left: 80px;"><small style="font-style: italic;"><span style="font-weight: bold;">me@home:~$&nbsp; </span></small><small style="font-style: italic;"><span style="font-weight: bold;">mv libcrontab.so&nbsp; /usr/local/bin/</span></small><br>
+<small style="font-style: italic;"><span style="font-weight: bold;">
+me@home:~$&nbsp; </span></small><a href="Howto-5.fr.html"><small style="font-style: italic;"><span style="font-weight: bold;"></span></small></a><small style="font-style: italic;"><a href="Howto-5.en.html">frontend</a><span style="font-weight: bold;">&nbsp; --plugin&nbsp; </span></small><small style="font-style: italic;"><span style="font-weight: bold;">libcrontab</span></small><small style="font-style: italic;"><span style="font-weight: bold;">.so</span></small><br>
+</div>
+
+<small style="font-style: italic;"><span style="font-weight: bold;">or:<br>
+</span></small>
+<div style="margin-left: 80px;"><small style="font-style: italic;"><span style="font-weight: bold;">me@home:~$&nbsp; </span></small><small style="font-style: italic;"><span style="font-weight: bold;">mv </span></small><small style="font-style: italic;"><span style="font-weight: bold;">libcrontab</span></small><small style="font-style: italic;"><span style="font-weight: bold;">.so&nbsp; /usr/local/bin/</span></small><br>
+<small style="font-style: italic;"><span style="font-weight: bold;">
+</span></small><small style="font-style: italic;"><span style="font-weight: bold;">me@hom</span></small><small style="font-style: italic;"><span style="font-weight: bold;">e:~$&nbsp; </span></small><small style="font-style: italic;"><span style="font-weight: bold;">ln [-s] /usr/local/bin/</span></small><a href="Howto-5.fr.html"><small style="font-style: italic;"><span style="font-weight: bold;"></span></small></a><small style="font-style: italic;"><a href="Howto-5.en.html">frontend</a></small><small style="font-style: italic;"><span style="font-weight: bold;">&nbsp; /usr/local/bin/</span></small><small style="font-style: italic;"><span style="font-weight: bold;">crontab</span></small><small style="font-style: italic;"><span style="font-weight: bold;">Frontend</span></small><br>
+<small style="font-style: italic;"><span style="font-weight: bold;"></span></small><small style="font-style: italic;"><span style="font-weight: bold;">me@hom</span></small><small style="font-style: italic;"><span style="font-weight: bold;">e:~$&nbsp; crontab</span></small><small style="font-style: italic;"><span style="font-weight: bold;">Frontend</span></small><br>
+</div>
+
+
+<small style="font-style: italic;"><span style="font-weight: bold;"></span></small><small style="font-style: italic;"><span style="font-weight: bold;"></span></small>
+<small style="font-style: italic;"><span style="font-weight: bold;"><br>
+ </span></small><small style="font-style: italic;"><span style="font-weight: bold;">
+</span></small><small style="font-style: italic;"><span style="font-weight: bold;">
+</span></small><span style="font-style: italic;"><span style="font-weight: bold; text-decoration: underline; color: red;">
+</span></span></div><br>
+<h2><a name="ss15.4">15.4 Todo :</a>
+</h2>
+
+
+
+
+
+
+<div style="margin-left: 40px; text-align: justify;">Tests...<br></div>
+
+
+<hr><a href="Howto-16.en.html">Next</a> <a href="Howto-14.en.html">Previous</a> <a href="Howto.en.html">Summary</a>
+
+
+
+</body></html>

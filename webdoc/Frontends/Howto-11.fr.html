@@ -1,0 +1,718 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html><head>
+
+  <meta name="GENERATOR" content="KompoZer-0.8a4"><title>LdapEasyInterface (libcppei) Mini Howto (Français)</title>
+  
+  <link href="LdapcppeiMiniHowto-1.fr.html" rel="next"></head><body><a href="Howto-12.fr.html">
+Page suivante</a>
+<a href="Howto-10.fr.html">Page précédente</a> <a href="Howto.fr.html">Sommaire</a> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; (<span style="font-weight: bold;">Français</span> - <a href="Howto-11.en.html">English</a>)
+<hr>
+<h2><a name="S11"><span style="text-decoration: underline;">11. L'interface de gestion de la configuration du service SAMBA :</span></a></h2>
+
+
+
+
+
+
+<h2><a name="ss11.1">11.1 Définition des domaines samba - GUI "sambaDomainFrontend"
+</a></h2>
+
+<div style="margin-left: 40px;"><br>
+<div style="text-align: center;"><img style="width: 627px; height: 485px;" alt="images/sambaDomainFrontend.png" src="images/sambaDomainFrontend.png"><br>
+
+</div><br>
+Les sources de la version opérationnelle sont <a href="../archives/ldapEasyAdminFrontends/sources/sambadomain.so/">là</a>.<br>
+<span style="text-decoration: underline; font-weight: bold; font-style: italic;"></span><span style="font-style: italic;"></span><br>
+Cet extension ("<span style="font-weight: bold;">plugin</span>") est également utilisable au sein de l'interface "<a href="Howto-6.fr.html#ss6.6">domainFrontend</a>".<br>
+<small>
+</small></div>
+
+
+<h2><a name="ss11.2"></a>11.2 Utilitaire "<a href="../archives/ldapEasyAdminFrontends/sources/sambaSidSelector/">sambaSidSelector</a>" d'aide à l'édition de l'attribut "<span style="text-decoration: underline;">sambaSID</span>"<br>
+</h2>
+
+<div style="margin-left: 40px;">Cet utilitaire sera utilisé dans les interfaces "<a href="Howto-8.fr.html#ss8.4">personFrontend</a>" et "<a href="Howto-9.fr.html#S9">posixGroupFrontend</a>" :<br>
+<br>
+<div style="text-align: center;"><img style="width: 485px; height: 169px;" alt="images/sambaSidSelector.png" src="images/sambaSidSelector.png"><br>
+</div><br>
+Les sources de la version opérationnelle sont <a href="../archives/ldapEasyAdminFrontends/tools/sambaSidSelector/">ici</a>... (version 0.2 - 20101012)<br>
+<br>
+<span style="text-decoration: underline;">Syntaxe :</span>&nbsp;&nbsp;&nbsp; "<span style="font-style: italic; font-weight: bold;">sambaSidSelector</span><span style="font-style: italic; font-weight: bold;">&nbsp; --domain&nbsp; "dnsDomainName"</span><span style="font-style: italic; font-weight: bold;">&nbsp; [--uidNumber #]&nbsp; [--gidNumber #]</span><span style="font-style: italic; font-weight: bold;">&nbsp; [-t/--type "sambaSamAccount/sambaGroupMapping/alias"]&nbsp; [--stdin /&nbsp; "currentValue"]</span>"<br>
+
+<ul>
+  <li style="text-align: justify;">L'option obligatoire "<span style="font-weight: bold;">-d/--domain</span>" permet de renseigner le nom du domaine dans lequel rechercher la racine du "<span style="font-weight: bold;">SID</span>" (une valeur de "<span style="font-weight: bold;">dn</span>" peut être renseignée, seule la valeur "<span style="font-weight: bold; font-style: italic;">dc=...</span>" indiquant le nom de domaine sera conservée).</li>
+  
+  <li style="text-align: justify;">Les options "<span style="font-weight: bold;">--uidNumber/-u</span>" et "<span style="font-weight: bold;">--gidNumber/-g</span>" servent à renseigner les "<span style="font-weight: bold;">id</span>" qui permettront de calculer le "<span style="font-weight: bold;">RID</span>" en fin de "<span style="font-weight: bold;">SID</span>", cela lorsque l'attribut "<span style="font-weight: bold;">sambaAlgorithmicRidBase</span>" est utilisé dans la définition du domaine "<span style="font-weight: bold;">Samba</span>" référencé par l'option "<span style="font-weight: bold;">--domain</span>" précédente.</li>
+  <li style="text-align: justify;">l'option "<span style="font-weight: bold;">-t/--type</span>" permet de figer la première liste de valeurs (comboBox) du masque d'édition sur respectivement "<span style="font-weight: bold;">user</span>" ou "<span style="font-weight: bold;">group</span>", ceci afin de cadrer au mieux la nature de l'information ("<span style="font-weight: bold;">SID</span>") saisie par l'opérateur ...</li>
+  <li style="text-align: justify;">une valeur de "<span style="font-weight: bold;">SID-RID</span>" passée en argument de la commande (ou bien : "<span style="font-weight: bold;">--stdin/-</span>" pour la valeur passée en entrée standard du processus, comme dans le cas des interfaces "<span style="font-weight: bold;">ldapEasyInterface-Frontend</span>") permet à l'utilitaire "<span style="font-style: italic; font-weight: bold;">sambaSidSelector</span>" d'afficher une valeur initiale.</li>
+  
+
+</ul>
+
+<div style="text-align: justify;"><span style="text-decoration: underline;"><span style="font-weight: bold;">Nota</span></span><span style="text-decoration: underline; font-weight: bold;"> :</span>&nbsp;&nbsp;&nbsp; Cet utilitaire d'aide à l'édition "<span style="font-style: italic; font-weight: bold;">sambaSidSelector</span><span style="font-style: italic; font-weight: bold;"></span>" se connecte à l'annuaire <span style="font-weight: bold;">LDAP</span> avec les informations de connexion de l'interface appelante (via les <span style="font-weight: bold;">IPC</span>
+- <span style="font-weight: bold;">shared memory</span>). Il
+ne peut pas, en effet, se connecter seul à l'annuaire pour y rechercher
+les informations qui lui permettront de déterminer une valeur cohérente
+de "<span style="font-weight: bold;">SID</span>" ; une session de connexion doit donc déjà être active lors de son lancement, ceci via
+l'une des interfaces graphiques d'administration "<span style="font-weight: bold;">ldapEasyInterface</span>" déjà ouverte ...
+</div>
+<ul>
+
+</ul>
+
+<br><span style="text-decoration: underline;"><a name="ss11.2.1"></a>
+Exemple d'utilisation dans la définition des déclencheurs de l'interface d'administration "</span><a style="text-decoration: underline;" href="Howto-8.fr.html#ss8.4">personFrontend</a><span style="text-decoration: underline;">" :</span><br>
+
+<br>
+
+<div style="text-align: center;"><img style="width: 945px; height: 230px;" alt="images/triggersDefinition_person.png" src="images/triggersDefinition_person.png"><br>
+<br>
+<img style="width: 1048px; height: 172px;" alt="images/triggersDefinition_sambaNextUserRid.png" src="images/triggersDefinition_sambaNextUserRid.png"><br>
+</div>
+
+<br>
+
+<br>
+
+<span style="text-decoration: underline;"><a name="ss11.2.2"></a></span><span style="text-decoration: underline;">
+Exemple de définition dans la liste des déclencheurs de l'interface graphique "</span><a style="text-decoration: underline;" href="Howto-9.fr.html#S9">posixGroupFrontend</a><span style="text-decoration: underline;">" :</span><br>
+
+<br>
+
+<div style="text-align: center;"><img style="width: 941px; height: 226px;" alt="images/triggersDefinition_posixGroup.png" src="images/triggersDefinition_posixGroup.png"><br>
+<br>
+<img style="width: 1119px; height: 172px;" alt="images/triggersDefinition_sambaNextGroupRid.png" src="images/triggersDefinition_sambaNextGroupRid.png"><br>
+</div>
+
+<br>
+<span style="text-decoration: underline; font-weight: bold;">Nota:</span>&nbsp; "<span style="font-weight: bold;">groupSelector</span>" s'obtient par la commande : "<span style="font-weight: bold; font-style: italic;">ln&nbsp; [-s]&nbsp; sambaSidSelector&nbsp; groupSelector</span>" ...<br>
+<br>
+
+<small>
+</small></div>
+
+
+<br>
+<h2><a name="ss11.3">11.3 Utilitaire d'aide à l'édition des mots de passe "sambaNTPassword" et "sambaLMPassword"
+</a></h2>
+
+
+
+<div style="margin-left: 40px;">
+<div style="text-align: justify;"><a name="ss11.3.1"></a><big><span style="font-weight: bold;">11.3.1 </span><span style="font-weight: bold; text-decoration: underline;">Utilitaire "</span><a style="font-weight: bold; text-decoration: underline;" href="../archives/ldapEasyAdminFrontends/sources/slappassword/">ntpassword</a><span style="font-weight: bold; text-decoration: underline;">" de mise à jour des mots de passe "</span><a style="font-weight: bold; text-decoration: underline;" href="http://www.samba.org">samba</a><span style="font-weight: bold; text-decoration: underline;">" :</span></big><br>
+<br>
+<div style="margin-left: 40px;">L'interface graphique "<a href="Howto-8.fr.html#ss8.3">slappassword</a>"
+version 0.2 a été modifiée vers sa version 0.3 (à partir de sources du projet "<a href="http://www.samba.org">Samba</a>"), cela
+afin de permettre outre l'édition des mots de passe "<span style="font-weight: bold;">posix</span>", celle également des attributs "<span style="font-weight: bold;">sambaLMPassword</span>" et "<span style="font-weight: bold;">sambaNTPassword</span>" :<br>
+</div>
+
+</div>
+
+
+<br>
+
+<div style="text-align: center;"><img style="width: 926px; height: 734px;" alt="images/sambaNTPassword.png" src="images/sambaNTPassword.png"><br>
+</div>
+<br>
+
+<div style="margin-left: 40px;"><span style="text-decoration: underline; font-weight: bold;">Syntaxe d'utilisation :</span><br>
+<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold; font-style: italic;">ln&nbsp; [-s]&nbsp; /usr/local/bin/slappassword&nbsp; /usr/local/bin/ntpassword</span><br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp; <span style="font-weight: bold; font-style: italic;">ntpassword&nbsp;
+</span><span style="font-weight: bold; font-style: italic;">[ (-H/--host "hostname[:port]")&nbsp; /&nbsp; ("anIPCLdapConnectionIsActive")&nbsp; --dn/-d "userDn"&nbsp; </span><span style="font-weight: bold; font-style: italic;"> [--update</span><span style="font-weight: bold; font-style: italic;">] ]&nbsp; </span><span style="font-weight: bold; font-style: italic;">[-N/--NTPassword&nbsp; [NThash] ]&nbsp; [-L/--LMPassword&nbsp; [LMhash] ]&nbsp; [--date "</span><span style="font-weight: bold; font-style: italic;">secondesSince1970</span><span style="font-weight: bold; font-style: italic;">"]</span><span style="font-weight: bold; font-style: italic;">&nbsp; [--minLength/-m #]</span><span style="font-weight: bold; font-style: italic;">&nbsp;</span><span style="font-weight: bold; font-style: italic;"> </span><span style="font-weight: bold; font-style: italic;">[--stdin / "hashedPassword"]</span><br>
+<span style="font-weight: bold; font-style: italic;">
+</span><span style="font-style: italic;"><span style="font-weight: bold;"></span></span><br>
+</div>
+
+<ul style="text-align: justify; margin-left: 40px;">
+  <li>L'option "<span style="font-weight: bold;">--host/-H</span>" sert à indiquer le nom du serveur hébergeant l'annuaire <span style="font-weight: bold;">LDAP</span> (pour le test de connexion et/ou l'option "<span style="font-weight: bold;">--update</span>"). Cette option est facultative si une connexion LDAP est déjà active (décrite en "<span style="font-weight: bold;">shared memory</span>") via l'une ou l'autre des interfaces graphiques "<span style="font-weight: bold;">ldapEasyInterface</span>" déjà en cours d'exécution et elle-même connectée.</li>
+  <li>L'option "<span style="font-weight: bold;">--dn/-d</span>" : sert à indiquer le <span style="font-weight: bold;">DN</span>
+de l'identifiant de connexion pour lequel on souhaite vérifier/mettre à
+jour le mot de passe. Elle doit être associée à l'option "<span style="font-weight: bold;">-H</span>" ou bien à une connexion IPC (<span style="font-weight: bold;">shared memory</span>) active.</li>
+<li style="text-align: justify;">Les deux options "<span style="font-weight: bold; font-style: italic;">-N/--NTPassword</span><span style="font-weight: bold; font-style: italic;"></span>" ou "<span style="font-weight: bold; font-style: italic;">-L/--</span><span style="font-weight: bold; font-style: italic;">LMPassword</span> permettent de limiter le choix des hachages sélectionnables en "<span style="font-weight: bold;">ComboBox</span>"
+et par conséquent utilisables pour la définition d'un nouveau mot de passe. Les deux
+options activées simultanément restreignent le choix à : "<span style="font-weight: bold;">LMHash:NTHash</span>".
+En outre, ces 2 options admettent chacune une valeur de hachage qui
+prédomine sur l'éventuel paramètre passé en entrée standard (ou, hors
+option, sur ligne de commande). Elles conditionnent également
+l'affichage en sortie standard du nouveau mot de passe validé.<br>
+</li><li style="text-align: justify;">L'option "<span style="font-weight: bold; font-style: italic;">--date</span><span style="font-weight: bold; font-style: italic;"></span>"
+permet de spécifier une date de référence (au format UNIX : secondes
+depuis 1970)<span style="font-weight: bold;"></span> avant laquelle la modification de date n'est pas permise par le masque de saisie.</li>
+  <li style="text-align: justify;">L'option "<span style="font-weight: bold; font-style: italic;">--minLength</span>"
+permet de spécifier une longueur minimale de mot de passe (option sans aucune valeur -&gt; 5) avant possibilité de validation.<br>
+ </li>
+
+  <li style="text-align: justify;">L'option "<span style="font-weight: bold; font-style: italic;">--update</span>"
+permet de préciser que, lors de la validation, les attributs
+"<span style="font-weight: bold;">sambaLMPasswd</span>" et/ou "<span style="font-weight: bold;">sambaNTPassword</span>" seront effectivement mis à
+jour dans l'annuaire LDAP. Cette option doit être utiliser conjointement avec :</li>
+  <ul>
+    <li style="text-align: justify;">soit les deux options "<span style="font-weight: bold;">-H</span>" et "<span style="font-weight: bold;">-d</span>" renseignées,</li>
+    <li style="text-align: justify;">soit l'option "<span style="font-weight: bold;">--dn</span>" seule mais avec une connexion LDAP active décrite en "<span style="font-weight: bold;">shared memory</span>".<br>
+    </li>
+  </ul>
+
+<li style="text-align: justify;">une valeur de hachage passée en argument de la commande (ou bien : "<span style="font-weight: bold; font-style: italic;">--stdin/-</span>"
+pour une valeur passée en entrée standard du processus) permet de
+renseigner la valeur courante du mot de passe (par exemple, pour sa
+vérification éventuelle).</li>
+</ul>
+<br>
+<big><a name="ss11.3.2"></a><span style="font-weight: bold;">11.3.2 </span><span style="font-weight: bold; text-decoration: underline;">Application pratique à la mise à jour des champs "samba(LM/NT)Password" de l'interface "<a href="Howto-8.fr.html">personFrontend</a>"</span></big><span style="font-weight: bold; text-decoration: underline;"><big> :</big><br>
+<br>
+</span>
+<div style="margin-left: 40px;"><span style="text-decoration: underline;"></span>Le
+problème qui se présente ici est que l'on a deux attributs (deux
+hachages d'un même mot de passe) à mettre à jour dans l'annuaire ...<br>
+<br>
+Outre le fait qu'il peut s'avérer fastidieux à la longue de saisir deux fois (voire trois si l'on inclue le mot de passe "<span style="font-weight: bold;">posix</span>") un même mot de passe pour un même utilisateur, l'unicité attendue n'est pas vraiment garantie.<br>
+Cela n'est pas forcément bloquant concernant le mot de passe "<span style="font-weight: bold;">posix</span>"
+; cela peut même s'avérer constituer une option souhaitée sur certains
+sites ou par certains utilisateurs (mot de passe "Email" <span style="font-weight: bold;">!=</span> mot de passe des partages réseau "<a href="http://www.samba.org">samba</a>"). Cependant, cela s'avère problématique pour les deux hachages (<span style="font-weight: bold;">LM/NT</span>) du mot de passe "<a href="http://www.samba.org">samba</a>" ...<br>
+<br>
+En outre, si l'opérateur modifie un premier attribut (par exemple : "<span style="font-weight: bold;">sambaLMPassword</span>") puis en valide la mise à jour au sein de l'interface de saisie (par exemple, "<a href="Howto-8.fr.html#S8">personFrontend</a>"), les attributs "<span style="font-weight: bold;">sambaPwdLastSet</span>" et "<span style="font-weight: bold;">sambaPwdCanChange</span>" seront également mis à jour durant cette validation, cela par le mécanisme des "<a href="#ss11.6">déclencheurs après mise à jour</a>". Il se peut donc fort bien que
+l'opérateur, s'apercevant par la suite de son oubli de mise à jour sur
+le second attribut "<span style="font-weight: bold;">sambaNTPassword</span>"
+se trouve alors dans l'impossibilité de rectifier son erreur du fait du
+délai minimum de validité des mots de passe défini par l'administrateur
+du domaine : <a href="#ss11.1">sambaMinPwdAge</a> !...<br>
+<br>
+<br style="text-decoration: underline;">
+<span style="text-decoration: underline;">La solution est la suivante :</span><br>
+<br>
+
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+    <tr>
+      <td colspan="3" rowspan="1" style="vertical-align: top; background-color: rgb(255, 204, 102); text-align: center;">Definitions of Triggers during the editions<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center; background-color: rgb(204, 204, 204);">Attribut Name<br>
+      </td>
+      <td style="vertical-align: top; text-align: center; background-color: rgb(204, 204, 204);">Associate Trigger<br>
+      </td>
+      <td style="vertical-align: top; text-align: center; background-color: rgb(204, 204, 204);">Description<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">userPassword<br>
+      </td>
+      <td style="vertical-align: top;">slappassword --stdin<br>
+      </td>
+      <td style="vertical-align: top;">posixPwd edit<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">sambaLMPassword<br>
+      </td>
+      <td style="vertical-align: top;">onlyForYourEyes Edit rather attribute 'sambaNTPassword'<br>
+      </td>
+      <td style="vertical-align: top;">No edition<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">sambaNTPassword<br>
+      </td>
+      <td style="vertical-align: top;">$(%null=ntpassword
+--date 0%sambaPwdCanChange -N -L " %sambaLMPassword:" -m
+0$(getAttribute -d "%dn" -n sambaMinPwdLength --scope onelevel -f
+'(objectClass=sambaDomain)') --dn "%dn" --update --stdin
+$(%sambaPwdLastSet = date "+%%s")) $(%sambaPwdLastSet=date +%%s)
+$(%sambaPwdCanChange=expr $(date +%%s) + 0$(getAttribute --domain "%dn"
+--name sambaMinPwdAge --scope onelevel -f '(objectClass=sambaDomain)'))
+$(%sambaLMPassword=getAttribute -b %dn -n sambaLMPassword) getAttribute
+-b %dn -n sambaNTPassword</td>
+      <td style="vertical-align: top;">NTPwd edition<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">sambaPwdLastSet<br>
+      </td>
+      <td style="vertical-align: top;">onlyForYourEyes This data cannot be manually modified<br>
+      </td>
+      <td style="vertical-align: top;">Automatic update<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">sambaPwdCanChange<br>
+      </td>
+      <td style="vertical-align: top;">onlyForYourEyes This data cannot be manually modified<br>
+      </td>
+      <td style="vertical-align: top;">Automatic update</td>
+    </tr>
+  </tbody>
+</table>
+
+<br>
+<span style="text-decoration: underline;">avec :</span><br>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+    <tr>
+      <td colspan="3" rowspan="1" style="vertical-align: top; background-color: rgb(255, 204, 102); text-align: center;">Definitions of Triggers on Displaying<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center; background-color: rgb(204, 204, 204);">Attribut Name<br>
+      </td>
+      <td style="vertical-align: top; text-align: center; background-color: rgb(204, 204, 204);">Associate Trigger<br>
+      </td>
+      <td style="vertical-align: top; text-align: center; background-color: rgb(204, 204, 204);">Description<br>
+      </td>
+    </tr>
+    
+    <tr>
+      <td style="vertical-align: top;">sambaPwdCanChange
+      </td>
+      <td style="vertical-align: top;">date -d @%this "+%%Y-%%m-%%d %%H:%%M:%%S"<br>
+</td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    
+    <tr>
+      <td style="vertical-align: top;">sambaPwdLastSet<br>
+      </td>
+      <td style="vertical-align: top;">date -d @%this "+%%Y-%%m-%%d %%H:%%M:%%S"<br>
+</td><td style="vertical-align: top;"><br>
+</td>
+    </tr>
+    
+  </tbody>
+</table>
+
+<br>
+<span style="text-decoration: underline; font-weight: bold;">Remarque :</span><br>
+</div>
+<div style="margin-left: 40px;">
+<ul>
+  <li>l'utilitaire "<span style="font-weight: bold;">getAttribute</span>" s'obtient par la commande "<span style="font-weight: bold;">ln&nbsp; -s&nbsp; /usr/local/bin/setAttribute&nbsp; </span><span style="font-weight: bold;">/usr/local/bin/</span><span style="font-weight: bold;">getAttribute</span>" ... (voir : "<a href="../archives/ldapEasyAdminFrontends/sources/setAttribute/">setAttribute</a>").</li>
+  <li>l'utilitaire "<span style="font-weight: bold;">ntpassword</span>" s'obtient par la commande "<span style="font-weight: bold;">ln&nbsp; -s&nbsp; /usr/local/bin/slappassword&nbsp; /usr/local/bin/ntpassword</span>" ... (voir : "<a href="../archives/ldapEasyAdminFrontends/sources/slappassword/">slappassword</a>").</li>
+</ul>
+</div>
+<div style="margin-left: 40px;">
+</div>
+
+
+
+
+
+
+
+</div>
+
+
+
+<h2><br>
+
+</h2>
+<h2><a name="ss11.4">11.4 Utilitaire d'aide à l'édition de l'attribut "sambaAcctFlagsSelector"
+</a></h2>
+
+
+
+<div style="margin-left: 40px;">Cet utilitaire sera configuré en "<a href="Howto-11.fr.html#ss11.2.1">déclencheur d'édition</a>" notamment au sein de l'interfaces "<a href="Howto-8.fr.html#S8">personFrontend</a>" pour faciliter l'édition du champ "<span style="font-weight: bold;">sambaAcctFlags</span>" de l'objectClass "<span style="font-weight: bold;">sambaSamAccount</span>" éventuellement ouvert :<br>
+<br>
+
+<div style="text-align: center;"><img style="width: 427px; height: 436px;" alt="images/sambaAcctFlags.png" src="images/sambaAcctFlags.png"><br>
+</div>
+<br>
+
+Les sources de la version 0.1 sont <a href="../archives/ldapEasyAdminFrontends/sources/sambaAcctFlagsSelector/">ici</a>...<br>
+
+<br>
+
+<span style="text-decoration: underline;">Syntaxe :</span>&nbsp;&nbsp; &nbsp;&nbsp; <span style="font-style: italic; font-weight: bold;">sambaAcctFlagsSelector&nbsp;<span style="font-style: italic;"> [--stdin /&nbsp; "currentValue"]</span><br>
+<br>
+</span><span style="text-decoration: underline;">
+Exemple de définition (menu "</span><span style="text-decoration: underline;"><span style="font-weight: bold;">Settings/Triggers definition</span></span><span style="text-decoration: underline;">") dans la liste des déclencheurs de "</span><a style="text-decoration: underline;" href="Howto-8.fr.html#ss8.4">personFrontend</a><span style="text-decoration: underline;">" :</span><span style="font-style: italic; font-weight: bold;"><br>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span style="font-style: italic;">Sur l'attribut "</span><span style="font-style: italic; font-weight: bold;">sambaAcctFlags</span><span style="font-style: italic;">" :</span><span style="font-style: italic; font-weight: bold;">&nbsp; &nbsp;&nbsp;  "/usr/local/bin/</span><span style="font-style: italic; font-weight: bold;"></span><span style="font-style: italic; font-weight: bold;">sambaAcctFlagsSelector</span><span style="font-style: italic; font-weight: bold;">&nbsp; --stdin"</span><br>
+<span style="font-style: italic; font-weight: bold;"><br>
+</span></div>
+
+
+
+<h2><a name="ss11.5">11.5 Utilitaire d'aide à ne rien saisir
+</a></h2>
+
+
+
+<div style="margin-left: 40px;">Ce déclencheur (extrêmement complexe... ;-) "<a href="../archives/ldapEasyAdminFrontends/sources/onlyForYourEyes/">onlyForYourEyes</a>" permet d'aider l'opérateur à ... ne rien faire.<br>
+<br>
+<div style="text-align: center;"><img style="width: 757px; height: 466px;" alt="images/cannotChange.png" src="images/cannotChange.png"><br>
+</div>
+<br>
+
+
+<div style="text-align: justify;">
+Cet utilitaire pourrait être remplacé (mais, sans affichage) par la commande : "<span style="font-weight: bold;">exit 1</span>" ...<br>
+<br>
+En réalité, le champs spécifique "<span style="font-weight: bold;">sambaPwdLastSet</span>" sera mis à jour par le "<a href="Howto-11.fr.html#ss11.6"><span style="text-decoration: underline;">déclencheur sur mise à jour</span></a>"  "<a href="../archives/ldapEasyAdminFrontends/sources/setAttribute/">setAttribute</a>" de l'interface "<a href="Howto-8.fr.html#S8">personFrontend</a>" (en version minimale 1.3), cela à chaque fois que l'un des champs "<span style="font-weight: bold;">sambaNTPassword</span>" ou "<span style="font-weight: bold;">sambaLMPassword</span>" sera modifié (<span style="font-style: italic;">voir ci-dessous</span>).<br>
+
+<br>
+<big><span style="font-weight: bold;"></span></big></div>
+</div>
+
+
+
+<h2><a name="ss11.6">11.6 Déclencheurs après mise à jour
+</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;">Voici la définition du déclencheur sur mise à jour pour le champ "<span style="font-weight: bold;">sambaLMPassword</span>" :<br>
+
+<br>
+
+<div style="text-align: center;"><img style="width: 1118px; height: 195px;" alt="images/triggersOnBackup.png" src="images/triggersOnBackup.png"><br>
+</div>
+
+
+<br>
+On notera, dans cette définition, la possibilité de récursivité sur la
+syntaxe "<span style="font-weight: bold;">$(...)</span>".<br>
+<br>
+
+Les sources de la version opérationnelle de l'utilitaire <a href="../archives/ldapEasyAdminFrontends/sources/setAttribute/">"setAttribute" sont ici</a> ...<br>
+
+
+<br>
+
+
+<span style="text-decoration: underline;">Syntaxe :</span>&nbsp;&nbsp;&nbsp; <span style="font-style: italic;"><span style="font-weight: bold;">setAttribute&nbsp; ((--baseDn/--dn/-b "entryDN") / (--domain/-d "dc=..."))&nbsp; --name/-n "attributeName"&nbsp; [
+[--replace] / --add / --delete ]&nbsp; --stdin /&nbsp; "theNewValue" ]&nbsp; [-q/--quiet]&nbsp; [--onError \"value\"]</span></span><span style="font-style: italic; font-weight: bold;"></span><br>
+<ul>
+<li style="text-align: justify;">L'option obligatoire "<span style="font-weight: bold; font-style: italic;">--dn</span>" permet de renseigner le nom de l'entrée d'annuaire dont on souhaite modifier l'attribut.</li>
+  <li style="text-align: justify;">L'option "<span style="font-weight: bold;">--domain/-d</span>", alternative à la précédente mais également exclusive de celle-ci, permet de renseigner le "<span style="font-weight: bold;">dn</span>" de l'entrée à modifier mais de n'en retenir que la partie définition du domaine (à savoir, la partie "<span style="font-weight: bold;">baseDn</span>" uniquement en "<span style="font-weight: bold;">dc=...</span>").<br>
+  </li>
+
+  <li style="text-align: justify;">L'option également obligatoire "<span style="font-weight: bold; font-style: italic;">--name</span>" renseigne le nom de l'attribut à modifier.</li>
+  <li style="text-align: justify;">L'option "<span style="font-weight: bold; font-style: italic;">--replace</span>" (par défaut), "<span style="font-weight: bold; font-style: italic;">--add</span>" ou "<big style="font-weight: bold; font-style: italic;">--delete</big>" permet de spécifier le type de l'opération souhaitée.</li>
+  <li style="text-align: justify;">L'option "<span style="font-weight: bold;">--filter/-f</span>"
+permet de définir un filtre de sélection permettant d'isoler l'entrée d'annuaire à
+modifier. Lorsque cette option est utilisée, la recherche dans
+l'annuaire <span style="font-weight: bold;">LDAP</span> est menée avec un "<span style="font-weight: bold;">scope</span>" en "<span style="font-weight: bold;">subtree</span>" (recherche au sein de la sous-arborescence définie par l'option "<span style="font-weight: bold;">-b</span>" ou "<span style="font-weight: bold;">-d</span>"). A défaut de cet option, le "<span style="font-weight: bold;">scope</span>" vaut alors "<span style="font-weight: bold;">base</span>" (recherche limitée au seul niveau spécifié par "<span style="font-weight: bold;">-b</span>" ou "<span style="font-weight: bold;">-d</span>").<br>
+  </li>
+
+<li style="text-align: justify;">l'option "<span style="font-weight: bold;">--</span><span style="font-weight: bold; font-style: italic;">stdin</span><span style="font-style: italic; font-weight: bold;">/-</span> " (ou bien, la valeur simplement passé en argument de la ligne de commande, hors option) permet
+d'indiquer la valeur que l'on doit substituer, ajouter ou effacer à
+l'attribut sélectionné.</li>
+  <li style="text-align: justify;">l'option "<span style="font-weight: bold;">-q/--quiet</span>" permet de supprimer les affichages en cas d'erreur.</li>
+  <li style="text-align: justify;">l'option "<span style="font-weight: bold;">--onError</span>", valable uniquement pour la commande "<span style="font-weight: bold;">getAttribute</span>", permet de retourner une valeur spécifique (passée en argument de l'option) sur echec de la requête <span style="font-weight: bold;">LDAP</span> (par exemple : sur <span style="font-weight: bold;">dn</span> ou <span style="font-weight: bold;">attribut</span> non existant).</li>
+
+</ul>
+La connexion de cet utilitaire à l'annuaire LDAP est exclusivement réalisée via les <span style="font-weight: bold;">IPC</span>
+(<span style="font-weight: bold;">shared memory</span>) selon les paramètres de connexion de l'interface graphique "<span style="font-weight: bold;">ldapEasyInterfaceFrontend</span>" appelante ...<br>
+<br>
+L'utilitaire "<span style="font-weight: bold;">getAttribute</span>" s'obtient ainsi :&nbsp;&nbsp;  "<span style="font-weight: bold;">ln&nbsp; [-s]&nbsp; <a href="../archives/ldapEasyAdminFrontends/sources/setAttribute/">setAttribute</a>&nbsp; getAttribute</span>".<br>
+<br>
+<br>
+<span style="text-decoration: underline;"></span><span style="font-style: italic; font-weight: bold;"></span><div style="text-align: center;"><a href="../archives/ldapEasyAdminFrontends/sources/domain.so/triggersDefinition_example.ldiff"><big><span style="font-weight: bold;"><span style="font-weight: bold;">Ici</span></span> se trouve un fichier d'exemple de définitions de déclencheurs au format "ldiff" ...</big></a><span style="font-style: italic; font-weight: bold;"></span><br>
+<span style="font-style: italic; font-weight: bold;"></span></div>
+<span style="font-style: italic; font-weight: bold;">
+</span>
+<br>
+
+</div>
+
+
+<h2><a name="ss11.7">11.7 Définition des services samba
+</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;"><a href="../archives/ldapEasyAdminFrontends/sources/sambaconfig.so/sambaFrontend.LDIFF">Voici un exemple</a> d'arborescence de définition (format "<span style="font-weight: bold;">LDIFF</span>") du service <a href="http://www.samba.org">Samba</a>
+qui, associé à une entrée "<a href="Howto-7.fr.html#S7">server</a><span style="font-weight: bold;"></span>" de l'annuaire <span style="font-weight: bold;">LDAP</span> permettra d'en définir tous les paramètres à répercuter dans le fichier de configuration (<span style="text-decoration: underline;">par exemple :</span> "<span style="font-weight: bold;">/etc/smb.conf</span>" ) sur le serveur physique (voire même virtuel, d'ailleurs... ;-) correspondant.<br>
+<br>
+Nous allons définir une interface dynamique, paramétrable
+(création/suppression/positionnement/dimensionnement de champs de
+saisie sur un bureau - en mode graphique) par l'administrateur habilité (cf. "<a href="../archives/ldapEasyAdminFrontends/sources/sambaconfig.so/">sambaConfigFrontend</a>").<br>
+<br><span style="text-decoration: underline; font-weight: bold;">Cela se présente ainsi :</span><br>
+<div style="text-align: center;"><span style="text-decoration: underline;"><img style="width: 1084px; height: 723px;" alt="images/sambaConfigFrontend.png" src="images/sambaConfigFrontend.png"></span><br>
+</div>
+
+<span style="text-decoration: underline; font-weight: bold;"><br><a name="ss11.7.1"></a>
+avec, par exemple :</span><br>
+<div style="margin-left: 40px;"><small><span style="font-style: italic;">dn: cn=netbiosName,ou=fieldDefinition,ou=sambaConfigFrontend,ou=LdapEasyInter</span><span style="font-style: italic;">face,ou=ldap,ou=application,dc=mydomain</span><br style="font-style: italic;">
+<span style="font-style: italic;">cn: netbiosName<br>
+</span><span style="font-style: italic;">description: the Netbios Name of the Samba service</span><br style="font-style: italic;">
+<span style="font-style: italic;">l: -1309,-806,0,167,0,1,0<br>
+</span><span style="font-style: italic;">objectClass: LdapEasyInterface</span><br>
+<span style="font-style: italic;">objectClass: applicationProcess</span><span style="font-style: italic;"></span><span style="font-style: italic;"></span><span style="font-style: italic;"><br>
+</span><span style="font-style: italic;">objectClass: top</span></small>
+
+
+
+<br>
+<span style="font-style: italic;"></span>
+</div><br>
+<span style="font-weight: bold; text-decoration: underline;">ou encore :</span><br>
+<br>
+<div style="margin-left: 40px;"><small><span style="font-style: italic;">dn: cn=security,ou=fieldDefinition,ou=sambaConfigFrontend,ou=LdapEasyInterfac</span><span style="font-style: italic;">e,ou=ldap,ou=application,dc=mydomain</span><br style="font-style: italic;">
+<span style="font-style: italic;">cn: security<br>
+</span><span style="font-style: italic;">description: the Samba security mode</span><br style="font-style: italic;">
+<span style="font-style: italic;">l: -1303,-562,4,148,1,1,0,SHARE|USER</span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: LdapEasyInterface</span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: applicationProcess</span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: top</span></small>
+
+
+
+
+<br>
+</div>
+
+<br>
+<a href="../archives/ldapEasyAdminFrontends/sources/sambaconfig.so/sambaConfigFieldsDefinition_example.LDIFF">Ici se trouve la définition</a><span style="font-weight: bold;"></span>, au format "<span style="font-weight: bold;">LDIFF</span>", de l'exemple de masque présenté ci-dessus ... Il peut/doit être enrichi ...<br>
+<br>
+<br style="font-weight: bold;">
+<span style="text-decoration: underline; font-weight: bold;"><a name="ss11.8.1"></a>Exemple de procédure manuelle de création d'un nouveau champs de saisie :</span><br>
+<br>
+<div style="text-align: center;"><img style="width: 1193px; height: 188px;" alt="images/newFieldProcedure.png" src="images/newFieldProcedure.png"><br>
+</div>
+
+
+<ol style="font-style: italic; margin-left: 40px;">
+  <small>
+  </small>
+  <ol>
+    <ol>
+      <ol>
+        <ol>
+          <ol>
+            <li><small>Création du nouveau champs par menu contextuel : "clic-droit sur le bureau",</small></li>
+            <li><small>Saisie du nom d'attribut (à précéder d'un "." si non visible),</small></li>
+            <li><small>Saisie du commentaire d'aide,</small></li>
+            <li><small>Dimensionnement et positionnement du nouveau champs sur le bureau,</small></li>
+            <li><small>Définition</small><small> - clic-droit -</small><small> du type de widget : <span style="font-weight: bold;">lineEdit</span>, <span style="font-weight: bold;">checkBox</span>, <span style="font-weight: bold;">spinBox</span>, <span style="font-weight: bold;">comboBox</span>, <span style="font-weight: bold;">listWindow</span>, <span style="font-weight: bold;">VLine</span> ou <span style="font-weight: bold;">HLine</span>,</small></li>
+            <li><small>Réglage des propriétés du champs : "<span style="font-weight: bold;">readonly</span>", "<span style="font-weight: bold;">enable</span>", "<span style="font-weight: bold;">mandatory</span>", "<span style="font-weight: bold;">virtual</span>", saisie des valeurs initiales sur "<span style="font-weight: bold;">comboBox</span>",<br>
+</small></li>
+
+            <li><small>Sauvegarde du nouveau champs dans l'annuaire LDAP.</small></li>
+          </ol>
+        </ol>
+      </ol>
+    </ol>
+  </ol>
+  <small>
+  
+  
+  
+  
+  </small>
+</ol><span style="font-weight: bold; text-decoration: underline;">ATTENTION :</span> Pour accéder à cette procédure, il convient toutefois que le compte de connexion LDAP utilisé possède le rôle "<span style="font-weight: bold;">adminMask</span>" (cf: menu "<span style="font-weight: bold;">Help/About Roles</span>" ...)<br>
+<span style="color: rgb(0, 153, 0);"></span><br>
+</div>
+
+<h2><a name="ss11.8">11.8 Définition des ressources SAMBA
+</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;"><span style="text-decoration: underline; font-weight: bold;">Voici un exemple de masque de saisie d'une ressource de partage "samba" :</span><br>
+<div style="text-align: center;"><img style="width: 796px; height: 560px;" alt="images/sambaShareFrontend.png" src="images/sambaShareFrontend.png"><br>
+</div>
+
+<br>
+<a href="../archives/ldapEasyAdminFrontends/sources/sambaconfig.so/sambaShareFieldsDefinition_example.LDIFF">Ici se trouve la définition</a><span style="font-weight: bold;"></span>, au format "<span style="font-weight: bold;">LDIFF</span>", de l'exemple de masque présenté ci-dessus ...<br>
+...<br>
+</div>
+
+<h2><a name="ss11.9">11.9 L'interface de paramétrage système "doSmbConf"
+</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;">Voici l'interface de paramétrage "<span style="font-weight: bold;">samba</span>": <a href="../archives/ldapEasyAdminFrontends/sources/getHostName/">doSmbConf</a>. Elle partage ses sources avec <a href="Howto-7.fr.html#ss7.3">getHostName</a>. Elle peut donc être utilisée ainsi :<br>
+<span style="font-style: italic;"><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; </span></span><span style="font-weight: bold; font-style: italic;">getHostName&nbsp; --smbconf</span><span style="font-style: italic;"></span><br>
+ou bien :&nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp; &nbsp; <span style="font-style: italic;"></span><span style="font-weight: bold; font-style: italic;">ln&nbsp; -s&nbsp; /usr/local/bin/getHostName&nbsp; /usr/local/bin/doSmbConf&nbsp; ;&nbsp; doSmbConf</span><span style="font-style: italic;"></span><br>
+<br>
+Ce programme permet la génération automatique (déclenchée soit par "<span style="font-weight: bold;">cron</span>",
+soit au niveau des procédures de démarrage du système destinataire) du
+fichier de configuration samba à partir des informations (si elles existent) contenues dans
+la base LDAP et concernant l'adresse MAC du serveur courant (où la
+commande est lancée) :<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold; font-style: italic;">doSmbConf -v -U ldap://ldap... &gt;/etc/samba/smb.conf</span><br>
+<br>
+<span style="text-decoration: underline; font-weight: bold;">Nota :</span> l'option "<span style="font-weight: bold; font-style: italic;">--sharesOnly</span>" permet de ne générer que la partie définition des ressources partagées "<span style="font-weight: bold;">samba</span>",
+cela pour permettre par exemple, via la ressource "cron", une mise à
+jour périodique des options des partages sans nécessité de redémarrage
+des processus de "<span style="font-weight: bold;">samba</span>" (exemple à venir sur le modèle de <a href="Howto-11.fr.html#ss11.9">nfsdConf</a>) ...<br>
+<br>
+<span style="text-decoration: underline; font-weight: bold;">Exemple de </span><span style="text-decoration: underline; font-weight: bold;">shell-</span><span style="text-decoration: underline; font-weight: bold;">script de démarrage à installer (/etc/init.d/) sur chacun des serveurs de l'intranet à administrer :<br>
+</span><small>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; ...<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; # <span style="text-decoration: underline;"><a href="Howto-7.fr.html#ss7.3"><span style="font-style: italic;">previous setting...</span></a></span><span style="text-decoration: underline; font-weight: bold;"></span><br>
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  ...<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  SMBCONFDIR="/etc/samba"<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; TMP=/tmp/<a href="../archives/ldapEasyAdminFrontends/sources/getHostName/">doSmbConf</a>.$$<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; NBCONF=$(${BIN}/<a href="../archives/ldapEasyAdminFrontends/sources/getHostName/">getHostName</a> --smbconf --number)</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  I=0; while [ $I -lt 0$NBCONF ] ; do</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; NETBIOSNAME=$(</span><span style="font-style: italic;">2&gt;&amp;1 ${BIN}/getHostName --smbconf -#$I &gt;$TMP)<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; [ $? -eq 0</span><span style="font-style: italic;">
+] &amp;&amp; cat &lt;$TMP &gt;$SMBCONFDIR/smb</span><span style="font-style: italic;">_$NETBIOSNAME</span><span style="font-style: italic;">.conf<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  rm -f $TMP<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp; I=$(expr $I + 1)<br style="font-style: italic;">
+</span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  done</span><br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  ...<br>
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp; # </span><a style="font-style: italic;" href="Howto-12.fr.html#ss12.2">next setting...</a><br style="font-style: italic;">
+
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  ...<br>
+<span style="text-decoration: underline; font-weight: bold;"></span></small>
+
+
+
+
+<br>
+<span style="text-decoration: underline; font-weight: bold;">Exemple d'utilisation de cette interface sur la "</span><a style="text-decoration: underline; font-weight: bold;" href="../archives/ldapEasyAdminFrontends/exportLDAP_example.LDIFF">base de tests</a><span style="text-decoration: underline; font-weight: bold;">" :</span><br>
+<br>
+<small style="font-style: italic;"><span style="font-weight: bold;">root@me:~/Cdev#&nbsp; <a href="../archives/ldapEasyAdminFrontends/sources/getHostName/">doSmbConf</a>&nbsp; --forceMacAddress&nbsp; 11:22:33:44:55:66</span><br></small><small><span style="font-style: italic;">multimedia&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; </span><span style="color: rgb(0, 153, 0); font-style: italic;">// Here, it's "stderr"</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; </span><span style="color: rgb(0, 153, 0); font-style: italic;">// Now, it's "stdout"...</span></small><small style="font-style: italic;"><span style="color: rgb(0, 153, 0);"></span><br>
+# @(#)LdapEasyInterface - Samba - Global Settings:<br>
+
+[global]<br>
+
+guest account = TRUE <br>
+
+hosts allow = 192.168.0.0/24&nbsp; <br>
+
+hosts deny = 192.168.0.1 192.168.0.2 192.168.0.3 192.168.0.4 192.168.0.5&nbsp; <br>
+
+netbiosname = multimedia <br>
+
+oslevel = 33 <br>
+
+security = SHARE <br>
+
+server string = serveur de partage multimedia <br>
+
+workgroup = home <br>
+<br>
+<br>
+
+# @(#)LdapEasyInterface - Samba - Definitions of Shares:<br>
+
+[music]<br>
+
+browsable = TRUE <br>
+
+comment = Musics <br>
+
+force create mode = 0750 <br>
+
+guest ok = TRUE <br>
+
+path = /var/data/musics <br>
+
+read only = TRUE <br>
+
+# @(#)setfacl = -m mask::w&nbsp; <br>
+<br>
+
+[picture]<br>
+
+browsable = TRUE <br>
+
+comment = Pictures <br>
+
+force create mode = 0750 <br>
+
+guest ok = TRUE <br>
+
+path = /var/data/pictures <br>
+
+read only = TRUE <br>
+
+# @(#)setfacl = -m mask::w&nbsp; <br>
+<br>
+
+[video]<br>
+
+browsable = TRUE <br>
+
+comment = Videos <br>
+
+force create mode = 0750 <br>
+
+guest ok = TRUE <br>
+
+path = /var/data/videos <br>
+
+read only = TRUE <br>
+
+# @(#)setfacl = -m mask::w&nbsp; <br>
+<br>
+
+# @(#)LdapEasyInterface - End -<br>
+<br>
+<span style="font-weight: bold;">root@me:~/Cdev#&nbsp; echo $?<br>
+</span>0
+<span style="font-weight: bold;"><br>
+root@me:~/Cdev#</span><br>
+</small>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+<h2><small style="font-style: italic;"><a name="ss11.10"></a></small>11.10 Les sources C++<br>
+</h2>
+
+
+<div style="text-align: justify; margin-left: 40px;">Les sources de la dernière version (<span style="font-weight: bold;">20110913</span>) de <a href="../archives/ldapEasyAdminFrontends/sources/sambaconfig.so/">"sambaDomain.so" sont </a><a href="../archives/ldapEasyAdminFrontends/">ici</a> avec sources des utilitaires d'aide à la saisie...<br>
+<br>
+La dernière version (<span style="font-weight: bold;">20110830</span>) des sources communes à <a href="../archives/ldapEasyAdminFrontends/sambaconfig/">"libsambaconfig.so" et "libsambashare.so" est là.</a><br>
+<small style="font-style: italic;"><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; "sambaShareFrontend</span>" s'obtient par la commande SHELL :<br>
+</small><small style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">ln [-s] /usr/local/bin/libsambaconfig.so /usr/local/bin/libsambashare.so</span><br>
+</small><small style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">ln [-s] /usr/local/bin/<a href="Howto-5.fr.html">frontend</a> /usr/local/bin/nfsShareFrontend</span></small><br><br>
+Ces mêmes sources gèrent aussi la définition de l'interface de paramétrage des services réseau : "<a href="Howto-12.fr.html#S12"><span style="font-weight: bold;">Rsyncd</span></a>" &amp; "<a href="Howto-13.fr.html#S13"><span style="font-weight: bold;">Nfsd</span></a>" ...<br>
+</div>
+<br>
+<h2><a name="ss11.11">11.11 A faire</a>
+</h2>
+
+
+
+
+
+
+<div style="margin-left: 40px; text-align: justify;">- ajouter la notion de "<a href="Howto-8.fr.html#ss8.4">déclencheurs</a>" ...<br>
+- essayer de simplifier la méthode de mise à jour de l'annuaire (<span style="font-weight: bold;">"sambaConfig::saveObject()"</span>) selon le modèle adopté dans les sources de l'interface "<a href="Howto-6.fr.html#ss6.6">domainFrontend</a>" ...<br></div>
+
+
+<hr><a href="Howto-12.fr.html">Page suivante</a>
+<a href="Howto-10.fr.html">Page précédente</a> <a href="Howto.fr.html">Sommaire</a>
+
+
+
+</body></html>

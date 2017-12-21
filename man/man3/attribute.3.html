@@ -1,0 +1,335 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ATTRIBUTE</TITLE>
+</HEAD><BODY>
+<H1>ATTRIBUTE</H1>
+Section: libldapcppei 3.1.0 (3)<BR>Updated: 2012-08-24<BR><A HREF="#index">Index</A>
+<A HREF="http://homepage.gna.org/ldapcppei/miniHowto-1.en.html#ss1.8">Return to Main Contents</A><HR>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+attribute --- <B>libldapcppei</B> is a C++ library under licence GNU version 3 whose topic is to provide a C++ programming interface for easy and safe use of OPENLDAP databases.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/libldapcppei/ldapAttribute.h">libldapcppei/ldapAttribute.h</A>&gt;</B>
+<P>
+
+<B>using namespace ldapcppei;</B>
+<P>
+
+<B>attribute( void );</B>
+<BR>
+
+<B>attribute( char const *</B><I>attributeName</I> <B>);</B>
+<BR>
+
+<B>attribute( std::string const &amp;</B><I>attributeName</I> <B>);</B>
+<BR>
+
+<B>attribute( std::string</B> <I>attributeName</I>, <B>int</B> <I>ldapMod</I> <B>);</B>
+<BR>
+
+<B>attribute( std::string</B> <I>attributeName</I>, <B>int</B> <I>ldapMod</I>, <B>char const *</B><I>value</I> <B>);</B>
+<BR>
+
+<B>attribute( std::string</B> <I>attributeName</I>, <B>int</B> <I>ldapMod</I>, <B>std::string</B> <I>value</I> <B>);</B>
+<BR>
+
+<B>attribute( std::string</B> <I>attributeName</I>, <B>int</B> <I>ldapMod</I>, <B>BerValue const *</B><I>value</I> <B>);</B>
+<BR>
+
+<B>attribute( std::string</B> <I>attributeName</I>, <B>int</B> <I>ldapMod</I>, <B>BerValue const &amp;</B><I>value</I> <B>);</B>
+<BR>
+
+<B>attribute( std::string</B> <I>attributeName</I>, <B>int</B> <I>ldapMod</I>, <B>berValue const *</B><I>value</I> <B>);</B>
+<BR>
+
+<B>attribute( std::string</B> <I>attributeName</I>, <B>int</B> <I>ldapMod</I>, <B>berValue const &amp;</B><I>value</I> <B>);</B>
+<BR>
+
+<B>attribute( std::string</B> <I>attributeName</I>, <B>int</B> <I>ldapMod</I>, <B>berValue *</B><I>value</I>, <B>bool</B> <I>autoDelete</I> <B>);</B>
+<BR>
+
+<B>attribute( std::string</B> <I>attributeName</I>, <B>int</B> <I>ldapMod</I>, <B>cont char *</B><I>values</I><B>[] );</B>
+<BR>
+
+<B>attribute( std::string</B> <I>attributeName</I>, <B>int</B> <I>ldapMod</I>, <B>cont BerValue *</B><I>values</I><B>[] );</B>
+<BR>
+
+<B>attribute( std::string</B> <I>attributeName</I>, <B>int</B> <I>ldapMod</I>, <B>cont berValue *</B><I>values</I><B>[] );</B>
+<BR>
+
+<B>attribute( std::string</B> <I>attributeName</I>, <B>int</B> <I>ldapMod</I>, <B>berValue *</B><I>values</I><B>[], bool</B> <I>autoDelete</I> <B>);</B>
+<BR>
+
+<B>attribute( LDAPMod const *</B><I>value</I> <B>);</B>
+<BR>
+
+<B>attribute( LDAPMod const &amp;</B><I>value</I> <B>);</B>
+<BR>
+
+<B>attribute( attribute const *</B><I>value</I> <B>);</B>
+<BR>
+
+<B>attribute( attribute const &amp;</B><I>value</I> <B>);</B>
+<A NAME="lbAD">&nbsp;</A>
+<H2>CONFIGURATION</H2>
+
+The <B>g++</B> option &quot;<B>-std=c++0x</B>&quot; must be set when using this component: &quot;<B>g++</B> <B>-std=c++0x</B> ... file ... <B>-lldapcppei</B> <B>-lldap</B> ...&quot;
+<A NAME="lbAE">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>attribute()</B> provides LDAP attribute objects. It's a <B>std::set</B> of <B>berValues</B> sorted by value (<B>operator&lt;(berValue const *</B>).
+<DL COMPACT>
+<DT><B>attribute( void )</B><DD>
+Creates an empty <B>attribute</B>.
+<DT><B>attribute( char const *</B><I>attributeName</I> <B>)</B><DD>
+Creates an empty <B>attribute</B> with the attribute name &quot;<I>attributeName</I>&quot; and a <B>ldap_mod_op</B>=<B>LDAP_MOD_BVALUES</B>.
+<DT><B>attribute( std::string const &amp;</B><I>attributeName</I> <B>)</B><DD>
+Creates an empty <B>attribute</B> with the attribute name &quot;<I>attributeName</I>&quot; and a <B>ldap_mod_op</B>=<B>LDAP_MOD_BVALUES</B>.
+<DT><B>attribute( std::string</B> <I>attributeName</I>, <B>int</B> <I>ldapMod</I> <B>)</B><DD>
+Creates an empty <B>attribute</B> with the attribute name &quot;<I>attributeName</I>&quot; and a <B>ldap_mod_op</B>=<B>LDAP_MOD_BVALUES</B> | <I>ldapMod</I>.
+<DT><B>attribute( std::string</B> <I>attributeName</I>, <B>int</B> <I>ldapMod</I>, <B>char const *</B><I>value</I> <B>);</B><DD>
+Create an <B>attribute</B> which contains one <B>berValue</B> of value: <I>value</I>.
+<DT><B>attribute( std::string</B> <I>attributeName</I>, <B>int</B> <I>ldapMod</I>, <B>std::string</B> <I>value</I> <B>);</B><DD>
+Create an <B>attribute</B> which contains one <B>berValue</B> of value: <I>value</I>.
+<DT><B>attribute( std::string</B> <I>attributeName</I>, <B>int</B> <I>ldapMod</I>, <B>BerValue</B> <I>value</I> <B>);</B><DD>
+Create an <B>attribute</B> which contains one <B>berValue</B> of value: <I>value</I>.
+<DT><B>attribute( std::string</B> <I>attributeName</I>, <B>int</B> <I>ldapMod</I>, <B>BerValue</B> <I>value</I> <B>);</B><DD>
+Create an <B>attribute</B> which contains one <B>berValue</B> of value: <I>value</I>.
+<DT><B>attribute( std::string</B> <I>attributeName</I>, <B>int</B> <I>ldapMod</I>, <B>berValue</B> <I>value</I> <B>);</B><DD>
+Create an <B>attribute</B> which contains one <B>berValue</B> of value: <I>value</I>.
+<DT><B>attribute( std::string</B> <I>attributeName</I>, <B>int</B> <I>ldapMod</I>, <B>berValue</B> <I>value</I> <B>);</B><DD>
+Create an <B>attribute</B> which contains one <B>berValue</B> of value: <I>value</I>.
+<DT><B>attribute( std::string</B> <I>attributeName</I>, <B>int</B> <I>ldapMod</I>, <B>berValue *</B><I>value</I>, <B>bool</B> <I>autoDelete</I> <B>);</B><DD>
+Create an <B>attribute</B> which the <B>berValue</B> <I>value</I>. After that, if <I>autoDelete</I> is <B>TRUE</B>, <I>value</I> is embedded in the <B>attribute</B> object (corresponding to a fast insert of the <B>berValue</B> in the <B>attribute</B> vs a copy when <I>autoDelete</I> is <B>FALSE</B>...).
+<DT><B>attribute( std::string</B> <I>attributeName</I>, <B>int</B> <I>ldapMod</I>, <B>cont char *</B><I>values</I><B>[] );</B><DD>
+Create an <B>attribute</B> which contains all the <B>berValues</B> of values: <I>values[]</I>.
+<DT><B>attribute( std::string</B> <I>attributeName</I>, <B>int</B> <I>ldapMod</I>, <B>cont BerValue *</B><I>values</I><B>[] );</B><DD>
+Create an <B>attribute</B> which contains all the <B>berValues</B> of values: <I>values[]</I>.
+<DT><B>attribute( std::string</B> <I>attributeName</I>, <B>int</B> <I>ldapMod</I>, <B>cont berValue *</B><I>values</I><B>[]);</B><DD>
+Create an <B>attribute</B> which contains all the <B>berValues</B> <I>values[]</I>.
+<DT><B>attribute( std::string</B> <I>attributeName</I>, <B>int</B> <I>ldapMod</I>, <B>berValue *</B><I>values</I><B>[], bool</B> <I>autoDelete</I> <B>);</B><DD>
+Create an <B>attribute</B> which contains all the <B>berValues</B> of values: <I>values[]</I>. Be sure to avoid the delete of the original <I>values</I> when <I>autodelete</I> is <B>TRUE</B>...
+<DT><B>attribute( LDAPMod const *</B><I>value</I> <B>);</B><DD>
+Create an <B>attribute</B> with the contain of the OPENLDAP structure: *<I>value</I>.
+<DT><B>attribute( LDAPMod const &amp;</B><I>value</I> <B>);</B><DD>
+Create an <B>attribute</B> with the contain of the OPENLDAP structure: <I>value</I>.
+<DT><B>attribute( attribute const *</B><I>value</I> <B>);</B><DD>
+Create an <B>attribute</B> of value: *<I>value</I>.
+<DT><B>attribute( attribute const &amp;</B><I>value</I> <B>);</B><DD>
+Create an <B>attribute</B> of value: <I>value</I>.
+
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>PUBLIC METHODS</H2>
+
+<DL COMPACT>
+<DT><B>- const std::string&amp; identifier( void ) const;</B> <B>const std::string&amp; getIdentifier( void ) const;</B> <B>const std::string&amp; name( void ) const;</B><DD>
+Returns the name of the attribute.
+<DT><B>- attribute&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>identifier( std::String</B> <I>name</I> <B>);</B> <B>attribute&amp; setIdentifier( std::String</B> <I>name</I> <B>);</B> <B>attribute&amp; name( std::String</B> <I>name</I> <B>);</B><DD>
+Sets the name of the attribute. Returns <B>*this</B>.<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>isName( berValue</B> <I>name</I> <B>);</B><DD>
+Checks if the name of the attribute is <I>name</I>.<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>isNameStartingWith( berValue</B> <I>name</I> <B>);</B><DD>
+Checks if the name of the attribute starts with <I>name</I>.<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>isNameEndingWith( berValue</B> <I>name</I> <B>);</B><DD>
+Checks if the name of the attribute ends with <I>name</I>.<BR>
+<DT><B>- attribute&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>setNULL( void );</B><DD>
+Clears the <B>attribute</B> and makes it definitely readOnly. Returns <B>*this</B>.<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>isNULL( void );</B><DD>
+Checks if the <B>attribute</B> is NULL.<BR>
+<DT><B>- int<TT>&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>ldap_mod_op( void );</B><DD>
+Returns the <B>ldap_mod_op</B> value of the <B>attribute</B>.<BR>
+<DT><B>- attribute&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>ldap_mod_op( int</B> <I>value</I> <B>);</B><DD>
+Sets to <I>value</I> the <B>ldap_mod_op</B> value of the <B>attribute</B>. Returns <B>*this</B>.<BR>
+<DT><B>- attribute&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>setAddAttribute( void );</B><DD>
+Sets the <B>ldap_mod_op</B> value of the <B>attribute</B> to <B>LDAP_MOD_ADD</B>. Returns <B>*this</B>.<BR>
+<DT><B>- attribute&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>setReplaceAttribute( void );</B><DD>
+Sets the <B>ldap_mod_op</B> value of the <B>attribute</B> to <B>LDAP_MOD_REPLACE</B>. Returns <B>*this</B>.<BR>
+<DT><B>- attribute&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>setDeleteAttribute( void );</B><DD>
+Sets the <B>ldap_mod_op</B> value of the <B>attribute</B> to <B>LDAP_MOD_DELETE</B>. Returns <B>*this</B>.<BR>
+<DT><B>- attribute&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>setSearchAttribute( void );</B><DD>
+Sets the <B>ldap_mod_op</B> value of the <B>attribute</B> to <B>LDAP_MOD_SEARCH</B>. Returns <B>*this</B>.<BR>
+<DT><B>- attribute&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>clear( void );</B><DD>
+Erases all the contents of the <B>attribute</B>, resets its name and its <B>ldap_mod_op</B>.<BR>
+<DT><B>- attribute&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>eraseAll( void );</B><DD>
+Like clear() except its name which is not modified.<BR>
+<DT><B>- attribute&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>erase( void );</B><DD>
+Erases the current <B>berValue</B> of the <B>attribute</B>.<BR>
+<DT><B>- attribute&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>erase( &quot;</B>berValue( <I>value</I> )&quot; <B>);</B><DD>
+Search the <B>berValue</B> of value <I>value</I> and delete it if it exists. (Types of possible arguments are the same as those of the <B>berValue</B> class constructors).<BR>
+<DT><B>- attribute&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>eraseNullValues( void );</B><DD>
+Erases all the null <B>berValues</B> of the <B>attribute</B>.<BR>
+<DT><B>- attribute&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>insert( &quot;</B>berValue( <I>value</I> )&quot; <B>);</B><DD>
+Insert a <B>berValue</B> in the <B>attribute</B>. (Types of possible arguments are the same as those of the <B>berValue</B> class constructors).<BR>
+<DT><B>- attribute&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>insert( berValue *</B><I>value</I>, <B>bool</B> <I>autoDelete</I> <B>);</B><DD>
+Insert the <B>berValue</B> <I>value</I> in the <B>attribute</B>. Be sure to avoid the delete of the original <I>values</I> when <I>autodelete</I> is <B>TRUE</B>...<BR>
+<DT><B>- attribute&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>insert( char const *</B><I>values</I><B>[] );</B><DD>
+Insert the values <I>values</I> as <B>berValues</B> in the <B>attribute</B> object.<BR>
+<DT><B>- attribute&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>insert( BerValue const *</B><I>values</I><B>[] );</B><DD>
+Insert the values <I>values</I> as <B>berValues</B> in the <B>attribute</B>.<BR>
+<DT><B>- attribute&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>insert( berValue const *</B><I>values</I><B>[] );</B><DD>
+Insert the values <I>values</I> as <B>berValues</B> in the <B>attribute</B>.<BR>
+<DT><B>- attribute&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>insert( berValue *</B><I>values</I><B>[]</B>, <B>bool</B> <I>autoDelete</I> <B>);</B><DD>
+Insert the <B>berValues</B> <I>values</I> in the <B>attribute</B>. Be sure to avoid the delete of the original <I>values</I> when <I>autodelete</I> is <B>TRUE</B>...<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>gotoBegin( void ); bool gotoFirst( void );</B><DD>
+Set the current position on the first <B>berValue</B> of the <B>attribute</B>. Returns <B>begin()</B>...<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>begin( void ); bool first( void );</B><DD>
+Returns <B>TRUE</B> if the current position is on the first <B>berValue</B> of the <B>attribute</B>, <B>FALSE</B> otherwise...<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>gotoPrevious( void );</B><DD>
+Set the current position to the previous <B>berValue</B> of the <B>attribute</B>. Returns <B>!end()</B>...<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>gotoNext( void );</B><DD>
+Set the current position to the next <B>berValue</B> of the <B>attribute</B>. Returns <B>!end()</B>...<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>gotoEnd( void ); bool gotoLast( void );</B><DD>
+Set the current position on the last <B>berValue</B> of the <B>attribute</B>. Returns <B>end()</B>...<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>end( void ); bool last( void );</B><DD>
+Returns <B>TRUE</B> if the current position is on the last <B>berValue</B> of the <B>attribute</B>, <B>FALSE</B> otherwise...<BR>
+<DT><B>- attribute&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>find( berValue</B> <I>value</I> <B>);</B><DD>
+Search for a <B>berValue</B>==<I>value</I>. Current position in the <B>attribute</B> will be <B>end()</B> if <I>value</I> is not found...<BR>
+<DT><B>- attribute&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>findStartingWith( berValue</B> <I>value</I> <B>);</B><DD>
+Search for the first <B>berValue</B> starting with <I>value</I>.<BR>
+<DT><B>- attribute&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>findNextStartingWith( berValue</B> <I>value</I> <B>);</B><DD>
+Search for the next <B>berValue</B> starting with <I>value</I>.<BR>
+<DT><B>- attribute&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>findContaining( berValue</B> <I>value</I> <B>);</B><DD>
+Search for the first <B>berValue</B> containing <I>value</I>.<BR>
+<DT><B>- attribute&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>findNextContaining( berValue</B> <I>value</I> <B>);</B><DD>
+Search for the next <B>berValue</B> containing <I>value</I>.<BR>
+<DT><B>- berValue*<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>getBerValue( void );</B><DD>
+Returns a pointer to the current <B>berValue</B> of the <B>attribute</B> or to a <B>nullBerValue</B> on <B>end()</B>.<BR>
+<DT><B>- const char*<TT>&nbsp;&nbsp;&nbsp;</TT>getStrValue( void );</B><DD>
+Returns the current <B>berValue::toStr()</B> (ie a <B>c_str()</B> decoded <B>fromUtf8()</B>) of the <B>attribute</B> or <B>&quot;&quot;</B> on <B>end()</B>.<BR>
+<DT><B>- size_t<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>getValueSize( void );</B><DD>
+Returns the size of the current <B>berValue</B> of the <B>attribute</B> or <B>0</B> on <B>end()</B>.<BR>
+<DT><B>- std::vector&lt;berValue&gt; getBerValuesVector( void );</B><DD>
+Returns a <B>std::vector</B> with the sames <B>berValues</B> than in the <B>attribute</B>.
+<DT><B>- std::vector&lt;std::string&gt; getStrValuesVector( void );</B><DD>
+Returns a <B>std::vector</B> of <B>std::string</B> values of all the <B>berValue::toStr()</B> contained in the <B>attribute</B>.
+<DT><B>- size_t<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>size( void );</B><DD>
+Returns the number of <B>berValues</B> contained in the <B>attribute</B>.<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>empty( void );</B><DD>
+Returns <B>TRUE</B> if the <B>attribute</B> is empty, <B>FALSE</B> otherwise.<BR>
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>OPERATORS</H2>
+
+<DL COMPACT>
+<DT><B>- attribute&amp;<TT>&nbsp;&nbsp;&nbsp;</TT>operator=( LDAPMod const */&amp;</B><I>value</I> <B>);</B><DD>
+Assigns the contain of the OPENLDAP structure (*)<I>value</I> to the <B>attribute</B> (which is simply cleared if <I>value</I>==<B>nullptr</B>).<BR>
+<DT><B>- attribute&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator=( attribute const */&amp;</B><I>value</I> <B>);</B><DD>
+Assigns (*)<I>value</I> (and its current position) to the <B>attribute</B> (which is simply cleared if <I>value</I>==<B>nullptr</B>).<BR>
+<DT><B>- attribute&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator+=( attribute const */&amp;</B><I>value</I> <B>);</B><DD>
+If attribute names are the same, then appends all the <B>berValues</B> of *<I>value</I> to the <B>attribute</B> and returns <B>*this</B>. Current position is <B>begin()</B>.<BR>
+<DT><B>- attribute<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator+( attribute const */&amp;</B><I>value</I> <B>);</B><DD>
+If attribute names are the same, returns a new <B>attribute</B> value with all the <B>berValues</B> of the two operands, <B>*this</B> otherwise.<BR>
+<DT><B>- attribute&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator+=( &quot;</B>berValue( <I>value</I> )&quot; <B>);</B><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>// Template on the methods <B>insert( berValue() )</B>...<DD>
+Appends the <B>berValue</B> (*)<I>value</I> to the <B>attribute</B> and returns <B>*this</B>. Current position is on the inserted <B>berValue</B>.<BR>
+<DT><B>- attribute<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator+( &quot;</B>berValue( <I>value</I> )&quot; <B>);</B><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>// Template on the methods <B>insert( berValue() )</B>...<DD>
+Returns a new <B>attribute</B> value of <B>*this</B> where the <B>berValue</B> (*)<I>value</I> is added.<BR>
+<DT><B>- attribute&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator-=( attribute const */&amp;</B><I>value</I> <B>);</B><DD>
+If attribute names are the same, then all the <B>berValues</B> of *<I>value</I> are erased from the <B>attribute</B> and <B>*this</B> is returned. Current position is <B>begin()</B>.<BR>
+<DT><B>- attribute<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator-( attribute const */&amp;</B><I>value</I> <B>);</B><DD>
+If attribute names are the same, returns a new <B>attribute</B> value with all the <B>berValues</B> of the second operand removed from <B>*this</B>.<BR>
+<DT><B>- attribute&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator-=( &quot;</B>berValue( <I>value</I> )&quot; <B>);</B><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>// Template on the methods <B>erase( berValue() )</B>...<DD>
+The <B>berValue</B> *<I>value</I> is erased from the <B>attribute</B> and <B>*this</B> is returned. On success, current position is incremented (<B>end()</B> otherwise).<BR>
+<DT><B>- attribute<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator-( &quot;</B>berValue( <I>value</I> )&quot; <B>);</B><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>// Template on the methods <B>erase( berValue() )</B>...<DD>
+Returns a new <B>attribute</B> value of <B>*this</B> where the <B>berValue</B> (*)<I>value</I> is removed.<BR>
+<DT><B>- attribute&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator&amp;=( attribute const */&amp;</B><I>value</I> <B>);</B><DD>
+All the <B>berValues</B> not present in *<I>value</I> are erased from the <B>attribute</B> and <B>*this</B> is returned. Current position is set to <B>begin()</B>.<BR>
+<DT><B>- attribute<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator&amp;( attribute const */&amp;</B><I>value</I> <B>);</B><DD>
+Returns a new <B>attribute</B> value of <B>*this</B> where the <B>berValues</B> not present in (*)<I>value</I> are removed.<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator==( attribute const */&amp;</B><I>value</I> <B>) const;</B><DD>
+Returns <B>TRUE</B> if <B>attribute</B> is the same (name and <B>berValues</B>) than the <B>attribute</B> <I>value</I>, <B>FALSE</B> otherwise.<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator!=( attribute const */&amp;</B><I>value</I> <B>) const;</B><DD>
+Returns <B>FALSE</B> if <B>attribute</B> is the same (name and <B>berValues</B>) than the <B>attribute</B> <I>value</I>, <B>TRUE</B> otherwise.<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator&gt;=( attribute const */&amp;</B><I>value</I> <B>) const;</B><DD>
+This operator acts only on the names (ie identifiers) of the attributes. It doesn't concern their <B>berValues</B>.<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator&gt;( attribute const */&amp;</B><I>value</I> <B>) const;</B><DD>
+This operator acts only on the names (ie identifiers) of the attributes. It doesn't concern their <B>berValues</B>.<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator&lt;=( attribute const */&amp;</B><I>value</I> <B>) const;</B><DD>
+This operator acts only on the names (ie identifiers) of the attributes. It doesn't concern their <B>berValues</B>.<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator&lt;( attribute const */&amp;</B><I>value</I> <B>) const;</B><DD>
+This operator acts only on the names (ie identifiers) of the attributes. It doesn't concern their <B>berValues</B>. Used by the <B>std::set</B> of the classe &quot;<B>entry</B>&quot;...<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator++( void ) const; bool operator++( int ) const;</B><DD>
+Increments the current position (<B>berValue</B> pointed by <B>getBerValue()</B>) of the <B>attribute</B>.<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator--( void ) const; bool operator--( int ) const;</B><DD>
+Decrements the current position (<B>berValue</B> pointed by <B>getBerValue()</B>) of the <B>attribute</B>.<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator[]( size_t</B> <I>i</I> <B>);</B><DD>
+Set the current position at the <B>berValue</B> number <I>i</I> and returns <B>getBerValue()</B>.<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator[]( berValue</B> <I>value</I> <B>);</B><DD>
+Set the current position at the <B>berValue</B> <I>value</I> and returns <B>getBerValue()</B>. The current position is unchanged if value.<B>size()</B>==0.<BR>
+<DT><B>- friend std::ostream&amp; operator&lt;&lt;( std::ostream&amp;</B> <I>s</I>, <B>attribute const &amp;</B><I>value</I> <B>);</B><DD>
+Allows to stream the name (<B>identifier()</B>) of the <B>attribute</B>.
+
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>BUGS</H2>
+
+Bugs are bad. Avoid them. ;-) (See below the author's email...)
+<A NAME="lbAI">&nbsp;</A>
+<H2>SEE ALSO</H2>
+
+<B><A HREF="byteArea.3.html">byteArea</A></B>(3),
+<B><A HREF="berValue.3.html">berValue</A></B>(3),
+<B><A HREF="entry.3.html">entry</A></B>(3),
+<B><A HREF="ldapSet.3.html">ldapSet</A></B>(3),
+<B><A HREF="ldapEasyInterface.3.html">ldapEasyInterface</A></B>(3),
+<B><A HREF="ldap.3.html">ldap</A></B>(3).
+<P>
+
+See
+<B><A HREF="http://homepage.gna.org/ldapcppei/miniHowto.en.html">http://homepage.gna.org/ldapcppei/miniHowto.en.html</A></B>
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>AUTHORS</H2>
+
+Man page originally written by Philippe Eychart &lt;<A HREF="mailto:peychart@mail.pf">peychart@mail.pf</A>&gt;.
+
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">CONFIGURATION</A><DD>
+<DT><A HREF="#lbAE">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAF">PUBLIC METHODS</A><DD>
+<DT><A HREF="#lbAG">OPERATORS</A><DD>
+<DT><A HREF="#lbAH">BUGS</A><DD>
+<DT><A HREF="#lbAI">SEE ALSO</A><DD>
+<DT><A HREF="#lbAJ">AUTHORS</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="http://savannah.nongnu.org/projects/man2html/">man2html</A>,
+using the manual pages.<BR>
+Time: 04:47:56 GMT, September 21, 2012
+</BODY>
+</HTML>

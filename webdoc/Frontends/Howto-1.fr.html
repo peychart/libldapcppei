@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html><head>
+
+
+  <meta name="GENERATOR" content="KompoZer-0.8a4"><title>LdapEasyInterface (libcppei) Mini Howto (Français)</title>
+  
+  <link href="LdapcppeiMiniHowto-1.fr.html" rel="next"></head><body>
+<a href="Howto-2.fr.html">Page suivante</a>
+<a href="Howto.fr.html">Page précédente</a> <a href="Howto.fr.html">Sommaire</a> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; (<span style="font-weight: bold;">Français</span> - <a href="Howto-1.en.html">English</a>)
+<hr><h2><a name="S1"><span style="text-decoration: underline;">1. Présentation du projet :</span>
+</a></h2>
+
+<h2><a name="ss1.1">1.1 Qu'est-ce que la suite logicielle "GNULdapEasyAdmin" ?</a></h2>
+<div style="margin-left: 40px;">
+<div style="text-align: justify;">Il s'agit d'une suite logicielle ayant pour
+objectif de mettre à disposition de l'administrateur système d'un
+réseau Intranet des outils conviviaux permettant de centraliser le
+paramétrage de ses systèmes serveurs au sein d'un annuaire LDAP
+(Lightweight Directory
+Access Protocol).<br>
+<br>
+Ainsi, l'installation (ou la réinstallation) logicielle d'un des matériels
+"serveur" se limitera-t-elle à appliquer les paquets logiciels
+nécessaires au fonctionnement des services qu'il héberge et le paramétrage de ses
+services hébergés pourra-t-il être effectif dès le premier démarrage du système
+d'exploitation, cela à partir
+de l'<span style="font-weight: bold;">adresse MAC</span> de sa (première) carte réseau identifiée au sein de l'annuaire <span style="font-weight: bold;">LDAP</span>.<br>
+<br>
+Toute modification ultérieure du paramétrage au sein de ce même
+annuaire pourra ensuite être répercutée automatiquement sur chaque
+plate-forme matérielle concernée (via, par exemple, le service "<span style="font-weight: bold;">cron</span>").<br>
+</div>
+<br>
+Deux groupes de logiciels composent cette suite :<br>
+<ul>
+  <li style="text-align: justify;">les interfaces graphiques qui
+permettent, de façon conviviale, de mettre en oeuvre ou modifier le
+paramétrage des serveurs et services gérés au sein de la base <span style="font-weight: bold;">LDAP</span>.<br>
+</li>
+  <li style="text-align: justify;">les pilotes de paramétrage qui se chargent de récupérer les informations
+au sein de l'annuaire et de les transformer en fichiers standards de
+configuration système, notamment pour les services dont la
+configuration n'est pas nativement interfacée avec le protocole LDAP.<br>
+  </li>
+</ul>
+<span style="text-decoration: underline; font-weight: bold; color: rgb(255, 102, 0);">Nota:</span> Une
+gestion de profils administrateurs permet de dédier par
+parties la gestion LDAP des paramétrages systèmes auprès de différents pôles de compétences :
+administrateurs réseau, administrateurs systèmes, responsables de la
+hotline utilisateurs, ...
+</div>
+<h2><a name="ss1.2">1.2 Exemple d'interface graphique
+</a></h2>
+<div style="margin-left: 40px;">
+<div style="text-align: justify;">L'interface graphique
+présentée ci-dessous en exemple est celle qui permettra de définir et gérer l'entité
+"serveur" au sein de l'annuaire d'entreprise.<br>
+<br>
+
+Elle ne défini à proprement parler aucun service réseau (tout au plus,
+le nom de domaine du serveur) mais sert essentiellement à définir dans l'annuaire LDAP le
+"noeud" serveur auquel seront par la suite attachées diverses autres
+définitions, contrôlées via d'autres interfaces spécifiques (par exemple : gestion des définitions "<a href="Howto-11.fr.html#ss11.7">samba</a>", "<a href="Howto-12.fr.html#S12">rsyncd</a>", "<a href="Howto-13.fr.html">nfsd</a>", ...).<br>
+<br>
+
+Cette entité "serveur" constitue donc la racine de définition des
+services qui y seront rattachés.<br>
+</div>
+
+<br>
+<img style="width: 602px; height: 280px;" alt="images/serverFrontend.png" src="images/serverFrontend.png"><br>
+</div>
+<h2><a name="ss1.3">1.3 Exemple d'interface de paramétrage système
+</a></h2>
+<div style="text-align: justify; margin-left: 40px;">
+<a href="Howto-7.fr.html#ss7.3">Ici</a> se trouve un exemple qui
+concerne la configuration du nom de domaine du serveur à partir de son
+adresse MAC et des informations correspondantes définies dans
+l'annuaire LDAP.<span style="text-decoration: underline;"><br>
+</span></div><br>
+
+<hr><a href="Howto-2.fr.html">Page suivante</a>
+<a href="Howto.fr.html">Page précédente</a> <a href="Howto.fr.html">Sommaire</a>
+
+
+
+
+
+
+
+
+
+
+
+
+</body></html>

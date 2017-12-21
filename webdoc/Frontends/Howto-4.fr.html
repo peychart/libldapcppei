@@ -1,0 +1,356 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html><head>
+
+  <meta name="GENERATOR" content="KompoZer-0.8a4"><title>LdapEasyInterface (libcppei) Mini Howto (Français)</title>
+  
+  <link href="LdapcppeiMiniHowto-1.fr.html" rel="next"></head><body><a href="Howto-5.fr.html">
+Page suivante</a>
+<a href="Howto-3.fr.html">Page précédente</a> <a href="Howto.fr.html">Sommaire</a>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; (<span style="font-weight: bold;">Français</span> - <a href="Howto-4.en.html">English</a>)
+<hr>
+<h2><a name="S4"><span style="text-decoration: underline;">4. L'interface de navigation :</span>
+</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;"><br>
+<div style="text-align: left;"><img style="width: 378px; height: 955px;" alt="images/controlFrontend-treeView.png" src="images/controlFrontend-treeView.png"><br>
+</div>
+
+
+<br>
+<span style="text-decoration: underline; font-weight: bold;"></span>Voici, pour exemple, <a href="../archives/ldapEasyAdminFrontends/exportLDAP_example.LDIFF">l'export complet de la base LDAP</a> (au format LDIFF) permettant d'obtenir cet affichage (<a href="Howto-2.fr.html#ss2.6">liste des schémas ici</a>). <br>
+</div>
+
+<h2><a name="ss4.1">4.1 Principe de fonctionnement
+</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;">Cette interface
+graphique gère l'aspect affichage et navigation au sein de
+l'arborescence LDAP de définition des paramètres d'administration pris en compte dans l'annuaire d'entreprise.<br>
+<br>
+Toutes les interfaces graphiques - décrites dans les pages qui suivent -
+du projet se synchronisent toutes entre elles au niveau de la position
+courante dans cette arborescence LDAP ici représentée. Dés que l'opérateur change de
+position courante au sein de l'une des interfaces graphiques du projet,
+les autres se synchronisent à leur tour sur la nouvelle position
+retenue (notamment par exemple lors d'un changement de domaine).<br>
+<br>
+Cependant, la position courante effective ne génère par forcément un
+affichage effectif d'informations dans chacune des interfaces actives.<br>
+<br>
+En
+effet : si par exemple la nouvelle position courante sélectionnée
+concerne un serveur spécifique au sein d'un domaine spécifique pour
+l'interface de gestion des serveurs, alors l'interface de gestion des
+personnes -tout autant bien sûr qu'elle ait été activée- se
+positionnera quant à elle effectivement bien sur le nouveau domaine
+retenue (celui d'appartenance du serveur sélectionné) mais ne sera pas en mesure d'afficher de
+position courante sur une personne particulière du domaine en question (les champs
+du masque resteront donc vides de tout affichage -sauf peut-être son
+champs "<span style="font-weight: bold;">dn</span>"- et grisés) ;
+toutefois, la création immédiate d'une nouvelle personne dans le
+domaine en cours sera accessible au sein de ce masque de gestion des personnes, ou
+encore l'utilisation de ses flèches de navigation "suivant/précédent" permettra le parcours de la
+liste des personnes présentes dans ce domaine, faisant du coup implicitement perdre sa
+position courante "<span style="font-weight: bold;">serveur</span>" au masque de gestion des serveurs qui
+faisait initialement l'objet de la nouvelle position courante ... ;-)<br>
+<br>
+Même si toutes les interfaces graphiques d'administration
+possédent (ou possèderont à terme) un minimum de fonctionnalités
+de navigation - et de recherche - (parfois, simplement au sein du
+domaine courant), de fait, l'interface de contrôle présentée ci-dessus
+reste la mieux adaptée à la sélection directe d'une nouvelle position
+courante dans l'arborescence d'annuaire, cela pour l'ensemble des interfaces graphiques d'administration "<span style="font-weight: bold;">GNU/LdapEasyInterface</span>".<br>
+<br>
+<big><span style="font-weight: bold; text-decoration: underline;">Structure du paramétrage :</span></big><br>
+<br>
+En fait, cette interface de contrôle ne possède pas de paramétrage
+propre. Elle utilise en réalité le paramétrage de l'ensemble des autres
+interfaces "<span style="font-weight: bold;">LdapEasyInterfaces</span>"
+(dont elle prend en compte l'affichage) afin de lister sous forme
+d'arborescence la totalité des entités d'administration (serveurs,
+personnes, groupes, rôles, etc.) que chacune des interfaces associées
+gèrent au sein de l'annuaire <span style="font-weight: bold;">LDAP</span><span style="font-weight: bold;"></span>.<br>
+<br>
+Bien sûr, l'ensemble de ces paramétrages suivent une logique commune
+permettant d'organiser chacune des entités représentées au sein de
+l'arborescence affichagée par la forme "<span style="font-weight: bold;">controlFrontend</span>" ...<br style="font-weight: bold;">
+<br>
+<span style="text-decoration: underline;">Cette "logique commune" fait appel à une notion de hiérarchie dans la définition du paramétrage
+de chacune des interfaces :</span><span style="font-weight: bold; text-decoration: underline;"></span><br style="text-decoration: underline;">
+
+<small><span style="font-style: italic;"><br>
+&nbsp;&nbsp;&nbsp; ou=application</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  -&gt; ou=ldap</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  -&gt; ou=ldapEasyInterface</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; -&gt; ou=controlFrontend</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; -&gt; ou=domainFrontend<br>
+</span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; -&gt; ou=personFrontend<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+seeAlso=<span style="font-weight: bold;">ou=people</span><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; l=<span style="font-weight: bold;">cn</span><br style="font-style: italic;">
+</span>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; ...<br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; -&gt; ou=serverFrontend</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; seeAlso=<span style="font-weight: bold;">ou=server,ou=computer</span>&nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  <small><span style="color: rgb(51, 204, 0);">/* permet de définir le RDN de stockage des entités "<span style="font-weight: bold;">server</span>" au sein de l'annuaire <span style="font-weight: bold;">LDAP</span> */</span></small></span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; l=<span style="font-weight: bold;">ou</span>&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+&nbsp;&nbsp; </span><small><span style="font-style: italic;"><span style="color: rgb(51, 204, 0);">/* permet de préciser l'attribut de stockage </span></span><span style="font-style: italic;"><span style="color: rgb(51, 204, 0);">(et donc, d'exclure tout autre) </span></span><span style="font-style: italic;"><span style="color: rgb(51, 204, 0);">de l'entité "<span style="font-weight: bold;">server</span>" (facultatif) */</span></span></small><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; -&gt;
+ou=sambaConfigFrontend</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; seeAlso=<span style="font-weight: bold;">ou=sambaConfig</span></span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; l=<span style="font-weight: bold;">ou</span></span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&gt; ou=sambaShareFrontend</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+seeAlso=<span style="font-weight: bold;">ou=shareDefinition</span></span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+l=<span style="font-weight: bold;">sambaShareName</span></span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+-&gt;ou=rsyncConfigFrontend<br>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; ...<br style="font-style: italic;">
+</span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+-&gt;ou=nfsConfigFrontend<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; ...<br style="font-style: italic;">
+</span><span style="font-style: italic;"></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; -&gt; etc.<br>
+</span></small>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+Ainsi, peut-on voir ci-dessus que le paramétrage de l'interface "<a href="Howto-7.fr.html#S7">serverFrontend</a>" - gérant l'entité "<span style="font-weight: bold;">server</span>" - héberge dans son arborescence une autre définition de paramétrage, en l'occurrence celle de l'interface "<a href="Howto-11.fr.html#ss11.7">sambaConfigFrontend</a>" - gérant l'entité "<span style="font-weight: bold;">service samba</span>" - qui, elle même, héberge en son sein une troisième définition de paramétrage, celle de l'interface "<a href="Howto-11.fr.html#ss11.8">sambaShareName</a>" - gérant l'entitée "<span style="font-weight: bold;">ressource de partage samba</span>" - ...<br>
+<br>
+<span style="text-decoration: underline;">Pourquoi cette imbrication ?</span><br>
+Car elle permet d'indiquer à l'interface d'affichage "<span style="font-weight: bold;">controlFrotend</span>" que les entités "<span style="font-weight: bold;">services samba</span>" éventuellement définies dans la base LDAP appartiendront chacune à une entités "<span style="font-weight: bold;">server</span>"
+et qu'elles devront donc être affichées, si elles existent, sous chacun
+de leurs serveurs d'appartenance.<br>
+<br>
+En d'autres termes, pour chacun des
+serveurs à afficher, il faudra veiller à vérifier si la notion de "<span style="font-weight: bold;">service samba</span>" y est définie et, si oui, l'afficher sous forme d'un sous-dossier "<span style="font-weight: bold;">sambaConfig</span>". Ce mécanisme est récursif (cf.: "<span style="font-weight: bold;">sambaShare</span>").<br>
+<br>
+Il pourra en être de même pour tout autre service éventuellement défini et géré par une interface d'administration "<span style="font-weight: bold;">LdapEasyInterface</span>", tel que par exemple "<span style="font-weight: bold;">rsyncFrontend</span>", "<span style="font-weight: bold;">nfsFrontend</span>", etc.<br>
+<br>
+<span style="text-decoration: underline;">L'organisation des données <span style="font-weight: bold;">LDAP</span> associée à cette structure de paramétrage est par conséquent la suivante :</span><br>
+
+
+<small><span style="font-style: italic;"><br>
+&nbsp;&nbsp;&nbsp; dc=mydomain</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  -&gt; ou=server,ou=computer</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  -&gt; ou=11:22:33:44:55:66</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  description=...</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp; ...<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  -&gt; ou=sambaConfig<br style="font-style: italic;">
+</span><span style="font-style: italic;">&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; -&gt;
+ou='</span><small>netbiosName</small><span style="font-style: italic;">'</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; -&gt; sambaOptionName=description</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; -&gt; sambaOptionName=...</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ...<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; -&gt; ou=shareDefinition<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+-&gt; sambaShareName=`</span><small>shareName1</small><span style="font-style: italic;">`<br>
+</span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; -&gt; sambaOptionName=description</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; -&gt; sambaOptionName=...</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; ..</span><span style="font-style: italic;">.<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+-&gt; sambaShareName=`</span><small>shareName2</small><span style="font-style: italic;">`<br>
+</span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; -&gt; sambaOptionName=description</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; -&gt; sambaOptionName=...</span><br style="font-style: italic;">
+</small>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<span style="font-style: italic;"><small>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; ...</small><br>
+<br>
+</span></div>
+
+
+
+
+<h2><a name="ss4.2">4.2 Le Bureau d'accés aux interfaces d'aministration</a></h2>
+<div style="margin-left: 40px; text-align: justify;">Cette interface "<span style="font-weight: bold;">controlFrontend</span>" possède deux vues. Le menu "<span style="font-weight: bold;">display</span>"
+permet de
+sélectionner la vue souhaitée et, ainsi, de basculer de la vue de visualisation de l'arborescence d'annuaire <span style="font-weight: bold;">LDAP</span> vers une vue
+"<span style="font-weight: bold;">desktop</span>" qui permettra de définir (<span style="font-weight: bold;">clic-droit</span>) ou d'utiliser (<span style="font-weight: bold;">double-clic gauche</span>) des liens d'accés (raccourcis) aux autres
+interfaces graphiques d'administration :<br>
+
+<br>
+
+<div style="text-align: center;"><img style="width: 692px; height: 560px;" alt="images/controlFrontend-desktop.png" src="images/controlFrontend-desktop.png"><br>
+</div>
+
+<br>
+</div>
+<h2><a href="../archives/ldapEasyAdminFrontends/sources/controlFrontend" name="ss4.3">4.3 Les sources C++</a>
+</h2>
+
+
+
+
+
+<div style="margin-left: 40px; text-align: justify;">Les sources de la dernière version (<span style="font-weight: bold;">20110913</span>) sont <a style="font-weight: bold;" href="../archives/ldapEasyAdminFrontends/sources/controlFrontend">ici</a>.<br>
+<br></div><br>
+<h2><a name="ss4.4">4.4 A faire</a>
+</h2>
+
+
+
+
+
+<div style="margin-left: 40px; text-align: justify;">- Développer la fonction de recherche d'objects au sein de l'arborescence.<br></div>
+<br>
+<hr><a href="Howto-5.fr.html">Page suivante</a>
+<a href="Howto-3.fr.html">Page précédente</a> <a href="Howto.fr.html">Sommaire</a>
+
+
+
+
+
+
+
+
+
+</body></html>

@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html><head>
+
+  <meta name="GENERATOR" content="KompoZer-0.8a4"><title>LdapEasyInterface (libcppei) Mini Howto (Français)</title>
+  
+  <link href="LdapcppeiMiniHowto-1.fr.html" rel="next"></head><body><a href="Howto-13.en.html">
+Next</a>
+<a href="Howto-11.en.html">Previous</a> <a href="Howto.en.html">Summary</a> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; (<a href="Howto-12.fr.html"><span style="font-weight: bold;">Français</span></a> - English)
+<hr>
+<h2><a name="S12"><span style="text-decoration: underline;">12. The interface for the RSYNC configuration:</span></a></h2>
+
+<h2><a name="ss12.1">12.1 Overview
+</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;"><span style="text-decoration: underline; font-weight: bold;">Input mask:</span><br>
+<div style="text-align: left;">
+</div>
+<div style="text-align: center;"><span style="text-decoration: underline; font-weight: bold;"></span><span style="text-decoration: underline;"><img style="width: 970px; height: 848px;" alt="images/rsyncFrontend.png" src="images/rsyncFrontend.png"></span><br>
+</div>
+
+
+
+
+
+<span style="text-decoration: underline; font-weight: bold;"></span><br>
+<a href="../archives/ldapEasyAdminFrontends/sources/sambaconfig.so/rsyncConfigFieldsDefinition_example.LDIFF">Here is the definition</a>, "<span style="font-weight: bold;">LDIF</span>" format, of this mask example "<span style="font-weight: bold;">rsyncConfigFrontend</span>" and <a href="../archives/ldapEasyAdminFrontends/sources/sambaconfig.so/rsyncShareFieldsDefinition_example.LDIFF">here is the definition</a> for this input mask: "<span style="font-weight: bold;">rsyncShareFrontend</span>"...<br>
+<br>The definition principle is the same as for "<a href="Howto-11.en.html#ss11.7.1">sambaConfigFrontend</a>"...<br style="font-weight: bold;">
+<span style="text-decoration: underline; font-weight: bold;"></span><br>
+</div>
+
+<h2><a name="ss12.2">12.2 The systems setup interface "doRsyncdConf"
+</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;">Here is the "<span style="font-weight: bold;">rsyncd</span>" interface: <a href="../archives/ldapEasyAdminFrontends/sources/getHostName/">doRsyncdConf</a> to generate the <span style="font-weight: bold;">RSYNC</span> file config. Code is shared with <a href="Howto-7.en.html#ss7.3">getHostName</a>. It can be used as follow:<br>
+
+<span style="font-style: italic;"><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; </span></span><span style="font-weight: bold; font-style: italic;">getHostName&nbsp; --rsyncdConf</span><span style="font-style: italic;"></span><br>
+
+or:&nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <span style="font-style: italic;"></span><span style="font-weight: bold; font-style: italic;">ln&nbsp; -s&nbsp; /usr/local/bin/getHostName&nbsp; /usr/local/bin/</span><span style="font-weight: bold; font-style: italic;">doRsyncdConf</span><span style="font-weight: bold; font-style: italic;">&nbsp; ;&nbsp; doRsyncdConf</span><span style="font-style: italic;"></span><br>
+
+<br><span id="result_box" class="" lang="en"><span class="hps">This program</span> allows<span class="hps alt-low-conf"> the automatic generation</span></span> (<span id="result_box" class="" lang="en"><span class="">either</span> <span class="hps">triggered</span> <span class="hps">by</span></span> "<span style="font-weight: bold;">cron</span>", <span id="result_box" class="" lang="en"><span class="hps">either at</span> <span class="hps">start-up procedures</span> <span class="hps">of the destination system</span></span>) of the  <span id="result_box" class="" lang="en"><span class="hps alt-low-conf"></span></span>"<span style="font-weight: bold;">rsyncd</span>" configuration file ("<span style="font-style: italic; font-weight: bold;">/etc/rsyncd.conf</span>") <span id="result_box" class="" lang="en"><span class="hps">from the information</span> <span class="hps">(if any</span><span class="">)</span> <span class="hps">contained</span> <span class="hps alt-low-conf">in the LDAP database</span> according to <span class="hps">the MAC address</span> <span class="hps">of the current server</span> <span class="hps atn">(</span><span class="alt-low-conf">where</span> <span class="hps alt-low-conf">the command is issued</span><span class="">)</span><span class="">:</span></span><br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold; font-style: italic;">doRsyncdConf -v -U ldap://ldap... &gt;/etc/rsyncd.conf</span><br>
+
+<br>
+
+<span style="text-decoration: underline; font-weight: bold;">Example for shell start</span><span style="text-decoration: underline; font-weight: bold;"> (/etc/init.d/) for each of the intranet servers to administrate:</span><span style="text-decoration: underline; font-weight: bold;"><br>
+</span><small>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  ...<br>
+
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; # <a href="Howto-11.en.html#ss11.9"><span style="font-style: italic;">previous setting...</span></a><br>
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  ...<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; RSYNCDCONFFILE="/etc</span><span style="font-style: italic;"></span><span style="font-style: italic;">/rsyncd</span><span style="font-style: italic;"></span><span style="font-style: italic;">.conf</span><span style="font-style: italic;">"<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; TMP=/tmp/<a href="../archives/ldapEasyAdminFrontends/sources/getHostName/">doRsyncdConf</a>.$$<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; </span><span style="font-style: italic;"></span><span style="font-style: italic;">2&gt;/dev/null ${BIN}/<a href="../archives/ldapEasyAdminFrontends/sources/getHostName/">getHostName</a> --rsyncdConf&nbsp; &gt;$TMP<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; [ $? -eq 0</span><span style="font-style: italic;">
+] &amp;&amp; cat &lt;$TMP &gt;$</span><span style="font-style: italic;">RSYNCDCONFFILE</span><span style="font-style: italic;"><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; rm -f&nbsp; $TMP</span><span style="font-style: italic;"></span><br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  ...<br>
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp; # </span><a style="font-style: italic;" href="Howto-13.en.html#ss13.2">next setting...</a><br style="font-style: italic;">
+
+
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  ...</small>
+
+
+
+<br>
+
+<span style="text-decoration: underline; font-weight: bold;"></span><br>
+
+<span style="text-decoration: underline; font-weight: bold;">Example of using this interface on the</span><span style="text-decoration: underline; font-weight: bold;"> "</span><a style="text-decoration: underline; font-weight: bold;" href="../archives/ldapEasyAdminFrontends/exportLDAP_example.LDIFF">test database</a><span style="text-decoration: underline; font-weight: bold;">":</span><br>
+
+<br>
+
+<small><span style="font-style: italic; font-weight: bold;">root@me:~/Cdev#&nbsp; <a href="../archives/ldapEasyAdminFrontends/sources/getHostName/">doRsyncdConf</a>&nbsp; -v --forceMacAddress&nbsp; 11:22:33:44:55:66</span><br style="font-style: italic;">
+<span style="font-style: italic;"></span></small><small><span style="font-style: italic;">multimedia&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; </span><span style="color: rgb(0, 153, 0); font-style: italic;">// Here, it's "stderr"</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; </span><span style="color: rgb(0, 153, 0); font-style: italic;">// Now, it's "stdout"...</span></small><small><span style="font-style: italic;"></span><span style="color: rgb(0, 153, 0); font-style: italic;"></span><br style="font-style: italic;">
+<span style="font-style: italic;"># @(#)LdapEasyInterface - Rsyncd - Global Settings:<br>
+# @(#)[global]<br>
+# @(#)description = Multimedia RSYNC Service <br>
+syslog facility = syslog <br>
+<br>
+<br>
+# @(#)LdapEasyInterface - Rsyncd - Definitions of Shares:<br>
+[music]<br>
+comment = Musics <br>
+list = TRUE <br>
+path = /pub/musics <br>
+read only = TRUE <br>
+<br>
+[picture]<br>
+comment = Pictures <br>
+list = TRUE <br>
+path = /pub/pictures <br>
+read only = TRUE <br>
+<br>
+[video]<br>
+comment = Videos <br>
+list = TRUE <br>
+path = /pub/videos <br>
+read only = TRUE <br>
+<br>
+# @(#)LdapEasyInterface - End -<br>
+</span><span style="font-style: italic;"></span><br style="font-style: italic;">
+<span style="font-style: italic; font-weight: bold;">root@me:~/Cdev#&nbsp; echo $?<br>
+</span><span style="font-style: italic;">0
+</span><span style="font-style: italic; font-weight: bold;"><br>
+root@me:~/Cdev#</span></small>
+
+
+
+
+
+
+
+
+</div>
+
+<h2><a name="ss12.3"></a>12.3 <a href="../archives/ldapEasyAdminFrontends/">The C++ source</a><br>
+</h2>
+
+
+<div style="text-align: justify; margin-left: 40px;">Latest version (<span style="font-weight: bold;">20110913</span>) of the shared code for <a href="../archives/ldapEasyAdminFrontends/sources/sambaconfig.so">"librsyncconfig.so" et "librsyncshare.so" is here</a>.<br>
+<br>
+<small style="font-style: italic;"><span style="font-weight: bold;">&nbsp;</span></small><small style="font-style: italic;"><span style="font-weight: bold;">&nbsp; - rsyncConfigFrontend</span> is obtained with the SHELL&nbsp; commands:<br>
+</small><small style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">ln [-s] /usr/local/bin/libsambaconfig.so /usr/local/bin/librsyncconfig.so</span><br>
+</small><small style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">ln [-s] /usr/local/bin/<a href="Howto-5.en.html">frontend</a> /usr/local/bin/rsyncConfigFrontend</span></small><br>
+<small style="font-style: italic;"><span style="font-weight: bold;">
+&nbsp;&nbsp; - rsyncShareFrontend</span> </small><small style="font-style: italic;">is obtained with the SHELL&nbsp; commands</small><small style="font-style: italic;">:<br>
+</small><small style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">ln [-s] /usr/local/bin/libsambaconfig.so /usr/local/bin/librsyncshare.so</span><br>
+</small><small style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">ln [-s] /usr/local/bin/<a href="Howto-5.en.html">frontend</a> /usr/local/bin/rsyncShareFrontend<br>
+</span></small><br>
+This same code generate also interfaces for: "<a href="Howto-11.en.html#ss11.7"><span style="font-weight: bold;">Samba</span></a>" and "<a href="Howto-13.en.html"><span style="font-weight: bold;">Nfsd</span></a>"...
+
+</div>
+<br>
+
+
+
+
+<hr><a href="Howto-13.en.html">Next</a> <a href="Howto-11.en.html">Previous</a> <a href="Howto.en.html">Summary</a>
+
+
+
+
+
+
+
+
+
+
+
+</body></html>

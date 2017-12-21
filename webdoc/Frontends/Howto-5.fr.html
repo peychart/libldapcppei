@@ -1,0 +1,339 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html><head>
+
+
+
+  <meta name="GENERATOR" content="KompoZer-0.8a4"><title>LdapEasyInterface (libcppei) Mini Howto (Français)</title>
+  
+  <link href="LdapcppeiMiniHowto-1.fr.html" rel="next"></head><body><a href="Howto-6.fr.html">Page suivante</a> <a href="Howto-4.fr.html">Page précédente</a> <a href="Howto.fr.html">Sommaire</a> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; (<span style="font-weight: bold;">Français</span> - <a href="Howto-5.en.html">English</a>)
+<hr>
+<h2><a name="S5"><span style="text-decoration: underline;">5 - L'interface graphique commune d'utilisation des extensions :</span>
+</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;"><br>
+<div style="text-align: center;"><img style="width: 678px; height: 276px;" alt="images/frontend.png" src="images/frontend.png"><br>
+</div>
+
+
+<br>
+</div>
+
+<h2><a name="ss5.1">5.1 - Principe de fonctionnement
+</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;">Cette interface est la base de toutes les interfaces graphiques (exception faite toutefois de : "<a href="Howto-4.fr.html">controlFrontend</a>").<br>
+<br>
+Elle gère toutes les actions possibles (ensemble des icônes des trois
+barres d'outils) pour toutes des interfaces graphiques d'administration : se
+connecter à l'annuaire, sauvegarder des modifications faites sur
+l'object courant, rafraîchir l'affichage, zoom avant ou arrière dans
+les cas d'un masque graphique, fermeture de l'interface, création d'un nouvel objet,
+édition de l'objet courant, suppression, annulation, actions de
+navigation/recherche et modification de l'apparence.<br>
+<br>Elle ne peut pas être lancée seule. Elle a besoin, pour démarrer,
+d'être appelée avec au moins une extension (option "<span style="font-weight: bold;">--plugin</span>") renseignée en
+paramètre(s) ou bien par le biais de son nom d'appel.<br>
+<br>
+<span style="text-decoration: underline;">Exemples :</span><br>
+<div style="margin-left: 40px;"><small><span style="font-weight: bold;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; </span><span style="font-style: italic; font-weight: bold;">frontend --plugin sambaconfig</span></small><br>
+
+ou :<br><small style="font-weight: bold;">
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-style: italic;">frontend --plugin /usr/local/bin/<a href="Howto-11.fr.html#ss11.10">libsambaconfig.so</a></span></small><br>
+
+ou :<br><small style="font-weight: bold;">
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-style: italic;">ln&nbsp; [-s]&nbsp; /usr/local/bin/frontend&nbsp; /usr/local/bin/sambaconfigFrontend&nbsp; ;&nbsp; </span><a style="font-style: italic;" href="Howto-11.fr.html#ss11.7">sambaconfigFrontend</a></small><br>
+<br>
+<span style="text-decoration: underline; font-weight: bold;"></span><small style="font-weight: bold;"><br>
+
+
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-style: italic;">frontend --plugin <a href="Howto-11.fr.html#ss11.8">sambashare</a></span></small><br>
+
+
+ou :<small style="font-weight: bold;"><br>
+
+
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-style: italic;">frontend --plugin /usr/local/bin/<a href="Howto-11.fr.html#ss11.10">libsambashare.so</a></span></small><br>
+etc.<span style="font-style: italic;"></span><br>
+<span style="font-style: italic;"></span></div>
+
+
+<span style="font-style: italic;">
+</span><br><big style="font-weight: bold;">
+Ce sont les extensions qui définissent et codent les règles de gestion
+des
+objets qu'elles prennent en charge : format de stockage des informations dans l'annuaire, mise en forme pour affichage, ...<br>
+</big>
+<br>
+Si nécessaire, plusieurs interfaces ("plugins") peuvent être appelées simultanément puisque la fenêtre centrale de "<span style="font-weight: bold;">frontend</span>" est une "<span style="font-weight: bold;">QStackedWidget</span>". Les extensions seront donc empilées et affichables en séquence (<a href="#ss5.4">cf. 5.4</a>). Bien sûr, plusieurs sessions différentes de "<span style="font-weight: bold;">frontend</span>" (une pour chaque "plugin" souhaité) peuvent aussi être lancées simultanément.<br>
+<br>
+
+</div>
+
+
+<h2><a name="ss5.2">5.2 - Principe des extensions</a></h2>
+<div style="text-align: justify; margin-left: 40px;"><span style="font-weight: bold; text-decoration: underline;"></span><span style="font-weight: bold; text-decoration: underline;"></span>L'interface définissant toutes les extensions est implémentée <a href="../archives/ldapEasyAdminFrontends/sources/frontend/pluginInterface.h">ici ("PluginInterface.h")</a>
+sous forme d'un fichier d'entête...<br>
+
+<br>
+
+L'ensemble des méthodes "<span style="font-weight: bold;">virtuelles pures</span>" déclarées dans ce
+fichier d'entête<span style="font-weight: bold;"></span>
+doit être défini dans toute extension qui sera écrite pour être compatible (et donc,
+utilisable) avec "<span style="font-weight: bold;">frontend</span>", permettant ainsi l'implémentation à moindre effort d'une nouvelle interface
+graphique, et donc, d'une nouvelle gestion d'objets d'administration
+LDAP.<br>
+
+<br><span style="text-decoration: underline;">
+
+Exemple d'extensions ("plugins") déjà existantes :</span> définition des <a href="Howto-7.fr.html">serveurs</a>, ressources partagées "<a href="Howto-11.fr.html#ss11.8">samba</a>", service "<a href="Howto-14.fr.html">dns</a>", etc.<br>
+
+<br>
+
+<span style="text-decoration: underline;">Remarque:</span> la définition commentée des signaux (rubrique : "<span style="font-weight: bold;">signals</span>") est <a href="../archives/ldapEasyAdminFrontends/sources/frontend/pluginInterface.h">ici</a>
+pour mémoire. Cependant, chacun de ces signaux devra effectivement être
+défini au sein de chacune des extensions puisqu'ils sont effectivement utilisés
+par l'interface "<span style="font-weight: bold;">frontend</span>" (cela, au travers de la méthode "<span style="font-weight: bold;">fromCurrentPlugin()-&gt;widget()</span>", pointeur de l'objet graphique d'extension "<span style="font-weight: bold;">Qt</span>"). En effet, <span style="text-decoration: underline;"></span><a href="http://fr.wikipedia.org/wiki/Qt">Qt4</a>
+ne semble pas (?), pour l'heure, gérer la remontée de signaux
+directement au travers des interfaces d'extensions, depuis l'extension vers le programme appelant ...<br>
+
+<br>
+<big><span style="text-decoration: underline; font-weight: bold;">Astuce :<br>
+</span></big>Outre leur possibilité d'appel au sein de "<span style="font-weight: bold;">frontend</span>", certaines extensions pourront judicieusement être appelées au sein même
+d'une extension "mère", cela notamment lorsque les gestions respectives de celles-ci correspondront
+à une même logique.<br>
+
+<br>
+
+<span style="text-decoration: underline;">Par exemple :</span> les extensions "<a href="Howto-11.fr.html">sambaDomain</a>" et "<a href="Howto-14.fr.html">bind9domain</a>" sont utilisables au sein même de l'extension "<a href="Howto-6.fr.html#ss6.6">domain</a>", constituant ainsi des onglets supplémentaires au sein de l'interface graphique de gestion des domaines : "<span style="font-weight: bold;">domainFrontend</span>" ou "<span style="font-weight: bold;">frontend --plugin domain</span>" ...<br>
+<br>
+Elles peuvent bien évidemment également être appelées séparément avec "<span style="font-weight: bold;">frontend</span>" : "<span style="font-weight: bold;">sambaDomainFrontend</span>" (lien vers "<span style="font-weight: bold;">frontend</span>") ou "<span style="font-weight: bold;">frontend --plugin sambadomain</span>" et "<span style="font-weight: bold;">bind9Frontend</span>" ou "<span style="font-weight: bold;">frontend --plugin bind9domain</span>" ...<br>
+<br>
+</div>
+<br>
+<h2><a name="ss5.3">5.3 - Principe des déclencheurs
+</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;"><span style="font-weight: bold; text-decoration: underline;"></span><span style="font-weight: bold; text-decoration: underline;"></span>Depuis la version 1.8 de la classe de connexion "<a href="Howto-3.fr.html">connectWindow</a>",
+la notion de déclencheur est accessible à toutes les extensions, cela
+au travers du "descripteur" de leur connexion à l'annuaire LDAP.<br>
+<br>
+<span style="font-weight: bold; font-style: italic;"><a name="ss5.3.1"></a></span><big style="font-weight: bold;"><span style="text-decoration: underline;">5.3.1 - Pour cela, six méthodes d'interfaçage sont disponibles :</span></big><br>
+
+<br>
+<div style="margin-left: 40px;"><a name="ss5.3.1.a"></a>
+- <span style="text-decoration: underline; color: rgb(0, 153, 0);"> void connectWindow::resetTriggers ( void ) :</span>
+permet de réinitialiser tous les contextes  - déjà ouverts - de définitions des
+déclencheurs, notamment pour que les prochains appels
+de contextes (<span style="font-weight: bold;">cf.:</span> <a href="#ss5.3.1.b">setTriggers()</a> ci-dessous) provoquent une relecture effective des définitions au sein de la base de données LDAP où elles sont stockées.<br>
+<br>
+<a name="ss5.3.1.b"></a>
+- <span style="text-decoration: underline; color: rgb(0, 153, 0);">bool connectWindow::setTriggers ( const char*<span style="color: black;"> contextName, </span>const char* <span style="font-style: italic; color: black;">description</span> ) :</span> permet d'initialiser un nouveau contexte ou de basculer vers un
+contexte de définitions de déclencheurs déjà ouvert. Retourne "<span style="font-weight: bold;">true</span>" si des définitions existent, "<span style="font-weight: bold;">false</span>" sinon. Exemples : "<span style="font-weight: bold;">setTriggers</span> ( "<span style="font-style: italic;">triggerOnEdit</span>", "<span style="font-style: italic;">triggers on fields edition</span>" ), <span style="font-weight: bold;">setTriggers</span> ( "<span style="font-style: italic;">triggerOnBackup</span>", "<span style="font-style: italic;">triggers on fields backup"</span> ), <span style="font-weight: bold;">setTriggers</span> ( "<span style="font-style: italic;">triggerOnDelete</span>", "<span style="font-style: italic;">triggers on fields delete</span>" ), <span style="font-weight: bold;">setTriggers</span> ( "<span style="font-style: italic;">triggerOnDisplay</span>", "<span style="font-style: italic;">triggers on fields displaying</span> ), etc.<br>
+<br>
+<a name="ss5.3.1.c"></a>
+
+- <span style="text-decoration: underline; color: rgb(0, 153, 0);">bool connectWindow::hasTrigger ( const char* </span><span style="text-decoration: underline; color: rgb(0, 153, 0);"><span style="font-style: italic; color: black;">fieldName</span></span><span style="text-decoration: underline; color: rgb(0, 153, 0);"> ) :</span> permet de savoir si un déclencheur est défini pour le champ (attribut) de nom "<span style="font-style: italic;">fieldName</span>".<br>
+<br>
+<a name="ss5.3.1.d"></a>
+
+-&nbsp;<span style="text-decoration: underline;"></span><span style="text-decoration: underline; color: rgb(0, 153, 0);">void connectWindow::insertTriggeredField ( const char* <span style="font-style: italic; color: black;">fieldName</span> ) :</span>
+permet d'ajouter au context courant un nom de champ auquel pourra
+ensuite être éventuellement associée une définition de déclencheur (lors
+de l'appel à <a href="#ss5.3.1.e">openTriggersForm()</a>, décrite ci-dessous).<br>
+<br>
+<a name="ss5.3.1.e"></a>
+
+
+-&nbsp;<span style="text-decoration: underline;"></span><span style="text-decoration: underline; color: rgb(0, 153, 0);">void connectWindow::openTriggersForm ( bool <span style="font-style: italic; color: black;">writable</span> ) :</span> permet d'ouvrir la fenêtre d'édition (ou d'affichage si "<span style="font-style: italic;">writable=FALSE</span>") des déclencheurs.<br>
+<br>
+<a name="ss5.3.1.f"></a>
+
+
+
+- <span style="text-decoration: underline; color: rgb(0, 153, 0);">bool connectWindow::triggerEvaluation ( std::string&amp; <span style="font-style: italic; color: black;">fieldName</span><span style="color: black;">,</span> QString&amp; <span style="font-style: italic; color: black;">previousValue</span><span style="color: black;">,</span> QString&amp; <span style="font-style: italic; color: black;">newValue</span><span style="color: black;">,</span> entry* <span style="font-style: italic; color: black;">mask</span><span style="color: black;">,</span> QWidget* <span style="font-style: italic; color: black;">parent</span> = NULL ) :</span>
+permet de déclencher l'exécution d'un déclencheur. Retourne "<span style="font-style: italic;">true</span>" ou
+"<span style="font-style: italic;">false</span>" selon, soit l'execution correcte du déclencheur, soit l'erreur
+d'exécution ou bien l'abandon de l'opérateur au sein du programme interactif
+éventuellement déclenché ...<br>
+<ul style="margin-left: 40px;">
+  <li><span style="text-decoration: underline;">"</span><span style="font-style: italic; font-weight: bold; text-decoration: underline;">fieldName</span><span style="text-decoration: underline;">"</span>
+permet d'indiquer quel champ est concerné par le déclenchement souhaité. La
+valeur référencée par cette variable peut avoir changé au retour d'exécution du déclencheur, ce qui
+indiquera au programmeur que d'autres champs du masque (dont les noms seront alors présents dans la variable "<span style="font-style: italic; font-weight: bold;">fieldName</span>") auront été impactés par l'exécution
+du déclencheur. Il pourra alors être éventuellement judicieux de générer, au sein du programme, un
+rafraîchissement d'affichage afin d'offrir à l'opérateur
+la visualisation des modifications opérées.</li>
+  <li><span style="text-decoration: underline;">
+
+"</span><span style="font-weight: bold; font-style: italic; text-decoration: underline;">previousValue</span><span style="text-decoration: underline;">"</span>
+permet de renseigner à destination du déclencheur la valeur du champ avant son déclenchement
+(cette valeur sera passée en entrée standard de la commande de
+déclenchement et pourra donc être utilisée par celle-ci, si besoin est). Cette valeur est référencée par "%<span style="font-style: italic; font-weight: bold;">fieldName</span>" au sein de la définition du déclencheur.</li>
+  <li><span style="text-decoration: underline;">
+
+"</span><span style="font-weight: bold; font-style: italic; text-decoration: underline;">newValue</span><span style="text-decoration: underline;">"</span>
+permet de référencer la nouvelle valeur de champ soumise à validation (référencée par "%<span style="font-style: italic; font-weight: bold;">this</span>"
+au sein de la définition du déclencheur) et, au retour de l'exécution du
+déclencheur, référencera la valeur alors validée (donc : éventuellement
+modifiée ou remplacée) par l'exécution du déclencheur.</li>
+  <li><span style="text-decoration: underline;">
+
+"</span><span style="font-style: italic; font-weight: bold; text-decoration: underline;">mask</span><span style="text-decoration: underline;">"</span>
+permet de disposer (pour utilisation ou modification) de l'ensemble des
+valeurs d'attributs du masque d'écran lors de la définition (par la
+syntaxe "%<span style="font-style: italic;"><span style="font-weight: bold;">attribut</span></span><span style="font-style: italic; font-weight: bold;">Name</span>") et lors de l'exécution du déclencheur (par utilisation du contenus de ces attributs ainsi référencés<span style="font-style: italic;"><span style="font-weight: bold;"></span></span><span style="font-style: italic; font-weight: bold;"></span>).</li>
+  <li><span style="text-decoration: underline;">
+
+"</span><span style="font-style: italic; font-weight: bold; text-decoration: underline;">parent</span><span style="text-decoration: underline;">"</span> permet (si renseigné) de référencer la fenêtre appelante dont hériteront toutes les fenêtres éventuellement générées
+lors de l'exécution du déclencheur (notamment lorsque celui-ci est interactif
+ou bien lorsqu'il échouera avec un message sur sa sortie erreur -&nbsp; "<span style="font-style: italic; font-weight: bold;">stderr</span>").<br>
+  </li>
+</ul>
+</div>
+
+
+ <br>
+<big style="font-style: italic;"><span style="font-weight: bold;"><a name="ss5.3.2"></a></span></big><big style="text-decoration: underline; font-weight: bold;">5.3.2 - Le principe d'utilisation est le suivant :</big><br>
+<br>
+<div style="margin-left: 40px;">Il convient d'ouvrir selon le besoin un ou plusieurs contextes de définitions de
+déclencheurs (par exemple, contexte des déclencheurs sur l'édition des
+champs du masque de saisie et contexte des déclencheurs sur leur
+sauvegarde au sein de l'annuaire).<br>
+<br>
+
+Le contexte courant actif sera le dernier qui aura été appelé. Pour
+changer de contexte, il suffit donc, à tout moment, de rappeler celui
+souhaité, cela par le biais de la méthode : "connectWindow::<a href="Howto-5.fr.html#ss5.3.1.b">setTriggers(<span style="font-style: italic;">context, description</span>)</a><span style="font-style: italic;"></span><span style="font-style: italic;"></span>".
+La chaîne de caractères de description servira simplement à
+donner un titre à la fenêtre d'édition des déclencheurs correspondants
+lorsque cette dernière sera ouverte.<br>
+<br>
+
+La première ouverture d'un contexte donné récupère dans l'annuaire LDAP
+toutes les définitions qui y sont éventuellement déjà stockées pour le
+nom du contexte en question. Tout rappel ultérieur à ce contexte ne
+fera ensuite plus du tout appel aux données de l'annuaire, cela jusqu'à
+un éventuel "connectWindow::<a href="Howto-5.fr.html#ss5.3.1.a">resetTriggers()</a>" de tous les contextes déjà ouverts.<br>
+<br>
+
+Il convient ensuite d'insérer
+dans le contexte courant tous les noms de champs susceptibles
+d'acceuillir de nouvelles définitions de déclencheurs ("connectWindow::<a href="Howto-5.fr.html#ss5.3.1.d">insertTriggeredField()</a>"). En pratique, il s'agira par
+exemple de la liste de l'ensemble des champs définis au sein du masque de saisie de
+l'interface.<br>
+<br>
+
+Ainsi, lorsque cela est souhaité, par exemple sur activation d'un menu "<span style="font-style: italic; text-decoration: underline;">menu d'extension / édition des déclencheurs d'éditions</span>" défini au sein de l'interface graphique, la fenêtre d'édition est ouverte ("connectWindow::<a href="Howto-5.fr.html#ss5.3.1.e">openTriggersForm()</a>") sur le contexte courant de déclencheurs.
+Dans cette fenêtre, si elle a été appelée en écriture, l'opérateur peut
+éditer, modifier ou supprimer les définitions souhaitées pour tout
+champ de la liste affichée (liste initialisée par appels successifs de "connectWindow::<a href="Howto-5.fr.html#ss5.3.1.d">insertTriggeredField()</a>"). A la fermeture de cette fenêtre d'édition,
+l'opérateur aura l'opportunité de sauvegarder (ou non) dans l'annaire le
+nouveau contexte ainsi défini qui deviendra alors immédiatement opérant.<br>
+<br>
+Ensuite, sur chaque action faisant l'object d'un contexte activé (édition pour le contexte d'édition,
+sauvegarde pour le contexte de sauvegarde, ... en fait, celui qui est actif) sur l'un quelconque des
+champs d'affichage de l'interface graphique, vérification sera faite si une
+définition de déclencheur existe pour ce champ concerné par l'action et, si tel
+est le cas, l'action effectuée (saisie, sauvegarde ou
+affichage...) engendrera (voire : sera conditionnée par le résultat de) l'exécution de la
+commande système
+définie dans le déclencheur du champ : ("connectWindow::<a href="Howto-5.fr.html#ss5.3.1.f">triggerEvaluation()</a>").<br>
+</div>
+
+
+
+
+
+
+
+<br>
+
+<br>
+
+<big style="font-style: italic;"><span style="font-weight: bold;"><a name="ss5.3.3"></a></span></big><big style="font-weight: bold;"><span style="text-decoration: underline;">5.3.3 - Exemple de définitions de déclencheurs :</span></big><big style="font-style: italic;"><span style="font-weight: bold;"><br>
+</span></big><br>
+<div style="margin-left: 40px;">
+Des exemples de définitions sont <a href="Howto-6.fr.html#ss6.3">ici</a>, <a href="Howto-11.fr.html#ss11.2.1">là</a> ou <a href="Howto-11.fr.html#ss11.3.2">là</a> ...<br>
+<br>
+<span style="text-decoration: underline;">Voici également décrite ci-dessous une possibilité d'interaction entre plusieurs champs de saisie du masque d'écran :</span><br>
+<span style="text-decoration: underline;"></span></div>
+
+
+<span style="text-decoration: underline;"><br>
+</span><span style="text-decoration: underline; font-weight: bold;">
+</span>
+<div style="text-align: center;"><img style="width: 791px; height: 524px;" alt="images/triggerDefinition_otherExample.png" src="images/triggerDefinition_otherExample.png"><br>
+</div>
+
+<big style="font-style: italic;"><span style="font-weight: bold;"></span></big><br>
+<div style="margin-left: 40px;">
+<div style="text-align: justify;">
+Ainsi, dans cet exemple, sur saisie de l'attribut "<span style="font-weight: bold;">uid</span>", l'attribut "<span style="font-weight: bold;">homeDirectory</span>" sera mis à jour en temps réel sur le masque de l'interface graphique, ceci avec la valeur fixe "<span style="font-weight: bold; font-style: italic;">/tmp/</span>" suivie de la valeur déjà contenue par l'attribut "<span style="font-weight: bold;">uid</span>" en cours de saisie ...<br>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline; color: rgb(204, 0, 0);">Remarque :</span> <span style="font-style: italic;">Pourquoi "</span><span style="font-weight: bold; font-style: italic;">%this</span><span style="font-style: italic;">" plutôt que "</span><span style="font-weight: bold; font-style: italic;">%uid</span><span style="font-style: italic;">" dans une telle définition ?</span><br style="font-style: italic;">
+
+<br>
+
+
+
+Car "<span style="font-weight: bold;">%uid</span>" représente la
+valeur qui précède la frappe au clavier ayant déclenché l'exécution du déclencheur (argument : "<span style="font-weight: bold; font-style: italic;">previousValue</span>"), alors que "<span style="font-weight: bold;">%this</span>" représente la valeur après frappe au clavier ayant réveillé le déclencheur (argument : "<span style="font-weight: bold; font-style: italic;">newValue</span>").<span style="font-style: italic;"><br>
+<br>
+Ainsi, l'utilisation de "</span><span style="font-weight: bold; font-style: italic;">%uid</span><span style="font-style: italic;">" plutôt que de "</span><span style="font-weight: bold; font-style: italic;">%this</span><span style="font-style: italic;">"
+dans la définition d'un tel déclencheur provoquerait-elle </span><span style="font-style: italic;">au sein de l'attribut "</span><span style="font-weight: bold; font-style: italic;">homeDirectory</span><span style="font-style: italic;">" résultant </span><span style="font-style: italic;">l'absence
+systématique du dernier caractère de la valeur en cours de saisie dans
+le champ "</span><span style="font-weight: bold; font-style: italic;">uid</span><span style="font-style: italic;">" </span><span style="font-style: italic;">!...</span><br>
+<span style="font-style: italic;">
+</span><br>
+<span style="font-style: italic;">
+</span><br>
+<span style="font-style: italic;">
+</span>Depuis la <span style="font-weight: bold;">version 1.8.2 (20110805) </span>de la classe "<a href="Howto-3.fr.html">connectWindow</a>", le caractère '<span style="font-weight: bold;">|</span>' (pipe) est
+utilisable dans la définition des commandes de déclencheurs, permettant ainsi de chaîner des processus.<br>
+<br>
+<span style="text-decoration: underline; font-weight: bold;">Exemple de définitions de déclencheurs d'édition au sein de l'interface "</span><a href="Howto-8.fr.html">personFrontend</a><span style="text-decoration: underline; font-weight: bold;">" :</span><br>
+<ul style="text-align: justify;">
+<li><span style="text-decoration: underline;">Déclencheur de l'attribut "</span><span style="font-weight: bold; text-decoration: underline;">sn</span><span style="text-decoration: underline;">" =</span> <span style="font-weight: bold;">$(%loginShell=echo /bin/sh) $(<span style="color: rgb(0, 0, 153);">%uid=echo %this | tr -s [:blank:] .</span>) $(%mail=echo %uid@$(<span style="color: rgb(0, 0, 153);">getAttribute --domain %dn --name </span></span><span style="font-weight: bold; color: rgb(0, 0, 153);">mail | sed s/^.*@//</span><span style="font-weight: bold;"><span style="color: rgb(0, 0, 153);">)</span>) $(%homeDirectory=echo /home/%uid) %description=echo %this</span></li><li><span style="text-decoration: underline;">Déclencheur de l'attribut "<span style="font-weight: bold;">uid</span></span><span style="text-decoration: underline;">" =</span> <span style="font-weight: bold;">$(%homeDirectory=echo /home/%this) </span><span style="font-weight: bold;">%mail=echo %this@$(<span style="color: rgb(0, 0, 153);">getAttribute --domain %dn --name </span></span><span style="font-weight: bold;"><span style="color: rgb(0, 0, 153);">mail | sed s/^.*@//</span>)</span></li>
+</ul>
+<span style="text-decoration: underline; color: rgb(255, 102, 0);">Remarque 1:</span> <span style="color: rgb(204, 0, 0);">Les
+déclencheurs d'édition définis dans cette GUI ne sont pas récursifs
+(contrairement aux
+déclencheurs sur sauvegarde) ; par conséquent, ici, la modification
+d'un attribut tiers ne
+déclenche pas les propres éventuels déclencheurs de celui-ci. Cela
+permettra de laisser une certaine latitude à l'opérateur dans l'édition
+de ses différentes valeurs de données.<br>
+<br>
+</span><span style="text-decoration: underline; color: rgb(255, 102, 0);">Remarque 2:</span> <span style="color: rgb(204, 0, 0);">La syntaxe des "$()" juxtaposés permet ici d'implémenter le ";" du Shell Unix ...</span><br>
+
+
+</div>
+
+
+</div>
+<br>
+
+
+</div>
+<h2><a href="../archives/ldapEasyAdminFrontends/sources/frontend" name="ss5.4">5.4 - Les sources C++</a>
+</h2>
+
+<div style="margin-left: 40px; text-align: justify;">Les sources de la dernière version (<span style="font-weight: bold;">20110913</span>) sont <a style="font-weight: bold;" href="../archives/ldapEasyAdminFrontends/sources/frontend">ici</a>.<br></div><br>
+<h2><a name="ss5.5">5.5 - A faire</a>
+</h2>
+
+<div style="margin-left: 40px; text-align: justify;">- Implémenter la navigation multi-interfaces lorsque plusieurs extensions ont été passées en paramètre à l'interface "<span style="font-weight: bold;">frontend</span>" et, par conséquent, sont ouvertes au sein de sa "<span style="font-weight: bold;">QStackedWidget</span>" centrale (20110518: reste à implémenter un bouton : "<span style="font-weight: bold;">suivant/précédent</span>").<br></div>
+<br>
+<hr><a href="Howto-6.fr.html">Page suivante</a> <a href="Howto-4.fr.html">Page précédente</a> <a href="Howto.fr.html">Sommaire</a>
+
+
+
+
+</body></html>

@@ -1,0 +1,221 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html><head>
+
+  <meta name="GENERATOR" content="KompoZer-0.8a4"><title>LdapEasyInterface (libcppei) Mini Howto (Français)</title>
+  
+  <link href="LdapcppeiMiniHowto-1.fr.html" rel="next"></head><body>
+<a href="Howto-1.en.html">Next</a> <a href="http://gna.org/projects/ldapcppei/">Previous</a>
+Table des matières <a href="../miniHowto.en.html">GNU/Ldapcppei</a> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; (<a href="Howto.fr.html"><span style="font-weight: bold;">Français</span></a> - English)
+<hr>
+
+<h2><a name="S1"><span style="text-decoration: underline;"></span></a>LdapEasyAdmin Frontends Howto</h2>
+
+<h3>Eychart Philippe <code>&lt;philippe.eychart@mail.pf&gt;</code><small><span style="font-weight: bold; font-style: italic;"><br>
+</span></small></h3>
+
+Beta version 0.1 - 2012 
+<br>
+<hr><span style="font-style: italic;" id="result_box" class="" lang="en"><span class="hps">This</span> <span class="hps">mini-HOWTO present</span> <span class="hps">a</span> <span class="hps">suite</span> <span class="hps">of</span> <span class="hps">front-end</span> <span class="hps atn">(</span><span>under the </span></span><em style="font-style: italic;"><a href="http://www.gnu.org/licenses/gpl-3.0.html">GNU V3</a></em><span style="font-style: italic;" id="result_box" class="" lang="en"><span></span><span class="hps"></span><span class="">)</span> <span class="hps">written in C</span> <span class="hps">+ +</span> <span class="hps">using</span> </span><em style="font-style: italic;"><a href="http://fr.wikipedia.org/wiki/Qt">Qt4</a></em><span style="font-style: italic;" id="result_box" class="" lang="en"> <span class="hps">and</span> </span><em style="font-style: italic;"><a href="../miniHowto.en.html">GNULdapcppei</a></em><span id="result_box" class="" lang="en"><span style="font-style: italic;"> </span><span style="font-style: italic;" class="hps">which aims</span><span style="font-style: italic;"> </span><span style="font-style: italic;" class="hps">to centralize</span><span style="font-style: italic;"> </span><span style="font-style: italic;" class="hps">and</span><span style="font-style: italic;"> </span><span style="font-style: italic;" class="hps">within</span><span style="font-style: italic;"> </span> <span style="font-style: italic;" class="hps">the definitionsof</span><span style="font-style: italic;"> </span><span style="font-style: italic;" class="hps">LDAP</span><span style="font-style: italic;"> </span><span style="font-style: italic;" class="hps">Linux servers</span><span style="font-style: italic;"> </span><span style="font-style: italic;" class="hps">involved in the formation</span><span style="font-style: italic;"> </span><span style="font-style: italic;" class="hps">large</span><span style="font-style: italic;"> </span><span style="font-style: italic;" class="hps">intranets</span><span class="">.</span></span><em></em><em> </em>
+<hr><small><span style="font-weight: bold; font-style: italic;"></span></small><br>
+<h3><a name="intro1">1.</a> <a href="Howto-1.en.html">Project presentation:<br>
+</a></h3>
+<ul>
+  <li><a href="Howto-1.en.html#ss1.1">1.1 What is the software suite "LdapEasyAdmin"?</a> </li>
+  <li><a href="Howto-1.en.html#ss1.2">1.2 <span id="result_box" class="short_text" lang="en"><span class="hps">GUI Example</span></span></a> </li>
+  <li><a href="Howto-1.en.html#ss1.3">1.3 Example of a configuration driver.<br>
+</a></li></ul>
+
+<h3><a name="intro2">2.</a> <a href="Howto-2.en.html">The structure of the LDAP database:<br>
+</a></h3>
+
+<ul>
+<li><a href="Howto-2.en.html#ss2.1">2.1 : Overview</a> </li><li><a href="Howto-2.en.html#ss2.2">2.2 : <span id="result_box" class="short_text" lang="en"><span class="hps">The minimum requirements</span></span>
+</a></li>
+  <li><a href="Howto-2.en.html#ss2.3">2.3 : <span id="result_box" class="short_text" lang="en"><span class="hps">Detail of the interfaces setup tree</span><span class="hps"></span></span></a></li>
+  <li><a href="Howto-2.en.html#ss2.4">2.4 : <span id="result_box" class="short_text" lang="en"><span class="hps">Minimal structure of the b</span><span class="hps">ase t</span><span class="hps">o start</span></span></a><a href="Howto-2.fr.html#ss2.3">
+</a></li>
+
+  <li><a href="Howto-2.en.html#ss2.5">2.5 : <span id="result_box" class="" lang="en"><span class="hps">Definition of the roles and</span> <span class="hps">access rights</span> <span class="hps">to data</span><span class="hps"></span></span></a></li>
+  <li><a href="Howto-2.en.html#ss2.6">2.6 : <span id="result_box" class="short_text" lang="en"><span class="hps">List of used L</span><span class="hps">DAP schemas</span><span class="hps"></span></span></a>
+  </li>
+
+
+</ul>
+
+<h3><a name="intro3">3.</a> <a href="Howto-3.en.html"><span id="result_box" class="short_text" lang="en"><span class="hps">The connection form</span></span>:<br>
+</a></h3>
+
+<ul>
+<li><a href="Howto-3.en.html#ss3.1">3.1 : Overview<br>
+</a></li><li><a href="Howto-3.en.html#ss3.2">3.2 : <span id="result_box" class="short_text" lang="en"><span class="hps">Some additional features</span></span></a>
+</li><li><a href="Howto-3.en.html#ss3.3">3.3 : The C++ sources</a></li>
+
+
+</ul>
+<h3><a name="intro4">4.</a> <a href="Howto-4.en.html"><span id="result_box" class="short_text" lang="en"><span class="hps">The navigation interface</span></span>:<br>
+</a></h3>
+
+<ul>
+<li><a href="Howto-4.en.html#ss4.1">4.1 : Overview</a></li>
+<li><a href="Howto-4.en.html#ss4.2">4.2 : The links desktop<br></a></li>
+<li><a href="Howto-4.en.html#ss4.3">4.3 : The C++ sources</a></li>
+<li><a href="Howto-4.en.html#ss4.4">4.4 : Todo</a></li>
+</ul>
+
+<h3><a name="intro5">5.</a> <a href="Howto-5.en.html">The common interface of extensions:<br>
+</a></h3>
+<ul>
+<li><a href="Howto-5.en.html#ss5.1">5.1 : Overview<br></a></li>
+<li><a href="Howto-5.en.html#ss5.2">5.2 : The extensions</a></li>
+  <li><a href="Howto-5.en.html#ss5.3">5.3 : The triggers</a><br>
+  </li>
+
+<li><a href="Howto-5.en.html#ss5.4">5.4 : The C++ sources</a></li>
+  <li><a href="Howto-5.en.html#ss5.5">5.5 : Todo</a><br>
+  </li>
+
+</ul>
+
+<h3><a name="intro6">6.</a> <a href="Howto-6.en.html">The setup graphical interface of the LDAP domains:<br>
+</a></h3>
+
+<ul>
+<li><a href="Howto-6.en.html#ss6.1">6.1 : Overview<br>
+</a></li><li><a href="Howto-6.en.html#ss6.2">6.2 : <span id="result_box" class="short_text" lang="en"><span class="hps">Management of m</span><span class="hps">ulti-valued</span></span>
+</a></li><li><a href="Howto-6.en.html#ss6.3">6.3 : <span id="result_box" class="short_text" lang="en"><span class="hps">Triggers on i</span><span class="hps">nput</span></span>
+</a></li><li><a href="Howto-6.en.html#ss6.4">6.4 : <span id="result_box" class="short_text" lang="en"><span class="hps">Triggers o</span><span class="hps">n d</span><span class="hps">isplay</span></span></a></li>
+  <li><a href="Howto-6.en.html#ss6.5">6.5 : Triggers on update</a></li>
+<li><a href="Howto-6.en.html#ss6.6">6.6 : The plugins</a></li>
+  <li><a href="Howto-6.en.html#ss6.7">6.7 : The C++ sources</a></li>
+  <li><a href="Howto-6.en.html#ss6.8">6.8 : Todo</a><br>
+  </li>
+
+</ul>
+
+<h3><a name="intro7">7.</a> <a href="Howto-7.en.html"><span id="result_box" class="short_text" lang="en"><span class="hps">The graphical interface for the servers definition</span><span class="hps"></span><span class="hps"></span></span>:<br>
+</a></h3>
+
+<ul>
+<li><a href="Howto-7.en.html#ss7.1">7.1 : Overview<br></a>
+</li><li><a href="Howto-7.en.html#ss7.2">7.2 : Screenshot</a></li><li>
+<a href="Howto-7.en.html#ss7.3">7.3 : The systems setup interface.<br></a></li>
+<li><a href="Howto-7.en.html#ss7.4">7.4 : The C++ sources</a></li>
+  <li><a href="Howto-7.en.html#ss7.5">7.5 : Todo</a> <br>
+  </li>
+
+
+</ul>
+<h3><a name="intro8">8.</a> <a href="Howto-8.en.html"><span id="result_box" class="short_text" lang="en"><span class="hps">The graphical interface</span> <span class="hps">for managing users</span><span class=""></span></span>:<br>
+</a></h3>
+
+<ul>
+<li><a href="Howto-8.en.html#ss8.1">8.1 : Overview<br>
+</a></li><li><a href="Howto-8.en.html#ss8.2">8.2 : <span id="result_box" class="short_text" lang="en"><span class="hps">Editing the l</span><span class="hps">ist of "</span><span class="hps atn"></span><span class="">objectClasses</span><span class="">"</span></span>
+</a></li><li><a href="Howto-8.en.html#ss8.3">8.3 : <span id="result_box" class="short_text" lang="en"><span class="hps">Entering p</span><span class="hps">asswords</span></span></a></li><li>
+<a href="Howto-8.en.html#ss8.4">8.4 : <span id="result_box" class="short_text" lang="en"><span class="hps">Integrity constraints</span></span></a></li>
+<li><a href="Howto-8.en.html#ss8.5">8.5 : The C++ sources</a></li>
+<li><a href="Howto-8.en.html#ss8.6">8.6 : Todo</a></li>
+
+</ul>
+<h3><a name="intro9">9.</a> <a href="Howto-9.en.html">The graphical interface for managing groups:<br>
+</a></h3>
+
+<ul>
+<li><a href="Howto-9.en.html#ss9.1">9.1 : Overview<br>
+</a></li><li><a href="Howto-9.en.html#ss9.2">9.2 : Editing the list of "objectClasses"<br>
+</a></li><li><a href="Howto-9.en.html#ss9.3">9.3 : Entering attributes "X-NOT-HUMAN-READABLE"
+</a></li><li><a href="Howto-9.en.html#ss9.4">9.4 : The C++ sources</a><br>
+</li></ul>
+
+<h3><a name="intro10">10.</a> <a href="Howto-10.en.html">The graphical interface for managing roles :<br>
+</a></h3>
+
+<ul>
+<li><a href="Howto-10.en.html#ss10.1">10.1 : Overview<br>
+</a></li><li><a href="Howto-10.en.html#ss10.2">10.2 : The C++ sources</a></li>
+</ul>
+
+<h3><a name="intro11">11.</a> <a href="Howto-11.en.html">The setup graphical interface for the SAMBA service:<br>
+</a></h3>
+
+<ul>
+<li><a href="Howto-11.en.html#ss11.1">11.1 : Overview of the SAMBA domains definition<br>
+</a></li><li><a href="Howto-11.en.html#ss11.2">11.2 : Utility for the "sambaSID" attribute setup.<br>
+</a></li><li><a href="Howto-11.en.html#ss11.3">11.3 : <span id="result_box" class="" lang="en"><span class="hps">Utility f</span><span class="hps">or configuring a</span><span class="hps">nd hashing p</span><span class="hps">asswords "</span></span>sambaNTPassword" and "sambaLMPassword"<br>
+</a></li><li><a href="Howto-11.en.html#ss11.4">11.4 : Utility for the "sambaAcctFlags" attribute<br>
+</a></li><li><a href="Howto-11.en.html#ss11.5">11.5 : Nothing to do...<br>
+</a></li><li><a href="Howto-11.en.html#ss11.6">11.6 : Triggers on update<br>
+</a></li><li><a href="Howto-11.en.html#ss11.7">11.7 : Definition of SAMBA services<br>
+</a></li><li><a href="Howto-11.en.html#ss11.8">11.8 : Definition of SAMBA ressources<br>
+</a></li><li><a href="Howto-11.en.html#ss11.9">11.9 : The systems setup interface ("doSmbConf")<br>
+    </a></li><li><a href="Howto-11.en.html#ss11.10">11.10 : The C++ sources<br>
+</a></li><li><a href="Howto-11.en.html#ss11.11">11.11 : Todo</a></li>
+</ul>
+
+<h3><a name="intro12">12.</a> <a href="Howto-12.en.html">The setup graphical interface for the RSYNC service:<br>
+</a></h3>
+
+
+<ul>
+<li><a href="Howto-12.en.html#ss12.1">12.1 : Overview<br>
+</a></li><li><a href="Howto-12.en.html#ss12.2">12.2 : The systems setup interface ("doRsyncdConf")<br>
+</a></li><li><a href="Howto-12.en.html#ss12.3">12.3 : The C++ sources<br>
+</a></li>
+</ul>
+<h3><a name="intro13">13.</a> <a href="Howto-13.en.html">The interface for the NFS configuration:<br>
+</a></h3>
+
+
+<ul>
+<li><a href="Howto-13.en.html#ss13.1">13.1 : Overview<br>
+</a></li><li><a href="Howto-13.en.html#ss13.2">13.2 : The systems setup interface ("doNfsdConf")</a><a href="Howto-13.fr.html#ss13.2">
+    </a></li><li><a href="Howto-13.en.html#ss13.3">13.3 : The C++ sources<br>
+</a></li>
+</ul>
+<h3><a name="intro14">14.</a> <a href="Howto-14.en.html">The setup graphical interface for the DNS:<br>
+</a></h3>
+
+
+
+<ul>
+<li><a href="Howto-14.en.html#ss14.1">14.1 : Overview<br>
+</a></li><li><a href="Howto-14.en.html#ss14.2">14.2 : The systems setup interface ("doDnsConf")&nbsp;</a><a href="Howto-14.fr.html#ss14.2">
+    </a></li><li><a href="Howto-14.en.html#ss14.3">14.3 : The C++ sources<br>
+</a></li>
+</ul>
+<h3><a name="intro15">15.</a> <a href="Howto-15.en.html">The setup graphical interface for the CRON service:<br>
+</a></h3>
+
+
+
+
+<ul>
+<li><a href="Howto-15.en.html#ss15.1">15.1 : Overview<br>
+</a></li><li><a href="Howto-15.en.html#ss15.2">15.2 : The systems setup interface</a><a href="Howto-14.fr.html#ss14.2">
+    </a></li><li><a href="Howto-15.en.html#ss15.3">15.3 : The C++ sources<br>
+</a></li><li><a href="Howto-15.en.html#ss15.4">15.4 : Todo<br>
+</a></li>
+</ul>
+<h3><a name="intro16">16.</a> <a href="Howto-16.en.html">The setup graphical interface for the NETFILTER service:<br>
+</a></h3>
+
+
+
+
+<ul>
+<li><a href="Howto-16.en.html#ss16.1">16.1 : Overview<br>
+</a></li><li><a href="Howto-16.en.html#ss16.2">16.2 : The systems setup interface ("doIpTables")</a><a href="Howto-14.fr.html#ss14.2">
+    </a></li><li><a href="Howto-16.en.html#ss16.3">16.3 : The C++ sources<br>
+</a></li>
+</ul>
+<hr><br>
+<a href="Howto-1.en.html">Next</a> <a href="http://gna.org/projects/ldapcppei/">Previous</a>
+Table des matières <a href="../miniHowto.fr.html">GNU/Ldapcppei</a>
+
+
+
+
+
+
+</body></html>

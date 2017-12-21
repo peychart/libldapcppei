@@ -1,0 +1,307 @@
+20140606 - version 3.1.4
+	- static const char* toCode64() added in the "ldapBerValue" class...
+
+20120925 - version 3.1.3
+	- some more convenient methods...
+	  like "entry::getAttribute( std::string& )" <-> find().getAttribute()
+	- optimization for "berValue/attribute::findStartWith()"...
+	  (use now: "std::set::upper_bound()"...).
+
+20120912 - version 3.1.2
+	- Some corrections on operators []...
+	- ldapEasyInterface::goto...() now set the errNo(). 
+
+20120906 - version 3.1.1
+	- the return types for some other methods (eg ldapEasyInterface::doSwapEntriesWithResults())
+	  have changed (now, ldapEasyInterface::doSwapEntriesWithResults() returns *this).
+
+20120831 - version 3.1.0
+	- modification of return type (*this) for some more methods,
+	- more templates with objects initialisations (insert, operators...),
+	- lValue type for some std::vector return (no memory management to care)
+	- operators simplification,
+	- source code cleaner...
+
+20120827 - version 3.0.2
+	- bug correction on berValue::toStr(): return value must be static!...
+
+20120822 - version 3.0.1
+	- removing some redundant methods.
+	  (byteArea::compare (size_t, size_t, byteArea), isDn()...).
+	- some bugs corrections.
+
+20120808 - version 3.0.0
+	- Version completely rewritten...
+	- Various optimizations and greatly improved sources,
+	- The option "-std=c++0x" (C++ 2011) is now required to compile,
+	- A new class "byteArea" inherited by the class "berValue" has been
+	  created,
+	- Warning: several methods (syntax) have changed... (thus, all the
+	  sources of the ldapAdmin project have been adapted).
+
+20120620 - version 2.9.1
+    - ldapEasyInterace::doDeleteEntries( ldapset/ldapset* ) are added...
+
+20111116 - version 2.9
+    - Important optimization for the methods "do(save/restore)(In/Out)Entries()"
+      class "ldapEasyInterface":
+      Now, the backup/restore of a "ldapSet" (in/out) in a buffer (LIFO or
+      named/"map") no longer generate the copy of this object (which can be
+      large).
+      This becomes a setting of its memory address, the current object (a
+      "ldapset") is then replaced by a new instantiation.
+      Thus the process is much faster ...
+      Also, an error that previously could generate an incorrect memory
+      address is no longer possible:
+        ...
+        entry  *currentEntry = ldapHandle.getOutput()->getEntry();
+        ldapHandle->doSaveOutEntries();
+        ...
+        ldapHandle->doRestoreOutEntries();
+        ldapHandle->find ( currentEntry ); // -> was generated a memory
+                                           // address error!...
+        // Now, this works... 
+        ...
+      However, the current context is now lost when its buffering is done...
+      So if we need to still use it (for example, in the generating of the new
+      context), it should be stored beforehand; example:
+        ldapSet  *currentEntry = ldapHandle.getEntry();	// store a part of the
+                                                        // previous context...
+        ldapHandle->doSaveOutEntries();			// backup the previous
+                                                        // context...	
+        ldapHandle.doSearchScopeBase( currentEntry->getIdentifier() );
+                                                    // generate the new one...
+        ...
+        or more simply:
+        ldapHandle = ldapHandle->doSaveOutEntries();  // Of course, the copy
+                                                      // is actually done in
+                                                      // this case... but
+                                                      // only because needed.
+        ldapHandle.doSearchScopeBase(ldapHandle.getEntry()->getIdentifier());
+        ...
+        // All sources (using lib) must be checked according to this new rule!
+
+      Gain observed (plugin: libperson.so <http://homepage.gna.org/ldapcppei/Frontends/Howto-8.fr.html>)
+      due to the optimization of this new version (2.9) of the library:
+         the displaying of a person among 134 (within a domain) takes now
+         about 1 second instead of 18!...
+         (In fact: the current context must be swapped -because of the
+         management of triggers- on each field displayed ; context: 116
+         fields distributed among 7 tabs/objectClasses displayed)...
+    - Bugg correction on ldapEntry::erase( int ldap_mod ); ldap_mod |= LDAP_MOD_BVALUE...
+      (20150109)
+
+20111103 - version 2.8
+    - the debian package is available ("make debian")...
+    - WARNING: the library name is now "libldapcppei.{so,a}"...
+      (no more "libldapEasyinterface.{so,a}").
+
+20111013 - version 2.7
+    - A new class "ldapSet":
+      So, the class "ldapEasyInterface" is simplified and the input buffer
+      accepts now the same methods than the output one...
+
+20110804 - version 2.6
+    - now, berValue::toStr() give a string Utf8 decoded (not
+      "berValue::c_str()")...
+      "ldapEasyInterface::doAdd/Modify/delete...Entries()" encode the dn
+      with "berValue::toUtf8()" before acting.
+
+20110624 - version 2.5
+    - Now ldapEasyInterface::ldapEasyInterface(ldapEasyInterface) &&
+      ldapEasyInterface::operator=(ldapEasyInterface) set the currents
+      positions to the same values as the argument (rather than a
+      reset). Ditto for the classes: "ldapEntry" & "ldapAttribute"...
+    - ldapEasyInterface::operator&=/|=/+=/-=() don't act any more on
+      the input buffers...
+    - WARNING: "operator|=()" has changed : now, it is recursif and
+      merge the values of the two objects...
+    - method ldapEasyInterface::erase(ldapEasyInterface&/*) are added...
+    - method "entry::erase(ldap_mod_op)" added. (erase all attributes
+      with ldap_mod_op == LDAP_MOD_OP) ...
+    - method "bool ldapEasyInterface::doModifyEntry(std::string,std::vector<attribute*> )"
+    - method "std::vector<attributes*> entry::getAttributesVector(void)"
+      added... (20110720)
+    - methods "std::vector<berValue*> attribute::getBerValuesVector(entry*/&)" &
+      "std::vector<std::string> attribute::getStrValuAttributesVector(entry*/&)"
+      added... (20110721)
+
+20110531 - version 2.4
+    - Now, the method "ldapEntry::eraseNullAttributes()" also erase the
+      "deleted" attributes (marked: LDAP_MOD_DELETE)...
+    - "ldapEasyInterface::do{Save,Restore}{In,Out}Entries()" value
+      the return error ; see: "ldapEasyInterface::getErrorNumber()" and
+      "ldapEasyInterface::getErrorString()"...
+
+20110513 - version 2.3
+    - The library is now in the namespace "ldapcppei" ...
+    - gotoLast() is now ok...
+    - Fixed a typo in the sources of : doAddEntries(), doModifyEntries(),
+      doDeleteEntries(), moveEntries() which produced a bad m_errno code
+      in some cases,
+    - option "-fPIC" append in make (needed by plugins)
+
+20100930 - version 2.2
+    - A notion of "named buffers" is added...
+      Now, the methods "doSave(In/out)Entries()" can be called
+      with a "std::string" parameter, the name of a specific buffer
+      which can be specifically recalled later which the methods:
+      "doRestore(In/out)Entries ( std::string name )"...
+      Without any parameters, the old methods always refer to the
+      LIFO (last in, first out) buffers...
+    - static const char* toUtf8() & fromUtf8() added in "berval" class...
+    - bugg correction in the method: attribute::swap().
+      (20110214)
+    - method entry::dnSize() & attribute::dnSize() append.
+      (20110218).
+    - method size(unsigned int lvl) append: number of objects of rank 'lvl'
+      in "ldapEasyInterface", "entry" & "attribute" classes...
+      (20110315)
+    - Now, the methods "ldapEasyInterface::goto[Next/Previous/First/Last]()"
+      accept an argument ("int") to define the "dnSize" to reach...
+      (20110407).
+    - "bool ldapEasyInterface::first/last(unsigned int l)" added...
+      Is current position the first/last one with dnSize l?
+      if (l==0) -> return ( ldapEasyInterface::top/bottom() )...
+      Methods "goTop/goBottom()" removed... (gotoBegin/gotoEnd prefered).
+      (20110416).
+
+20100824 - version 2.1
+    - version 2 stable.
+
+20100812 - version 2.0
+    - opperator<<() is append ; it gets the name of its entity (dn for
+      entries, name for attributes and value for berValues).
+    - now, operator+() adds elements to entities (entries to a
+      ldapEasyInterface, attributes to an entry, bervals to an attribute)
+      and operator|() adds elements of the same two entities("|=" to merge).
+    - bugg correction on ldapEasyInterface::operator=()...
+    - bugg correction on ldapEasyInterface::doSwapEntriesWithResults()
+      when one of the two set entries iterators == end().
+    - memory optimizations.
+
+20100805 - version 1.9
+    - pointer arguments are now secure (when "NULL" is passed...).
+    - operators: +=, -=, ==, +, -, |=, ++, &=,... for every classes.
+
+20100727 - version 1.8
+    - method: "std::string& ldapEasyInterface::getVersion()" is added,
+    - possible automatic free memory in methods which need a null
+      terminated area in parameters ... (bool parameter del=true)
+      This allows this kind of syntax:
+          entry e ( dn, (attribute *[]) {
+              new attribute ("objectClass", LDAP_MOD_ADD, (const char *[]){ "top", ...
+              new attribute ("description", LDAP_MOD_ADD, ...
+              ...
+              NULL},
+              true );	// automatic delete = true
+      (Nota: In fact, here it'll be not really deleted but directly
+       integrated in the object "entry" : more efficient...)
+
+20100629 - version 1.7
+    - the method "ldapEasyInterface::setUri()" is now public,
+      (because, we can define an ldapEasyInterface object empty)
+    - the protection for "doMofifyEntries" (v1.6) is supressed,
+       (cf. http://www.openldap.org/its/index.cgi?findid=6581),
+    - ldapEasyInterface::getStringError() -> getErrorString(),
+    - ldapEasyInterface::getNumbreError() -> getErrorNumber().
+    - ldapEasyInterface::doModifyEntries(entry) -> doModifyEntry(entry).
+       (ldapEasyInterface::doModifyEntries(void) not changed ...)
+    - ldapEasyInterface::doDeleteEntries(entry) -> doDeleteEntry(entry).
+       (ldapEasyInterface::doDeleteEntries(void) not changed ...)
+
+20100622 - version 1.6
+    - protection against trying to add an attribute with no
+      value in the method "doMofifyEntries" (because, in this
+      case, the function "Ldap_modify_ext_s" of the OpenLdap
+      API C seems to freeze).
+
+20100616 - version 1.5
+    - Several successive backups Contextual (doSaveEntries () /
+      doRestoreEntries ()) are now possible for the
+      ldapEasyInterface class...
+      This allows for this possibility in recursive methods.
+
+20100606 - version 1.4
+    - method "subBerValue(size_t pos, size_t len=0)" added to the
+      "berValue" class.
+    - method "find(berValue&)" added to the "berValue" class.
+
+20100525 - version 1.3
+    - set the current position on attribute and its values during a
+      doSave/RestoreEntries() ... (not only with the current entry,
+      like in the version 0.9).
+    - optimization on the compare operators in the "berValue" class.
+      (use of the new "berValue::compare" method).
+
+20100519 - version 1.2
+   - method "compare" is append in the "berValue" class ...
+   - one bugg correction on the "moveEntries" method.
+   - one bugg correction on the "doSwapEntriesWithResults" method.
+
+20100507 - version 1.1
+   - small modification in doSearchEntries() to allow "" for baseDn ...
+    (allow "rooeDSE" searchs like: ldapsearch -s base -b "" +)
+
+20100423 - version 1.0
+   - Addition of the saving of the current positions during a swap
+    (method: doSwapEntriesWithResults()).
+
+20100414 - version 0.9
+   - some more optimizations ... (some methods become "inline",
+    nullEntries, nullAttributes and nullBervalues become a single
+    static value, when it's possible: use of the "insert()" method in
+    containers copies, ...).
+   - save the current position when saving the in or out buffer with the
+    doSaveInEntries() or doSaveOutEntries() method.
+
+20100411 - version 0.8
+   - The ldapEasyInterface::setUris() method is now private.
+   - The ldapEasyInterface::open() accept arguments :
+       1/- string: uri, (optional - Change the value initialized during
+            the creation of the object),
+            during the ldapEasyInterface object ),
+       2/- string: user dn, (optional - like the setBindDn() method),
+       3/- string: password, (optional - like the setBindDn() method).
+   - some methods are now "inline" ...
+
+20100404 - version 0.7
+   - One bugg correction on the "nullEntry" definition: a null attribute
+    must be defined inside...
+
+20100318 - version 0.6
+   - some buggs corrections in the initialization methods of the
+    berValue class (nullAttribute must be created before any move in the
+    objects ...).
+
+20100308 - version 0.5
+   - some more methods in berValue class (insert & append) ...
+
+20100224 - version 0.4
+   - BUGG correction in ldapEasyInterface::getOpennedUri() return error
+    (memory indirection). The cause lived in the non-repositioning of the
+    vector-iterator "m_opennedUriIter" (must be == m_uris.end()) before
+    the attempts of openning (by "ldapEasyInterface::open()" method - or,
+    more exactly, after each "m_uris.push_back()").
+    So, on a non-openned base (eg. on error), the value of
+    "m_opennedUriIter" returned by "ldapEasyInterface::getOpennedUri()"
+    was not "\0" (but unpredictable).
+
+   - The vector-iterator "m_opennedUriIter" is now positioned (in the
+    duplicated object - method "ldapEasyInterface::operator=()") at the
+    same position than in the original object (so now, the call of
+    "ldapEasyInterface::getOpennedUri()" give the same result with the
+    duplicated object).
+
+   - Addition of the duplication of the temporary buffer (user buffer:
+    "m_saveEntries") in the code of "ldapEasyInterface::operator=()".
+
+20100222 - version 0.3
+    - A null "berValue" object is created in the class "attribute" to allow
+    the use of the methods "getVal{,ue}()" on a entry->getAttribute() call,
+    even when its result is NULL ...
+    Exemple:    entry e(); char *s = e.getAttribute()->getval(); // *s=='\0'
+
+20100219 - version 0.2
+    First distributed version.
+

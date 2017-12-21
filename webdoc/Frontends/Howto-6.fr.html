@@ -1,0 +1,348 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html><head>
+
+
+  <meta name="GENERATOR" content="KompoZer-0.8a4"><title>LdapEasyInterface (libcppei) Mini Howto (Français)</title>
+  
+  <link href="LdapcppeiMiniHowto-1.fr.html" rel="next"></head><body><a href="Howto-7.fr.html">
+Page suivante</a>
+<a href="Howto-5.fr.html">Page précédente</a> <a href="Howto.fr.html">Sommaire</a> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; (<span style="font-weight: bold;">Français</span> - <a href="Howto-6.en.html">English</a>)
+<hr>
+<h2><a name="top"><span style="text-decoration: underline;">6. L'interface de gestion des domaines LDAP :</span>
+</a></h2>
+
+
+<div style="margin-left: 40px; text-align: justify;">Cette interface graphique permet de
+gérer l'arborescence de chacun des domaines de l'annuaire LDAP d'administration
+du réseau d'entreprise (ajout/suppression/modification des domaines ou de leurs paramètres).<br>
+<br>
+<div style="text-align: center;"><img style="width: 647px; height: 586px;" alt="images/domainFrontend.png" src="images/domainFrontend.png"><br>
+<div style="text-align: left;"><small><small><span style="text-decoration: underline; font-weight: bold;">Note:</span> </small></small><span id="result_box" class="" lang="en"><small><small><span class="hps">La double présence du champs</span><span class="hps"></span> <span class="hps">"<span style="font-weight: bold;">streetAddress</span>"</span> <span class="hps"></span><span class="hps"></span><span class="hps">est due à une erreur de définition dans le schéma</span> <span class="hps atn">"</span><span style="font-weight: bold;" class="">cosine.schema</span><span>"</span> <span class="hps">faite au niveau de sa <span style="font-weight: bold;">RFC</span>.</span><span class="hps"></span></small></small><span class=""></span></span><br>
+
+
+<small>
+</small></div>
+</div>
+</div>
+
+
+<h2><a name="ss6.1">6.1 Principe
+</a></h2>
+
+
+<div style="margin-left: 40px;">
+<div style="text-align: justify;">Cette interface graphique partage son code avec les autres interfaces : "<a href="Howto-8.fr.html">personFrontend</a>", "<a href="Howto-9.fr.html">posixGroupFrontend</a>" et "<a href="Howto-10.fr.html">organizationalRoleFrontend</a>". Le nom de son exécutable de lancement doit par conséquent contenir la chaîne de caractères "<a style="font-weight: bold;" href="Howto-5.fr.html">Frontend</a>" précédée (sans espace ni autre caractère) du nom de "l'<span style="font-weight: bold;">objectClass</span>" de l'entité qu'elle gère (ci-dessus, en exemple : "<span style="font-weight: bold;">domain</span>").<br>
+
+
+
+<br>
+
+
+
+Un tel exécutable peut être appelé au travers de liens physiques ou symboliques ("<span style="font-weight: bold;">ln [-s]</span>") qui
+respectent la-dite règle ou, à défaut, qui ne contiennent pas la chaîne
+"<span style="font-weight: bold;">Frontend</span>". Cette règle est récursive et fonctionne donc sur des liens de liens. (<a href="#ss6.6">cf. ci-dessous</a>)<br>
+
+<br>
+<span style="font-weight: bold; text-decoration: underline;">Le
+principe de fonctionnement de cette interface de gestion des domaines
+LDAP est la constitution dynamique de son masque de saisie à partir de :</span><br>
+<ul>
+<li style="text-align: justify;">la liste des "<span style="font-weight: bold;">objectClass</span>" constituant le
+domaine en cours de visualisation (ou de création ou modification),<br>
+  </li><li style="text-align: justify;">ainsi que de la liste des attributs qui composent chacun des "<span style="font-weight: bold;">objectClasses</span>" constitutifs.</li>
+</ul>
+<br>Le responsable de l'architecture de l'annuaire LDAP peut, sur une sous-arborescence spécifique,
+changer la composition des sous-domaines présents ou à créer (ajouter ou en supprimer à volonté un ou plusieurs "<span style="font-weight: bold;">objectClasses</span>"). Ces changements seront ainsi hérités lors de
+la création des nouveaux sous-domaines qui y seront menées.<br>
+<br>
+Les mêmes "<span style="font-weight: bold;">objectClasses</span>" que
+ceux du domaine d'appartenance sont en effet proposés par défaut lors
+de la création de tout nouveau sous-domaine ; cette liste
+d'objectClasses peut cependant à tout moment faire l'objet de
+modifications (ajouts/suppressions) par l'opérateur, pour peu que ce
+dernier possède les droits de modification sur la structure des objets
+gérés par l'interface (rôle "<span style="font-weight: bold;">adminStruct</span>").<br>
+<small><span style="font-weight: bold; color: black;"></span></small><br>
+
+
+
+Ainsi, pour créer par exemple un domaine fils de la racine, la requête suivante donnera la liste des "<span style="font-weight: bold;">objectClass</span>" à prendre en compte (le domaine "<span style="font-weight: bold;">top</span>" étant bien entendu à exclure) :<br>
+
+
+
+<div style="margin-left: 40px;"><span style="color: rgb(255, 102, 0);">m_connectForm-&gt;getLdapHandle()-&gt;doSearchScopeBase ( m_connectForm-&gt;getRootEntry(), "objectClass" ) ;</span><br>
+</div>
+
+<span style="text-decoration: underline;"></span><br>
+Le résultat pourrait par exemple être :<br>
+
+
+
+<div style="margin-left: 40px; font-style: italic;"><small><span style="text-decoration: line-through; color: rgb(51, 102, 255);">objectClass: top</span><br style="color: rgb(51, 102, 255);">
+
+<span style="color: rgb(51, 102, 255);">objectClass: domain</span><br style="color: rgb(51, 102, 255);">
+
+<span style="color: rgb(51, 102, 255);">objectClass: dcObject</span><br style="color: rgb(51, 102, 255);">
+
+<span style="color: rgb(51, 102, 255);">objectClass: qmailUser<br>
+</span><span style="color: rgb(51, 102, 255);">objectClass: sambaGroupMapping</span><br>
+
+
+</small></div>
+
+<br>
+Il suffira ensuite à l'interface graphique, pour chacune des
+occurrences ainsi trouvées, de récupérer dans le schéma de l'annuaire
+la définition de chacun des "<span style="font-weight: bold;">objectClass</span>" pour en extraire la liste des attributs obligatoires "<span style="font-weight: bold;">must</span>" et/ou possibles "<span style="font-weight: bold;">may</span>" et constituer ainsi dynamiquement son masque d'affichage présenté sous forme de fenêtres et d'onglets classés par "<span style="font-weight: bold;">objectClass</span>" ("<span style="font-weight: bold;">QTabWidget</span>").<br>
+</div>
+<span style="text-decoration: underline;"></span><br>
+
+<span style="text-decoration: underline;">La requête LDAP d'extraction des définitions "d'<span style="font-weight: bold;">objectClass</span>" au sein du schéma sera la suivante :</span><br>
+
+<div style="margin-left: 40px;"><span style="color: rgb(255, 102, 0);">m_connectForm-&gt;getLdapHandle()-&gt;doSearchScopeBase ( "cn=subschema", "objectClasses" );</span><span style="color: rgb(255, 102, 0);"><br>
+</span></div>
+<br><span style="text-decoration: underline;">
+
+Extrait de résultat possible :</span><br>
+
+<div style="margin-left: 40px;"><small><span style="color: rgb(51, 102, 255); font-style: italic;">...</span><br style="color: rgb(51, 102, 255); font-style: italic;">
+<span style="color: rgb(51, 102, 255); font-style: italic;">objectClasses: ( 1.3.6.1.4.1.1466.344 NAME 'dcObject' DESC 'RFC2247: domain component object' SUP top AUXILIARY MUST dc )</span><br style="color: rgb(51, 102, 255); font-style: italic;">
+<span style="color: rgb(51, 102, 255); font-style: italic;">...</span></small>
+
+<br>
+</div>
+<br>
+
+<div style="text-align: justify;">
+La fonction "<span style="font-weight: bold;">LDAPObjectClass* ldap_str2objectclass ()</span>" (de la bibliothèque LDAP-cliente) permet à l'interface de convertir chaque chaîne résultat en structure <span style="font-weight: bold;">"LDAPObjectClass"</span> et d'en extraire facilement les informations souhaitées ("<span style="font-weight: bold;">oc-&gt;oc_at_oids_must</span>" et "<span style="font-weight: bold;">oc-&gt;oc_at_oids_may</span>" au format "<span style="font-weight: bold;">char ** - null terminated</span>").<br>
+
+</div>
+
+<br>
+<br>
+<small><span style="font-weight: bold; color: black;"></span><big><span style="text-decoration: underline; font-weight: bold; color: rgb(255, 102, 0);">Nota :</span> </big></small><span style="font-weight: bold;">OpenLdap</span> ne permet pas pour l'instant de modifier le "<span style="font-weight: bold;">DN</span>" d'une entrée si celle-ci n'est pas une feuille de l'arborescence <span style="font-weight: bold;">LDAP</span> ... L'interface graphique "<a href="Howto-6.fr.html">domainFrontend</a>" émule cependant (sur profile "<span style="font-weight: bold;">adminStruct</span>" de l'opérateur) ce type de modification de "<span style="font-weight: bold;">DN</span>" (exception faite bien sûr de la racine d'annuaire : "<span style="font-weight: bold;">rootEntry</span>") par déplacement - copy+delete - de toute l'arborescence concernée par une telle demande<big>. <span style="text-decoration: underline; color: rgb(204, 0, 0);">Attention cependant au volume des écritures en base que peuvent représenter certaines requêtes ...</span><br>
+</big>
+</div><h2><a name="ss6.2">6.2 Gestion des multivaleurs
+</a></h2>
+
+
+<div style="margin-left: 40px; text-align: justify;">Pour les
+paramètres possiblement multivalués, la fenêtre suivante est utilisable
+et permet l'édition de toutes les valeurs souhaitées pour le paramètre.<span style="font-weight: bold; text-decoration: underline;"></span><br>
+<br>
+<img style="width: 369px; height: 401px;" alt="images/domainFrontend-attrEdit.png" src="images/domainFrontend-attrEdit.png"><br>
+
+
+
+
+<br>
+<span style="font-weight: bold; text-decoration: underline;">Nota:</span>
+Les différentes valeurs seront automatiquement classées par ordre
+alphabétique, la première de la liste apparaissant implicitement dans
+le masque d'écran principal de l'interface. Pour forcer ce classement,
+la syntaxe "{1}paramètre1, {2}paramètre2, ..." est bien évidement
+utilisable ...<br>
+<br>
+
+<small>
+</small></div>
+
+
+<h2><a name="ss6.3">6.3 Déclencheurs sur saisie des attributs
+</a></h2>
+
+
+
+<div style="margin-left: 40px; text-align: justify;">La définition des déclencheurs se fait au travers du menu : "<span style="font-weight: bold;">Settings/Triggers for <span style="text-decoration: underline;">E</span>diting fields</span>".<br>
+<br>Ces déclencheurs permettent de traiter le cas de certaines données
+spécifiques lors de leur saisie par l'opérateur, ceci dans le but de
+respecter par exemple leur mise en forme ou bien certaines règles de
+cohérence qui peuvent les
+régir (règles non obligatoirement connues de l'opérateur autorisé
+à manipuler de telles données).<br>
+<br>
+Il peut s'agir aussi, tout simplement, de faire appel à d'autres
+interfaces spécifiques mieux adaptées à la manipulation de certains
+type de données, tel que par exemple un sélecteur d'images pour la
+saisie du paramètre "<span style="font-weight: bold;">jpegPhoto</span>" ...<br>
+<br>
+<div style="text-align: center;"><img style="width: 757px; height: 421px;" alt="images/triggersEditDefinition.png" src="images/triggersEditDefinition.png"><br>
+</div><br>
+Un tel masque de définition de déclencheurs est accessible à l'opérateur en mode modification seulement si le rôle "<span style="font-weight: bold;">adminStruct</span>" lui a préalablement été affecté.<br>
+
+<br>
+<br>La commande externe (format "<span style="font-weight: bold;">Shell Unix</span>") définie au sein de chaque déclencheur est appelée automatiquement par
+l'interface graphique dès
+que l'opérateur tente d'éditer le champs pour lequel ce déclencheur est défini.<br>
+<br>Lors de l'exécution de chacun des déclencheurs, la commande externe qui le défini est appelée avec, dans son entrée standard (<span style="font-weight: bold;">stdin</span>),
+la valeur courante
+du champ déclencheur. Il va de soit que la commande externe peut bien
+évidement ne pas tenir compte de cette valeur si elle n'en a pas besoin
+lors de son exécution.<br>
+<br>
+<span style="text-decoration: underline; font-weight: bold;">Chaque commande externe appelée par un déclencheur doit être écrite de sorte à
+retourner :</span><br>
+<ul>
+  <li>soit la nouvelle saisie validée par l'opérateur (y compris éventuellement "", valeur nulle) sur la sortie standard (<span style="font-weight: bold;">stdout</span>) du processus, validée par un code retour d'exécution égale à : <span style="font-weight: bold;">0 (zéro)</span>,</li>
+  <li>soit,
+sur abandon ou erreur d'exécution, un code retour d'exécution <span style="font-weight: bold;">différent de 0 (zéro)</span>, éventuellement complété par un message d'erreur sur la sortie erreur du processus "<span style="font-weight: bold;">stderr</span>" permettant de renseigner l'opérateur sur la cause de l'échec.</li>
+</ul>La valeur chaîne de caractères (ou, plus généralement d'octects, selon la
+nature de l'information saisie) ainsi correctement retournée constituera le nouveau
+contenu du champ déclencheur.<br>
+<br>
+<br style="text-decoration: underline; font-weight: bold;">
+<span style="text-decoration: underline; font-weight: bold;">Utilisation des </span><span style="font-weight: bold; text-decoration: underline;">valeurs d'attributs</span><span style="text-decoration: underline; font-weight: bold;"> :</span><br>
+<br>
+Les valeurs des autres champs d'attributs du masque de saisie
+(attributs de l'object en cours d'édition) sont utilisables dans la
+définition des déclencheurs par la syntaxe suivante : "%<span style="font-weight: bold; font-style: italic;">nom_du_champ</span><span style="font-weight: bold;"></span>" ...<br>
+<br>
+<span style="text-decoration: underline;">Par exemple :</span> "<span style="font-weight: bold;">%dn</span>" ou "<span style="font-weight: bold;">%uid</span>" seront remplacés par les valeurs présentes dans ces attributs juste avant l'exécution de la commande "<span style="font-weight: bold;">shell</span>" qui définira le déclencheur les utilisant.<br>
+<br>
+<span style="text-decoration: underline;">Exemple de commande externe appelable au sein d'un déclencheur :</span> "<a href="../archives/ldapEasyAdminFrontends/sources/slappassword/"><span style="font-weight: bold;">/usr/local/bin/slappassword</span></a>"<span style="text-decoration: underline;"><br>
+<br>
+</span>
+<div style="text-align: center;"><img style="width: 842px; height: 375px;" alt="images/slappassword.png" src="images/slappassword.png"><br>
+</div>
+<br>
+Cette interface graphique "<a href="../archives/ldapEasyAdminFrontends/sources/slappassword/">slappassword</a>" (version 0.2 - 20100921) offre, en l'occurence, un frontal graphique à la commande console : "<span style="font-weight: bold;">slappasswd</span>" du projet <a href="http://www.openldap.org">OpenLDAP</a>.<br>
+<br>
+<span style="font-style: italic;">
+</span>
+
+</div>
+
+
+<h2><a name="ss6.4">6.4 Déclencheurs sur affichage</a></h2>
+
+<div style="margin-left: 40px;">Cette notion est
+introduite par la version 1.7 (20110803) de cette interface graphique d'administration. La
+définition de tels déclencheurs se fait via le menu : "<span style="font-weight: bold;">Settings/Triggers on <span style="text-decoration: underline;">D</span>isplaying</span>".<br>
+<br>
+<span style="text-decoration: underline;">Exemple :</span><br>
+<div style="text-align: center;"><img style="width: 965px; height: 608px;" alt="images/triggersOnDisplaying.png" src="images/triggersOnDisplaying.png"><br>
+</div>
+<br>
+</div><h2><a name="ss6.5">6.5 Déclencheurs sur mise à jour de l'annuaire
+</a></h2>
+
+
+<div style="margin-left: 40px; text-align: justify;">Cette notion est
+introduite par la version 1.3 (20100926) de cette interface graphique d'administration. La
+définition de tels déclencheurs se fait via le menu : "<span style="font-weight: bold;">Settings/Triggers on <span style="text-decoration: underline;">B</span>ackup</span>".<br>
+<br>Il s'agit en réalité du même principe que précédemment mais, dans
+ce cas précis, les déclencheurs définis seront réveillés
+au moment de la sauvegarde en base de données (c.a.d. au sein de
+l'annuaire) de la
+création/modification de chacun des attributs concernés par la
+définition de tels déclencheurs.<br>
+<br>
+<span style="text-decoration: underline;">Exemple :</span> mise à jour des attributs "<a href="Howto-11.fr.html#ss11.6">sambaPwdLastSet</a>" et "<a href="Howto-11.fr.html#ss11.6">sambaPwdCanChange</a>" sur sauvegarde du nouvel attribut "<a href="Howto-11.fr.html#ss11.3.2">sambaNTPassword</a>" (modifié ou créé) par appel des commandes externes adéquates.<br>
+<br>
+Ces déclencheurs spécifiques sont récursifs. C'est à dire que si un
+déclencheur sur mise à jour a pour effet de modifier un autre attribut
+(que son propre attribut déclencheur), alors cet autre attribut
+réveillera à son tour son propre éventuel déclencheur (et ainsi de
+suite) ...<br>
+<span style="text-decoration: underline;"></span><br>
+<span style="font-weight: bold; text-decoration: underline; color: rgb(255, 102, 0);">Nota:</span><span style="color: rgb(255, 102, 0);"> </span><span style="font-weight: bold;"><span style="color: rgb(204, 0, 0);">Attention
+aux références circulaires </span></span><span style="font-weight: bold;"><span style="color: rgb(204, 0, 0);">dans les définitions des déclencheurs
+(modification d'un autre attribut lui-même modificateur du premier) !...</span><br>
+<br>
+Quoiqu'il en soit, afin de ne pas autoriser des déclenchements</span><span style="font-weight: bold;"> en boucle</span><span style="font-weight: bold;">s infinies, le nombre de récursions est arbitrairement (</span><span style="font-weight: bold;">par programme)</span><span style="font-weight: bold;"> limité à 15&nbsp;</span><span style="font-weight: bold;"> </span><span style="font-weight: bold;">...<br>
+</span>
+
+</div>
+<h2><a name="ss6.6">6.6 </a>Les extensions</h2>
+<div style="margin-left: 40px;">
+<div style="text-align: justify;">Si l'une ou l'autres des extensions ("plugins") "<a href="Howto-11.fr.html">libsambadomain.so</a>" ou "<a href="Howto-14.fr.html">libbind9domain.so</a>" est disponible au moment du lancement de l'exécution de l'interface graphique de paramétrage des domaines LDAP "<a href="#top">libdomain.so</a>",
+alors cette extension va venir s'insérer automatiquement dans un nouvel
+onglet au sein du masque d'écran de l'interface, cela au même titre
+qu'un nouvel "<span style="font-weight: bold;">objectClass</span>", complétant de la sorte les possibilités de gestion de l'interface de paramétrage des domaines LDAP :<br>
+
+<br>
+
+</div>
+<div style="text-align: center;"><img style="width: 647px; height: 522px;" alt="images/domainFrontend-pluginBind.png" src="images/domainFrontend-pluginBind.png"><br>
+</div>
+
+<br>
+
+<div style="text-align: center;"><img style="width: 647px; height: 522px;" alt="images/domainFrontend-pluginSmb.png" src="images/domainFrontend-pluginSmb.png"><br>
+</div>
+
+
+<br>
+</div>
+<h2><a name="ss6.7">6.7 </a><a href="../archives/ldapEasyAdminFrontends/sources/domain.so">Les sources C++<br>
+</a></h2>
+
+
+
+
+
+<div style="margin-left: 40px; text-align: justify;">Le code de cette
+interface graphique est à l'heure actuelle partagé avec trois autres
+interfaces graphiques d'administration LDAP.<br>
+<br>
+Les source de la dernière version (<span style="font-weight: bold;">20120102</span>) sont <a href="../archives/ldapEasyAdminFrontends/sources/domain.so">ici.</a><br>
+<br>
+Après compilation (et utilisation de la commande "<span style="font-weight: bold;">ln [-s]</span>"), ce sera le nom d'appel du programme qui déterminera l'interface d'administration exécutée et, par suite, le type de
+données d'annuaire gérées par l'opérateur ("<span style="font-weight: bold;">domainFrontend</span><span style="font-weight: bold;"></span>", "<a href="Howto-8.fr.html#S8">personFrontend</a>", "<a href="Howto-9.fr.html#S9">posixGroupFrontend</a>" ou "<a href="Howto-10.fr.html#S10">organizationalRoleFrontend</a>").<br>
+<br>
+<span style="text-decoration: underline; font-weight: bold;">Exemples de définitions :<br>
+<br>
+</span>
+<div style="margin-left: 40px;">
+<div style="margin-left: 80px;"><span style="font-style: italic; font-weight: bold;">ln -s /usr/local/bin/<a href="Howto-5.fr.html">frontend</a> /usr/local/bin/<a href="#top">domainFrontend</a></span><br style="font-style: italic; font-weight: bold;">
+<span style="font-style: italic; font-weight: bold;">ln -s /usr/local/bin/libdomain.so /usr/local/bin/libperson.so</span><br style="font-style: italic; font-weight: bold;">
+<span style="font-style: italic; font-weight: bold;">ln -s /usr/local/bin/<a href="Howto-5.fr.html">frontend</a> /usr/local/bin/<a href="Howto-8.fr.html">personFrontend</a></span><br style="font-style: italic; font-weight: bold;">
+<span style="font-style: italic; font-weight: bold;">ln -s
+/usr/local/bin/libdomain.so /usr/local/bin/libposixgroup.so</span><br style="font-style: italic; font-weight: bold;">
+<span style="font-style: italic; font-weight: bold;">ln -s /usr/local/bin/<a href="Howto-5.fr.html">frontend</a> /usr/local/bin/<a href="Howto-9.fr.html">posixgroupFrontend</a></span><br style="font-style: italic; font-weight: bold;">
+<span style="font-style: italic; font-weight: bold;">ln -s
+/usr/local/bin/libdomain.so /usr/local/bin/liborganizationalrole.so</span><br style="font-style: italic; font-weight: bold;">
+<span style="font-style: italic; font-weight: bold;">ln -s
+/usr/local/bin/<a href="Howto-5.fr.html">frontend</a> /usr/local/bin/<a href="Howto-10.fr.html">organizationalroleFrontend</a></span><br>
+</div>
+<span style="font-style: italic; font-weight: bold;"></span></div>
+
+
+
+
+
+
+<span style="font-style: italic; font-weight: bold;"><br>
+</span><span style="font-weight: bold; text-decoration: underline;">Exemples d'appel des interfaces graphiques :</span><span style="font-style: italic; font-weight: bold;"><br style="font-style: italic; font-weight: bold;">
+</span>
+
+<br>
+<div style="margin-left: 40px;">
+<div style="margin-left: 80px;"><span style="font-style: italic;">me@home:~$ </span><span style="font-weight: bold; font-style: italic;">domainFrontend<br>
+</span><span style="font-style: italic;">me@home:~$ </span><span style="font-weight: bold; font-style: italic;">frontend --plugin person<br>
+</span><span style="font-style: italic;">me@home:~$ </span><span style="font-weight: bold; font-style: italic;">personFrontend</span><br>
+<span style="font-weight: bold; font-style: italic;"></span><span style="font-style: italic;"></span><span style="font-weight: bold; font-style: italic;"></span><span style="font-weight: bold; font-style: italic;"></span><span style="font-style: italic;">me@home:~$ </span><span style="font-weight: bold; font-style: italic;">frontend --plugin libposixgroup.so</span><br>
+<span style="font-weight: bold; font-style: italic;"></span><span style="font-style: italic;"></span><span style="font-weight: bold; font-style: italic;"></span><span style="font-style: italic;">me@home:~$ </span><span style="font-weight: bold; font-style: italic;">organizationalroleFrontend</span><br>
+<span style="font-weight: bold; font-style: italic;"></span><span style="font-style: italic;">...</span><span style="font-weight: bold; font-style: italic;"></span><br>
+</div>
+<span style="font-weight: bold; font-style: italic;"></span></div>
+<span style="font-weight: bold; font-style: italic;"></span><br>
+</div>
+
+<h2><a name="ss6.8">6.8 A faire<br>
+</a></h2>
+<div style="margin-left: 40px; text-align: justify;">- tester ...<br></div>
+
+
+<hr><a href="Howto-7.fr.html">Page suivante</a>
+<a href="Howto-5.fr.html">Page précédente</a> <a href="Howto.fr.html">Sommaire</a>
+
+
+
+
+
+
+
+
+</body></html>

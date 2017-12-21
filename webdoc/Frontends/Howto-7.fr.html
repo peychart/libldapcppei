@@ -1,0 +1,220 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html><head>
+
+  <meta name="GENERATOR" content="KompoZer-0.8a4"><title>LdapEasyInterface (libcppei) Mini Howto (Français)</title>
+  
+  <link href="LdapcppeiMiniHowto-1.fr.html" rel="next"></head><body><a href="Howto-8.fr.html">
+Page suivante</a>
+<a href="Howto-6.fr.html">Page précédente</a> <a href="Howto.fr.html">Sommaire</a> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; (<span style="font-weight: bold;">Français</span> - <a href="Howto-7.en.html">English</a>)
+<hr>
+<h2><a name="S7"><span style="text-decoration: underline;">7. L'interface de définition des serveurs</span>
+</a></h2>
+
+<div style="margin-left: 40px;"><br>
+<div style="text-align: center;"><img style="width: 602px; height: 280px;" alt="images/serverFrontend.png" src="images/serverFrontend.png"><br>
+</div>
+
+<br>
+<small>
+</small></div>
+
+<h2><a name="ss7.1">7.1 - Aperçu
+</a></h2>
+
+<div style="margin-left: 40px;">Cette interface graphique permet la
+gestion (création, suppression, modification et restauration) de la
+définition des serveurs au sein de l'annuaire LDAP d'entreprise.<br>
+<br>
+C'est à ces définitions de serveurs que seront ensuite rattachées les
+définitions des services associés, définitions elles-mêmes gérées au sein d'autres
+interfaces spécifiques (<span style="text-decoration: underline;">par exemple:</span> "<span style="font-weight: bold;">rsyncFrontend</span>" pour la définition du service "<span style="font-weight: bold;">rsync</span>", "<span style="font-weight: bold;">sambaFrontend</span>" pour celle du service "<span style="font-weight: bold;">samba</span>", etc.).<br>
+
+<br>
+L'identifiant dans la base d'annuaire de chaque serveur est l'adresse
+MAC de sa première carte réseau découverte. Pour autant, l'adresse MAC
+d'un serveur déjà défini reste modifiable par cette GUI (tout autant
+que les droits de modification sont effectivement accordés à
+l'utilisateur de connexion LDAP utilisé) ; les services éventuellement
+déjà définis dans l'annuaire pour ce serveur resteront attachés à
+celui-ci après modification de son adresse MAC ...<br>
+<br>
+<small>
+</small></div>
+
+<h2><a name="ss7.2">7.2 - Autre capture d'écran</a></h2>
+
+<div style="margin-left: 40px; text-align: center;">
+<div style="text-align: justify;">A l'instar des autres interfaces graphiques, ce masque d'écran est contrôlé par l'autre interface graphique : "<a href="Howto-4.fr.html">controlFrontend</a>"
+quant à sa position courante de travail (à savoir, serveur affiché et
+localisé au sein du domaine de travail - en l'occurrence, ici: "<span style="font-weight: bold;">dc=mydomain</span>") :<br>
+</div>
+
+<br>
+
+<div style="text-align: left;"><img style="width: 693px; height: 605px;" alt="images/serverFrontend2.png" src="images/serverFrontend2.png"><br>
+</div>
+
+<br>
+
+
+</div><br>
+<h2><a name="ss7.3">7.3 - L'interface de paramétrage système
+</a></h2>
+<div style="margin-left: 40px;">Il faut maintenant répercuter dans le
+"monde réel" ce que l'on aura défini dans l'annuaire LDAP dédié à
+l'administration de notre Intranet.<br>
+<br>
+<span style="text-decoration: underline; font-weight: bold;">Exemple de </span><span style="text-decoration: underline; font-weight: bold;">shell-</span><span style="text-decoration: underline; font-weight: bold;">script de démarrage à installer sur chacun des serveurs de l'intranet à administrer </span><span style="text-decoration: underline; font-weight: bold;">:</span><br><span style="font-style: italic;"><small>#!/bin/sh</small></span><small><br style="font-style: italic;">
+<span style="font-style: italic;">
+#</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+# GNU/LdapEasyInterface (2010 July - v1.0)</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+#</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+# Script: rc.ldapEasyInterface</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+#&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; (assumes nssldap installed)<br>
+#<br style="font-style: italic;">
+</span><span style="font-style: italic;">
+BIN="/usr/local/bin"</span><br style="font-style: italic;">
+<br style="font-style: italic;">
+<span style="font-style: italic;">
+case "$1" in</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; "" | start | Start | START)</span><br style="font-style: italic;">
+<br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  # setting the hostname:</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  echo "LdapEasyInterface: setting the hostname..." &gt;&amp;2</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  FILE="/etc/hostname"</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  HOST_NAME=""</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  [ -x "${BIN}/</span><a style="font-style: italic;" href="../archives/ldapEasyAdminFrontends/sources/getHostName/">getHostName</a><span style="font-style: italic;">" ] &amp;&amp; HOST_NAME=$(${BIN}/</span><a style="font-style: italic;" href="../archives/ldapEasyAdminFrontends/sources/getHostName/">getHostName</a><span style="font-style: italic;">)</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; [ -n
+"${HOST_NAME}" ] &amp;&amp; echo "${HOST_NAME}" &gt;${FILE} &amp;&amp;
+hostname -F ${FILE} &amp;&amp; echo "Done." &gt;&amp;2</span><br style="font-style: italic;">
+<br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  # setting the dnsdomainname:</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  echo "LdapEasyInterface: setting the dnsdomainname..." &gt;&amp;2</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  FILE="/etc/hosts"</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  HOST_NAME="$(hostname)"</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  DNS_DOMAIN_NAME="" ; LINE_TO_ADD=""</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  [ -n "${HOST_NAME}" -a -x "${BIN}/</span><a style="font-style: italic;" href="../archives/ldapEasyAdminFrontends/sources/getHostName/">getHostName</a><span style="font-style: italic;">" ] &amp;&amp; DNS_DOMAIN_NAME=$(${BIN}/</span><a style="font-style: italic;" href="../archives/ldapEasyAdminFrontends/sources/getHostName/">getHostName</a><span style="font-style: italic;"> -d)</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; if ! grep -qsw
+"${HOST_NAME}.${DNS_DOMAIN_NAME}" ${FILE} ; then</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; LINE_TO_DEL="$(grep -w
+"${HOST_NAME}" ${FILE} | head -1)"</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; if [ -n "${LINE_TO_DEL}" ] ; then</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; IP="$(echo
+${LINE_TO_DEL} | sed -e 's/[ \t].*$//')"</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; else&nbsp;&nbsp; &nbsp;&nbsp;
+IP="127.0.1.1"</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; fi</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; [ -n
+"${DNS_DOMAIN_NAME}" ] &amp;&amp; LINE_TO_ADD="${IP}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${HOST_NAME}.${DNS_DOMAIN_NAME}
+${HOST_NAME}"</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; cat &lt;${FILE} &gt;${FILE}.bk</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if [ $? -eq 0 ] ; then</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; cat
+&gt;${FILE} &lt;&lt;@@@</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+${LINE_TO_ADD}</span><br style="font-style: italic;">
+<span style="font-style: italic;">$([ -n "${LINE_TO_DEL}" ] &amp;&amp; grep -v "${LINE_TO_DEL}" ${FILE})</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+@@@</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; echo "Done." &gt;&amp;2</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; fi&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fi</span><br style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ...<br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp; # </span><a style="font-style: italic;" href="Howto-11.fr.html#ss11.9">next setting...</a><br style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ...<br style="font-style: italic;">
+<span style="font-style: italic;">
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ;;</span><br style="font-style: italic;">
+<br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; stop | Stop | STOP)</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ;;</span><br style="font-style: italic;">
+<br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; *)&nbsp;&nbsp;  &nbsp;&nbsp;  echo "Syntaxe: $0 [ start | stop ]..." &gt;&amp;2</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+esac</span><br style="font-style: italic;">
+<br>
+
+# End<br>
+</small>
+
+
+
+
+
+
+
+
+
+<br>
+<small>
+</small></div>
+<h2><a href="../archives/ldapEasyAdminFrontends/sources/server.so/" name="ss7.4">7.4 - Les sources C++
+</a></h2>
+<div style="text-align: justify; margin-left: 40px;">Les sources de la dernière version (<span style="font-weight: bold;">20110913</span>) sont <a href="../archives/ldapEasyAdminFrontends/sources/server.so/">ici</a> et permettent d'obtenir l'extension (plugin) "libserver.so" utilisable ainsi:<br>
+<br><small style="font-weight: bold;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  <span style="font-style: italic;">frontend&nbsp; -- plugin&nbsp; libserver.so</span></small><br>
+ou :<br><small style="font-weight: bold;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  <span style="font-style: italic;">frontend&nbsp; --plugin&nbsp; server</span></small><br>
+ou :<br><small><span style="font-weight: bold;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp; </span><span style="font-style: italic; font-weight: bold;">cp libserver.so /usr/local/bin/&nbsp; ;&nbsp; </span></small><span style="font-style: italic;"><small><span style="font-weight: bold;">ln [-s] /usr/local/bin/frontend /usr/local/bin/serverFrontend&nbsp; ;&nbsp; serverFrontend</span></small><br>
+</span></div>
+
+<span style="font-weight: bold;"></span><br>
+<h2><a name="ss7.5">7.5 - A faire
+</a></h2>
+<div style="margin-left: 40px;">- tester ...<br>
+</div>
+
+<br>
+
+
+<hr><a href="Howto-8.fr.html">Page suivante</a>
+<a href="Howto-6.fr.html">Page précédente</a> <a href="Howto.fr.html">Sommaire</a>
+
+
+
+
+</body></html>

@@ -1,0 +1,209 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html><head>
+
+  <meta name="GENERATOR" content="KompoZer-0.8a4"><title>LdapEasyInterface (libcppei) Mini Howto (Français)</title>
+  
+  <link href="LdapcppeiMiniHowto-1.fr.html" rel="next"></head><body><a href="Howto-15.fr.html">
+Page suivante</a>
+<a href="Howto-13.fr.html">Page précédente</a> <a href="Howto.fr.html">Sommaire</a> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; (<span style="font-weight: bold;">Français</span> - <a href="Howto-14.en.html">English</a>)
+<hr>
+<h2><a name="S14"><span style="text-decoration: underline;">14. L'interface de gestion du paramétrage des DNS :</span></a></h2>
+
+
+
+
+<h2><a name="ss14.1">14.1 Aperçu
+</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;"><span style="text-decoration: underline; font-weight: bold;">Masque de saisie des paramètres du daemon "bind9" :</span>
+<div style="text-align: center;"><span style="text-decoration: underline; font-weight: bold;"></span><img style="width: 838px; height: 715px;" alt="images/bind9DomaintFrontend.png" src="images/bind9DomaintFrontend.png"><br>
+<br>
+</div>
+Ce plugin est aussi automatiquement appelé (lorsqu'il est accessible - "${PATH}") à partir de l'interface "<a href="Howto-6.fr.html#ss6.6">domainFrontend</a>" qui regroupe ainsi différentes gestions du domaine "<span style="font-weight: bold;">dc</span>" ...<br>
+<br>
+<a href="../archives/ldapEasyAdminFrontends/sources/bind9domain.so/dNSZone_example.LDIFF">Ici se trouve un exemple de définitions de zones DNS</a><span style="font-weight: bold;"></span> (format "<span style="font-weight: bold;">LDIFF</span>") de l'annuaire LDAP de paramétrage de notre intranet ...<br>
+<br>
+<small><span style="font-weight: bold; text-decoration: underline; font-style: italic;">Astuce :</span><span style="font-style: italic;">
+après modification erronée (ce qui peut arriver lors de l'utilisation
+de la molette de la souris pour scroller ;-), le double-clic sur "</span><span style="font-weight: bold; font-style: italic;">-</span><span style="font-style: italic;">" permet de restaurer les valeurs d'origine du (ou des) enregistrement(s) éventuellement détérioré(s) ...</span></small><br style="font-weight: bold;">
+<span style="text-decoration: underline; font-weight: bold;"></span><br>
+<br>
+<div style="text-align: center;"><img style="width: 840px; height: 710px;" alt="images/bind9DomaintFrontend2.png" src="images/bind9DomaintFrontend2.png"><br>
+</div>
+<br>
+Les définitions grisées (non barrées) correspondent aux RRs définies
+dans la zone DNS (directe) mais non encore présentes dans la zone "<span style="font-weight: bold;">arpa</span>" correspondante (ici: "<span style="font-weight: bold;">1.168.192.IN-ARPA</span>")...
+Elle sont donc suggérées à la validation et peuvent être intégrées à la
+définition de la zone inverse d'un simple clic sur l'icon "<span style="font-weight: bold;">+</span>".<br>
+<br>
+<br>
+</div>
+<h2><a name="ss14.2">14.2&nbsp; L'interface de paramétrage système
+</a></h2>
+<div style="margin-left: 40px; text-align: justify;"><span style="font-style: italic;"></span><span style="font-weight: bold; text-decoration: underline;"></span><big><span style="text-decoration: underline;"><span style="font-weight: bold;">Pilote de mise à jour du fichier "<span style="font-style: italic;">named.conf</span>"</span></span></big><span style="font-weight: bold; text-decoration: underline;"><big> :<br>
+</big><br>
+</span>
+Voici l'interface de paramétrage de "<span style="font-weight: bold;">named.conf</span>": <a href="../archives/ldapEasyAdminFrontends/sources/getHostName/">doNamedConf</a>. Elle partage ses sources avec <a href="Howto-7.fr.html#ss7.3">getHostName</a>. Elle peut donc être utilisée ainsi :<br>
+
+
+
+<span style="font-style: italic;"><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; </span></span><span style="font-weight: bold; font-style: italic;">getHostName&nbsp; --namedConf</span><span style="font-style: italic;"></span><br>
+
+
+
+ou bien :&nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp; &nbsp; <span style="font-style: italic;"></span><span style="font-weight: bold; font-style: italic;">ln&nbsp; -s&nbsp; /usr/local/bin/getHostName&nbsp; /usr/local/bin/</span><span style="font-weight: bold; font-style: italic;">doNamedConf</span><span style="font-weight: bold; font-style: italic;">&nbsp; ;&nbsp; </span><span style="font-weight: bold; font-style: italic;">doNamedConf</span><span style="font-weight: bold; font-style: italic;"></span><span style="font-style: italic;"></span><br>
+
+
+
+<br>
+
+
+
+Ce programme permet la génération automatique (déclenchée soit par "<span style="font-weight: bold;">cron</span>",
+soit au niveau des procédures de démarrage du système destinataire) du
+fichier de configuration <span style="font-weight: bold;"></span>(ex.: "<span style="font-weight: bold; font-style: italic;">/etc/named.conf</span>").<br>
+
+
+
+
+
+<br>
+
+
+
+<span style="text-decoration: underline; font-weight: bold;">Exemple de </span><span style="text-decoration: underline; font-weight: bold;">shell-</span><span style="text-decoration: underline; font-weight: bold;">script à installer (cron ?) sur le serveur DNS primaire (bind9 patché LDAP) de l'intranet à administrer :<br>
+</span><span style="font-weight: bold;"></span><small><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  ...</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; # </span><a style="font-style: italic;" href="Howto-13.fr.html#ss13.2">previous setting...</a><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  ...<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; </span><span style="font-style: italic;">NAMEDCONFFILE</span><span style="font-style: italic;">="/etc</span><span style="font-style: italic;"></span><span style="font-style: italic;">/named.conf</span><span style="font-style: italic;"></span><span style="font-style: italic;">"<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; TMP=/tmp/.doNamedConf.$$<br>
+&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="font-style: italic;">&lt;</span><span style="font-style: italic;">$</span><span style="font-style: italic;"></span><span style="font-style: italic;"></span></small><small><span style="font-style: italic;">NAMEDCONFFILE</span></small><small><span style="font-style: italic;"></span><span style="font-style: italic;"> </span><span style="font-style: italic;">awk '{</span><span style="font-style: italic;">if ($0 ~ /@\(#)LdapEasyInterface - bind9domain -/) bool=1;</span><span style="font-style: italic;"> </span><span style="font-style: italic;">if (!bool) print $0</span><span style="font-style: italic;"></span><span style="font-style: italic;">}' &gt;$TMP<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  if [ -s $</span></small><small><span style="font-style: italic;"></span><span style="font-style: italic;">NAMEDCONFFILE</span><span style="font-style: italic;"> ] ; then</span></small><br>
+<small>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  <span style="font-style: italic;"></span>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; <span style="font-style: italic;">2&gt;/dev/null ${BIN}/<a href="../archives/ldapEasyAdminFrontends/sources/getHostName/">getHostName</a> --namedConf&nbsp; &gt;&gt;$TMP<br></span></small><small><span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;</span><span style="font-style: italic;">$</span><span style="font-style: italic;"></span><span style="font-style: italic;"></span></small><small><span style="font-style: italic;">NAMEDCONFFILE</span></small><small><span style="font-style: italic;"></span><span style="font-style: italic;"> </span><span style="font-style: italic;">awk '{</span><span style="font-style: italic;"></span><span style="font-style: italic;"></span><span style="font-style: italic;"></span><span style="font-style: italic;"></span><span style="font-style: italic;"></span><span style="font-style: italic;">if ($0 ~ /@\(#)LdapEasyInterface - End -/) bool=</span></small><small><span style="font-style: italic;">1;</span><span style="font-style: italic;"> </span><span style="font-style: italic;">if (!bool) print $0</span><span style="font-style: italic;"></span><span style="font-style: italic;"></span><span style="font-style: italic;"></span></small><small><span style="font-style: italic;"></span><span style="font-style: italic;">}' &gt;&gt;$TMP<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  fi<br>
+</span></small><small><span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; </span><span style="font-style: italic;">cat &lt;$TMP &gt;$</span></small><small><span style="font-style: italic;">NAMEDCONFFILE</span></small><small><span style="font-style: italic;"></span><br>
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  </span><span style="font-style: italic;">rm -f&nbsp; $TMP</span><span style="font-style: italic;"></span><span style="font-style: italic;"></span><span style="font-style: italic;"></span><span style="font-style: italic;"></span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  ...<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  # <a href="Howto-15.fr.html#ss15.2"><span style="text-decoration: underline;">next setting...</span></a><br>
+</span><span style="text-decoration: underline; font-weight: bold;"></span>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  ...</small>
+
+
+
+
+
+
+
+
+<br>
+<br>
+<span style="text-decoration: underline;">Insérer préalablement les deux lignes suivantes dans le fichier "</span><span style="font-weight: bold; font-style: italic; text-decoration: underline;">/etc/named.conf</span><span style="text-decoration: underline;">" (là où souhaité) :</span><br>
+...<br>
+<small style="font-weight: bold; font-style: italic;"># @(#)LdapEasyInterface - bind9domain - Global Settings:<br>
+# @(#)LdapEasyInterface - End -<br>
+</small>...<br>
+<br>
+<span style="font-weight: bold; text-decoration: underline;">Exemple de déclaration de zone dans "named.conf" :</span><br>
+<br>
+<div style="text-align: left;">&nbsp;&nbsp;&nbsp; zone "domain" IN {
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; type master;
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; database "ldap
+ldap://ldap/ou=bind9domain,dc=domain????!bindname=cn=nssldap%2cou=applications%2cdc=mydomain,!x-bindpw=mydomain
+172800";
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; allow-update { none; };
+<br>
+&nbsp;&nbsp;&nbsp; };
+<br>
+<br>
+&nbsp;&nbsp;&nbsp; zone "1.168.192.in-addr.arpa" IN {
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; type master;
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; database "ldap
+ldap://ldap/ou=bind9domain,dc=mydomain????!bindname=cn=nssldap%2cou=applications%2cdc=mydomain,!x-bindpw=mydomain
+172800";
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; allow-update { none; };
+<br>
+&nbsp;&nbsp;&nbsp; };
+<br>
+</div>
+<span style="text-decoration: underline; font-weight: bold; color: rgb(255, 102, 0);"></span><small style="font-style: italic;"><span style="font-weight: bold; text-decoration: underline;"><br>
+</span></small><span style="font-weight: bold; text-decoration: underline;">Exemple de mise en oeuvre de l'interfaçage LDAP du service DNS "</span><span style="text-decoration: underline;">BIND9</span><span style="font-weight: bold; text-decoration: underline;">" :</span><br>
+
+<a href="http://howto-linux.tbugier.fr.eu.org/wiki/index.php/DNS-LDAP_-_param%C3%A9trer_le_serveur_Bind9_avec_LDAP">http://howto-linux.tbugier.fr.eu.org/wiki/index.php/DNS-LDAP_-_param%C3%A9trer_le_serveur_Bind9_avec_LDAP</a><br>
+
+
+<big><span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span></big><br>
+<small style="font-style: italic;"><span style="font-weight: bold; text-decoration: underline;">
+Astuce :</span>
+Le DNS patché LDAP ne sert qu'à transmettre les définitions de zones à
+l'ensemble des serveurs secondaires de l'intranet qui eux répondront aux
+requêtes des utilisateurs (Bind9 patché perd en effet des
+fonctionnalités importantes d'optimisation ...).</small><big style="font-style: italic;"><br>
+</big>
+
+<span style="font-style: italic; font-weight: bold;">
+
+</span>
+</div>
+
+<h2><a name="ss14.3"></a>14.3 <a href="../archives/ldapEasyAdminFrontends/">Les sources C++</a><br>
+</h2>
+
+
+<div style="text-align: justify; margin-left: 40px;">Les sources de la dernière version 1.2 du&nbsp; (<span style="font-weight: bold;">20111028</span>) sont <a href="../archives/ldapEasyAdminFrontends/">ici</a>...<br>
+<br>
+A utiliser avec les dernières mises à jour de "<a href="../miniHowto-2.fr.html#ss2.1">ldapcppei</a>", de "<a href="Howto-3.fr.html#ss3.4">connectForm</a>" et de "<a href="Howto-5.fr.html#ss5.5">frontend</a>" ...<br>
+
+<span style="font-weight: bold; text-decoration: underline; color: rgb(255, 102, 0);"></span><br>Après compilation du plugin :<br>
+<div style="margin-left: 160px;"><small style="font-style: italic;"><span style="font-weight: bold;">me@home:~$&nbsp; </span></small><small style="font-style: italic;"><span style="font-weight: bold;">mv libbind9domain.so&nbsp; /usr/local/bin/</span></small><br>
+<small style="font-style: italic;"><span style="font-weight: bold;">
+me@home:~$&nbsp; </span></small><a href="Howto-5.fr.html"><small style="font-style: italic;"><span style="font-weight: bold;"></span></small></a><small style="font-style: italic;"><a href="Howto-5.fr.html">frontend</a><span style="font-weight: bold;">&nbsp; --plugin&nbsp; libbind9domain.so</span></small><br>
+</div>
+
+
+<small style="font-style: italic;"><span style="font-weight: bold;">
+ou :<br>
+</span></small>
+<div style="margin-left: 160px;"><small style="font-style: italic;"><span style="font-weight: bold;">me@home:~$&nbsp; </span></small><small style="font-style: italic;"><span style="font-weight: bold;">mv libbind9domain.so&nbsp; /usr/local/bin/</span></small><br>
+<small style="font-style: italic;"><span style="font-weight: bold;">
+</span></small><small style="font-style: italic;"><span style="font-weight: bold;">me@hom</span></small><small style="font-style: italic;"><span style="font-weight: bold;">e:~$&nbsp; </span></small><small style="font-style: italic;"><span style="font-weight: bold;">ln [-s] /usr/local/bin/</span></small><a href="Howto-5.fr.html"><small style="font-style: italic;"><span style="font-weight: bold;"></span></small></a><small style="font-style: italic;"><a href="Howto-5.fr.html">frontend</a></small><small style="font-style: italic;"><span style="font-weight: bold;">&nbsp; /usr/local/bin/bind9DomainFrontend</span></small><br>
+<small style="font-style: italic;"><span style="font-weight: bold;"></span></small><small style="font-style: italic;"><span style="font-weight: bold;">me@hom</span></small><small style="font-style: italic;"><span style="font-weight: bold;">e:~$&nbsp; </span></small><small style="font-style: italic;"><span style="font-weight: bold;">bind9DomainFrontend</span></small><br>
+</div>
+
+
+
+<small style="font-style: italic;"><span style="font-weight: bold;">ou encore :<br>
+</span></small>
+<div style="margin-left: 160px;"><small style="font-style: italic;"><span style="font-weight: bold;">me@home:~$&nbsp; </span></small><small style="font-style: italic;"><span style="font-weight: bold;">mv libbind9domain.so&nbsp; /usr/local/bin/<br>
+</span></small><small style="font-style: italic;"><span style="font-weight: bold;">me@home</span></small><small style="font-style: italic;"><span style="font-weight: bold;">:~$&nbsp; domainFrontend </span></small><br>
+<small style="font-style: italic;"><span style="font-weight: bold;">
+</span></small><small style="font-style: italic;"><span style="font-weight: bold;">
+</span></small><span style="font-style: italic;"><span style="font-weight: bold; text-decoration: underline; color: red;">
+</span></span></div>
+
+
+<br>
+<br>
+Testé sur une base de <span style="font-weight: bold;">11380</span> entrées, dont <span style="font-weight: bold;">136</span> domaines ("<span style="font-style: italic; font-weight: bold;">dc</span>"), <span style="font-weight: bold;">160</span> zones DNS ("<span style="font-style: italic; font-weight: bold;">zoneName</span>") et <span style="font-weight: bold;">2954</span> définitions ("<span style="font-weight: bold; font-style: italic;">relativeDomainName</span>").<br>
+<br>
+Temps moyens de rafraichissement d'affichage sur un domaine de <span style="font-weight: bold;">10</span> zones et  <span style="font-weight: bold;">596</span> définitions (en version: <span style="font-weight: bold; font-style: italic;">Ubuntu 11.10 amd64 Unity - Intel Core CPU E8400 @ 3.00GHz * 2 - RAM 4Go)</span>:<br>
+- <span style="font-weight: bold;">10 secondes</span> sans option "<span style="font-weight: bold; font-style: italic;">Customized display</span>",<br>
+- <span style="font-weight: bold;">15 secondes</span> avec option "<span style="font-style: italic; font-weight: bold;">Customized display</span>"...<br>
+<br>
+Temps d'écriture LDAP de <span style="font-weight: bold;">50% des définitions modifiées</span> : 20s - 10s (de rafraichissement d'affichage)&nbsp; ~= <span style="font-weight: bold;">10 secondes</span>.<br>
+</div><br><br>
+<hr><a href="Howto-15.fr.html">Page suivante</a>
+<a href="Howto-13.fr.html">Page précédente</a> <a href="Howto.fr.html">Sommaire</a>
+
+
+
+</body></html>

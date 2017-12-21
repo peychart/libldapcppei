@@ -1,0 +1,35 @@
+#(@) Compiling and installing the ldapcppei library
+
+Requirement: the openldap package "libldap2-dev" must be installed.
+The "fakeroot" package is also requied to: "make debian"...
+
+Example of unpacking the distribution :
+
+	% cd /tmp
+	% tar xzf libldapcppei-${version}.tgz
+	% cd libldapcppei/
+
+Compiling the library:
+
+	% make
+
+Installing the library:
+
+	% make install
+
+Installation of sources:
+
+	% make installsrc
+
+Uninstall library and sources:
+
+	% make uninstall
+
+Make a debian package:
+
+	% make debian
+
+Install the debian package:
+
+	% sudo dpkg -i libldapcppei-${version}.deb
+

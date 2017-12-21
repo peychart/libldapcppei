@@ -1,0 +1,422 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html><head>
+
+  <meta name="GENERATOR" content="KompoZer-0.8a4"><title>LdapEasyInterface (libcppei) Mini Howto (Français)</title>
+  
+  <link href="LdapcppeiMiniHowto-1.fr.html" rel="next"></head><body>Next <a href="Howto-15.en.html">Previous</a> <a href="Howto.en.html">Summary</a> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; (<a href="Howto-16.fr.html"><span style="font-weight: bold;">Français</span></a> - English)
+<hr>
+<h2 style="text-decoration: underline;"><a name="S16">16. The setup graphical interface for<span id="result_box" class="" lang="en"><span class="hps"></span> <span class="hps atn">"</span><span>Netfilter</span><span>"</span> service <span class="hps">on</span> <span class="hps atn">"</span><span class="">GNU</span><span class="hps">/</span><span class="hps">Linux</span><span>" firewalls</span></span>:</a></h2>
+
+
+<h2><a name="ss16.1">16.1 Overview
+</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;"><span style="text-decoration: underline; font-weight: bold;">Input form:</span>
+<div style="text-align: center;"><span style="text-decoration: underline; font-weight: bold;"></span><img style="width: 928px; height: 1046px;" alt="images/netfilter.png" src="images/netfilter.png"><br>
+</div><small><span id="result_box" class="long_text" lang="en"><span class="hps">(In edit mode,</span> <span class="hps">the current rule</span> <span class="hps">can</span> <span class="hps">also</span> <span class="hps">be edited from</span> <span class="hps">the</span> <span class="hps atn">"</span><span>QLineEdit</span><span>"</span> <span class="hps">at the bottom</span> <span class="hps">of the screen</span> <span class="hps">...).</span></span><br>
+<br>
+</small>
+eg.: <a href="http://formation-debian.via.ecp.fr/firewall.html">http://formation-debian.via.ecp.fr/firewall.html</a> (2.3)...<br>
+<br>
+<span style="text-decoration: underline; font-weight: bold;">Right-click the </span><span style="text-decoration: underline; font-weight: bold;">"IP" field</span><span style="text-decoration: underline; font-weight: bold;"> </span><span style="text-decoration: underline; font-weight: bold; font-style: italic;">"<small>-&gt; List of </small></span><span style="text-decoration: underline; font-weight: bold; font-style: italic;"><small> IP </small></span><span style="text-decoration: underline; font-weight: bold; font-style: italic;"><small>addresses</small>"</span><span style="text-decoration: underline; font-weight: bold;">, right/</span><span style="text-decoration: underline; font-weight: bold;">left</span><span style="text-decoration: underline; font-weight: bold;">-click to </span><span style="text-decoration: underline; font-weight: bold;">create/</span><span style="text-decoration: underline; font-weight: bold;">select </span><span style="text-decoration: underline; font-weight: bold;">an IP-list:</span><br>
+<div style="text-align: center;"><img style="width: 469px; height: 348px;" alt="images/netfilterMakeIpListe.png" src="images/netfilterMakeIpListe.png"><br>
+<div style="text-align: left;">(Create a new list of IPs - and double-click to select it...).<br>
+</div>
+
+</div>
+
+<br style="text-decoration: underline; font-weight: bold; font-style: italic;">
+<span style="text-decoration: underline; font-weight: bold;">Right-click on f</span><span style="text-decoration: underline; font-weight: bold;">ield "protocol"/"port": </span><span style="text-decoration: underline; font-weight: bold;"> </span><span style="text-decoration: underline; font-weight: bold; font-style: italic;">"</span><small style="text-decoration: underline;"><span style="font-weight: bold;">Select a service/protocol</span></small><span style="text-decoration: underline; font-weight: bold; font-style: italic;">" </span><span style="text-decoration: underline; font-weight: bold;">(port/protocol or protocol</span><span style="text-decoration: underline; font-weight: bold;"> only</span><span style="text-decoration: underline; font-weight: bold;">) from the local files </span><span style="text-decoration: underline; font-weight: bold; font-style: italic;">"<small>/etc/services</small>" and </span><span style="text-decoration: underline; font-weight: bold; font-style: italic;">"<small>/etc/protocols</small>" (or ICMP type/code -from software- in case of this protocol...)</span><span style="text-decoration: underline; font-weight: bold; font-style: italic;">:</span><br>
+<div style="text-align: center;"><img style="width: 1033px; height: 621px;" alt="images/netfilterSelectService.png" src="images/netfilterSelectService.png"><br>
+</div>
+
+<br>
+<span style="text-decoration: underline; font-weight: bold;">Plugins selection :<span style="font-style: italic;"></span></span><span style="text-decoration: underline; font-style: italic; font-weight: bold;"></span><br>
+<div style="text-align: center;"><img style="width: 202px; height: 249px;" alt="images/netfilter_target_Plugin.png" src="images/netfilter_target_Plugin.png">&nbsp; <img style="width: 220px; height: 332px;" alt="images/netfilter_match_Plugin.png" src="images/netfilter_match_Plugin.png">&nbsp;&nbsp; <br>
+</div>
+<span style="text-decoration: underline;"><span style="font-weight: bold;">By</span></span><span style="text-decoration: underline; font-weight: bold;"> clicking the</span><span style="text-decoration: underline; font-style: italic; font-weight: bold;"> "<small>Set a time range</small>" plug-in:</span><br>
+<div style="text-align: center;"><img style="width: 486px; height: 330px;" alt="images/netfilterSetTimeRange.png" src="images/netfilterSetTimeRange.png"><br>
+</div><span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span><span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span><span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span>
+<span style="text-decoration: underline;"><span style="font-weight: bold;">About </span></span><span style="text-decoration: underline; font-weight: bold;">:</span><br>
+<div style="text-align: center;"><img style="width: 630px; height: 463px;" alt="images/netfilterHelp.png" src="images/netfilterHelp.png"><br>
+</div><br>
+<span style="text-decoration: underline;"><span style="font-weight: bold;">Gateway rules</span></span><span style="text-decoration: underline; font-weight: bold;">:<br>
+</span>
+<div style="text-align: center;"><span style="text-decoration: underline; font-weight: bold;"><img style="width: 814px; height: 379px;" alt="images/netfilterGateway.png" src="images/netfilterGateway.png"></span><br>
+
+<span style="text-decoration: underline; font-weight: bold;"></span></div><span style="text-decoration: underline;"><span style="font-weight: bold;">User chains</span></span><span style="text-decoration: underline; font-weight: bold;">:<br>
+</span>
+<div style="text-align: center;"><span style="text-decoration: underline; font-weight: bold;"><img style="width: 825px; height: 410px;" alt="images/netfilterUserChains.png" src="images/netfilterUserChains.png"></span><br>
+<span style="text-decoration: underline; font-weight: bold;"></span></div><small>(Models management...)</small><br>
+</div>
+
+<h2><a name="ss16.2">16.2&nbsp; The systems setup interface "doIpTables"<br>
+</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;"><span style="font-style: italic;"></span>Here is the "<span style="font-weight: bold;">netFilter</span>" driver: <a href="../archives/ldapEasyAdminFrontends/sources/getHostName/">doIpTables</a> which generates the file parameters of the GNU/Linux firewall. It shares its code with <a href="Howto-7.en.html#ss7.3">getHostName</a> and can be used <span id="result_box" class="short_text" lang="en"><span class="hps">as follows</span></span>:<br>
+
+<span style="font-style: italic;"><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-weight: bold; font-style: italic;">getHostName&nbsp; --netfilter</span><span style="font-style: italic;"></span><br>
+
+or :&nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp; &nbsp; <span style="font-style: italic;"></span><span style="font-weight: bold; font-style: italic;">ln&nbsp; -s&nbsp; /usr/local/bin/getHostName&nbsp; /usr/local/bin/</span><span style="font-weight: bold; font-style: italic;">doIpTables</span><span style="font-weight: bold; font-style: italic;">&nbsp; ;&nbsp; </span><span style="font-weight: bold; font-style: italic;">doIpTables</span><span style="font-weight: bold; font-style: italic;"></span><span style="font-style: italic;"></span><br>
+
+<br>This driver can automatically ("<span style="font-style: italic;">/etc/rc.d/...</span>" or "<span style="font-style: italic;">cron</span>") generate  "<span style="font-style: italic;">iptables</span>" chains for the  "<span style="font-style: italic;">netfilter</span>" service, from LDAP data (if any), according to the MAC address of the current server (where the program is started):<br>
+
+<div style="text-align: center;"><span style="font-weight: bold; font-style: italic;">doIpTables -v -U ldap://ldap...</span><br>
+</div>
+
+<br>
+
+<span style="text-decoration: underline; font-weight: bold;">Example of </span><span style="text-decoration: underline; font-weight: bold;">shell-</span><span style="text-decoration: underline; font-weight: bold;">script (/etc/init.d/) for every GNU/Linux firewall of the intranet:<br>
+</span><span style="font-weight: bold;"></span><small><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  ...</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; # </span><a style="font-style: italic;" href="Howto-15.en.html#ss15.2">previous setting...</a><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  ...<br>&nbsp;</span><span style="font-style: italic;">&nbsp;&nbsp; &nbsp;&nbsp; TMP=/tmp/.doIpTables.$$<br></span>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; <span style="font-style: italic;">2&gt;/dev/null ${BIN}/<a href="../archives/ldapEasyAdminFrontends/sources/getHostName/">getHostName</a> --netfilter&nbsp; &gt;$TMP<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  [ $? -eq 0 ] &amp;&amp; /bin/sh $TMP<br>
+</span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  </span><span style="font-style: italic;">rm -f&nbsp; $TMP</span><span style="font-style: italic;"></span><span style="font-style: italic;"></span><span style="font-style: italic;"></span><span style="font-style: italic;"></span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  ...<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  # <span style="text-decoration: underline; font-weight: bold;">next setting...</span><br>
+</span><span style="text-decoration: underline; font-weight: bold;"></span>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  ...</small>
+
+<br>
+
+<span style="text-decoration: underline; font-weight: bold;"></span><small><small><span style="font-style: italic;"><br>
+</span></small></small>
+
+<span style="text-decoration: underline; font-weight: bold;">Example of use with the "</span><a style="text-decoration: underline; font-weight: bold;" href="../archives/ldapEasyAdminFrontends/exportLDAP_example.LDIFF">test database</a><span style="text-decoration: underline; font-weight: bold;">" :</span><br>
+
+<br>
+
+<small><span style="font-style: italic; font-weight: bold;">root@me:~/Cdev#&nbsp; <a href="../archives/ldapEasyAdminFrontends/sources/getHostName/">getHostName</a>&nbsp; --netfilterConf&nbsp; --forceMacAddress&nbsp; 22:33:44:66:77:88&nbsp; |&nbsp; sh<br>
+</span></small><small><span style="font-style: italic; font-weight: bold;">root@me:~/Cdev#&nbsp; iptables&nbsp; -L</span></small><small><span style="font-style: italic; font-weight: bold;"></span><span style="font-style: italic;"></span><span style="font-style: italic; font-weight: bold;"><br style="font-style: italic;">
+</span><span style="font-style: italic;"></span><span style="font-style: italic;"></span><span style="font-style: italic;"></span><span style="font-style: italic;"><small>Chain INPUT (policy DROP)<br>
+target&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; prot opt
+source&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;
+destination&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+ACCEPT&nbsp;&nbsp;&nbsp;&nbsp; all&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/* No filtering for loopback */ <br>
+ACCEPT&nbsp;&nbsp;&nbsp;&nbsp; icmp --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/* ICMP, especially for ping */ icmp type 0 code 0 TIME on
+Mon,Tue,Wed,Thu,Fri <br>
+ACCEPT&nbsp;&nbsp;&nbsp;&nbsp; igmp --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/* IGMP for multicast */ <br>
+ACCEPT&nbsp;&nbsp;&nbsp;&nbsp; all&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/* Packets over connections already established */ state
+INVALID,NEW,UNTRACKED <br>
+ACCEPT&nbsp;&nbsp;&nbsp;&nbsp; tcp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/* SSH server avaible */ tcp dpt:ssh <br>
+ACCEPT&nbsp;&nbsp;&nbsp;&nbsp; tcp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/* Mail server access */ tcp dpt:smtp <br>
+ACCEPT&nbsp;&nbsp;&nbsp;&nbsp; tcp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/* Mail server access */ tcp dpt:ssmtp <br>
+ACCEPT&nbsp;&nbsp;&nbsp;&nbsp; tcp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/* Mail server access */ tcp dpt:submission <br>
+ACCEPT&nbsp;&nbsp;&nbsp;&nbsp; udp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+udp dpt:domain <br>
+ACCEPT&nbsp;&nbsp;&nbsp;&nbsp; tcp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tcp dpt:domain <br>
+ACCEPT&nbsp;&nbsp;&nbsp;&nbsp; tcp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tcp dpt:www <br>
+ACCEPT&nbsp;&nbsp;&nbsp;&nbsp; tcp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tcp dpt:https <br>
+ACCEPT&nbsp;&nbsp;&nbsp;&nbsp; tcp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/* Print server access */ tcp dpt:ipp <br>
+ACCEPT&nbsp;&nbsp;&nbsp;&nbsp; udp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/* Print server access */ udp dpt:ipp <br>
+ACCEPT&nbsp;&nbsp;&nbsp;&nbsp; tcp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tcp dpt:netbios-ssn <br>
+ACCEPT&nbsp;&nbsp;&nbsp;&nbsp; udp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+udp dpt:netbios-ns <br>
+ACCEPT&nbsp;&nbsp;&nbsp;&nbsp; udp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+udp dpt:xdmcp <br>
+ACCEPT&nbsp;&nbsp;&nbsp;&nbsp; tcp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tcp dpt:x11-1 <br>
+ACCEPT&nbsp;&nbsp;&nbsp;&nbsp; udp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/* To receive VideoLAN&nbsp; */ udp dpt:1234 <br>
+ACCEPT&nbsp;&nbsp;&nbsp;&nbsp; udp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+224.2.127.254&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* SAP */ udp dpt:9875 <br>
+ACCEPT&nbsp;&nbsp;&nbsp;&nbsp; tcp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/* GnomeMeeting use... */ tcp dpts:30000:33000 <br>
+ACCEPT&nbsp;&nbsp;&nbsp;&nbsp; tcp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/* GnomeMeeting use... */ tcp dpt:1720 <br>
+ACCEPT&nbsp;&nbsp;&nbsp;&nbsp; tcp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/* GnomeMeeting use... */ tcp dpts:5000:5006 <br>
+ACCEPT&nbsp;&nbsp;&nbsp;&nbsp; tcp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/* share music */ tcp dpt:daap <br>
+ACCEPT&nbsp;&nbsp;&nbsp;&nbsp; udp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+224.0.0.251&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* publish
+my name */ udp dpt:mdns <br>
+LOG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; all&nbsp;
+--&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+LOG level debug prefix `Firewall: ' <br>
+REJECT&nbsp;&nbsp;&nbsp; &nbsp; all&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+reject-with icmp-port-unreachable <br>
+<br>
+Chain FORWARD (policy DROP)<br>
+target&nbsp;&nbsp;&nbsp;&nbsp; prot opt
+source&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+destination&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+<br>
+Chain OUTPUT (policy ACCEPT)<br>
+target&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; prot opt
+source&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+destination&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+DROP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tcp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+193.107.240.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+DROP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tcp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+193.107.240.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+DROP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tcp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+193.107.240.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+DROP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tcp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+193.107.240.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+DROP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tcp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+82.138.81.211&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+DROP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tcp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+85.159.232.81&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+DROP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tcp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+85.159.232.82&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+DROP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tcp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+85.159.232.83&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+DROP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tcp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+85.159.236.252&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+DROP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tcp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+85.159.236.253&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+DROP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tcp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+85.159.236.254<br>
+<br>
+</small></span></small><small><span style="font-style: italic; font-weight: bold;">root@me:~/Cdev#&nbsp; iptables&nbsp; -L&nbsp; -t&nbsp; nat<br>
+</span><small><span style="font-style: italic;">Chain PREROUTING (policy ACCEPT)<br>
+target&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; prot opt
+source&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+destination&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+DNAT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tcp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tcp dpt:www to:192.168.0.3:80<br>
+</span></small></small><small><small><span style="font-style: italic;">
+DNAT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tcp&nbsp; --&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+anywhere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tcp dpt:https to:192.168.0.3:443<br>
+</span></small></small><small><small><span style="font-style: italic;"><br>
+Chain INPUT (policy ACCEPT)<br>
+target&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; prot opt
+source&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+destination&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+<br>
+Chain OUTPUT (policy ACCEPT)<br>
+target&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; prot opt
+source&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+destination&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+<br>
+Chain POSTROUTING (policy ACCEPT)<br>
+target&nbsp;&nbsp; &nbsp; &nbsp; prot opt
+source&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+destination<br>
+<br>
+</span></small><span style="font-style: italic; font-weight: bold;"></span></small><span style="font-style: italic; font-weight: bold;"><small>
+
+root@me:~/Cdev#<br>
+</small></span><br>
+<span style="text-decoration: underline; font-weight: bold;">Other example (from: <a href="http://www.inetdoc.net/guides/iptables-tutorial/examplecode.html">http://www.inetdoc.net/guides/iptables-tutorial/examplecode.html</a>):</span><br>
+<small><span style="font-style: italic; font-weight: bold;">root@me:~/Cdev#&nbsp; <a href="../archives/ldapEasyAdminFrontends/sources/getHostName/">getHostName</a>&nbsp; --netfilterConf&nbsp; --forceMacAddress&nbsp; 00:0C:29:37:32:A1</span></small><br>
+<small style="font-style: italic;"><small># @(#)LdapEasyInterface - netfilter - Setting:<br>
+iptables -F<br>
+iptables -X<br>
+iptables -N ALLOWED<br>
+iptables -A ALLOWED -j ACCEPT -p tcp --syn<br>
+iptables -A ALLOWED -j ACCEPT -p tcp -m state --state ESTABLISHED,RELATED<br>
+iptables -A ALLOWED -j DROP -p tcp<br>
+iptables -N BAD_TCP_PACKETS<br>
+iptables -A BAD_TCP_PACKETS -j REJECT --reject-with tcp-reset -p tcp -m state --state NEW --tcp-flags SYN,ACK SYN,ACK<br>
+iptables -A BAD_TCP_PACKETS -j LOG --log-prefix "New not syn:" -p tcp ! --syn -m state --state NEW<br>
+iptables -A BAD_TCP_PACKETS -j DROP -p tcp<br>
+iptables -N ICMP_PACKETS<br>
+iptables -A ICMP_PACKETS -j ACCEPT -p icmp --icmp-type 8/0<br>
+iptables -A ICMP_PACKETS -j ACCEPT -p icmp --icmp-type 11/0<br>
+iptables -N TCP_PACKETS<br>
+iptables -A TCP_PACKETS -j ACCEPT -p tcp --dport 21<br>
+iptables -A TCP_PACKETS -j ACCEPT -p tcp --dport 22<br>
+iptables -A TCP_PACKETS -j ACCEPT -p tcp --dport 80<br>
+iptables -A TCP_PACKETS -j ACCEPT -p tcp --dport 113<br>
+iptables -N UDP_PACKETS<br>
+iptables -A UDP_PACKETS -j ACCEPT -p udp --dport 53<br>
+iptables -A UDP_PACKETS -j ACCEPT -p udp --dport 123<br>
+iptables -A UDP_PACKETS -j ACCEPT -p udp --dport 2074<br>
+iptables -A UDP_PACKETS -j ACCEPT -p udp --dport 4000<br>
+iptables -A UDP_PACKETS -p udp&nbsp; --dport 67:68 -i eth0&nbsp; -j DROP <br>
+iptables -P INPUT DROP<br>
+iptables -t filter -A INPUT -j BAD_TCP_PACKETS -p tcp<br>
+iptables -t filter -A INPUT -j ACCEPT -s 192.168.0.0/16 -i eth0<br>
+iptables -t filter -A INPUT -j ACCEPT -s 127.0.0.1 -i lo --syn<br>
+iptables -t filter -A INPUT -j ACCEPT -s 192.168.0.0/16 -i lo<br>
+iptables -t filter -A INPUT -j ACCEPT -s 194.236.50.255 -i lo<br>
+iptables -t filter -A INPUT --match comment --comment "DHCP request from LAN" -j ACCEPT -p udp --sport 68 --dport 67 -i eth0<br>
+iptables -t filter -A INPUT -d 194.236.50.155 --syn -m state --state ESTABLISHED,RELATED -j ACCEPT<br>
+iptables -t filter -A INPUT -j TCP_PACKETS -p tcp -i eth0<br>
+iptables -t filter -A INPUT -j UDP_PACKETS -p udp -i eth0<br>
+iptables -t filter -A INPUT -j ICMP_PACKETS -p icmp -i eth0<br>
+iptables -t filter -A INPUT -d 224.0.0.0/8 -i eth0 -j DROP<br>
+iptables -t filter -A INPUT -j LOG --log-level 8 --log-prefix "IPT
+INPUT packet died: " -m limit --limit 3/minute --limit-burst 3<br>
+iptables -P OUTPUT DROP<br>
+iptables -t filter -A OUTPUT -j ACCEPT -s 127.0.0.1<br>
+iptables -t filter -A OUTPUT -j ACCEPT -s 192.168.0.2<br>
+iptables -t filter -A OUTPUT -j ACCEPT -s 194.236.50.155<br>
+iptables -t filter -A OUTPUT -j LOG --log-level 8 --log-prefix "IPT
+OUTPUT packet died: " -m limit --limit 3/minute --limit-burst 3<br>
+echo "1" &gt; /proc/sys/net/ipv4/ip_forward<br>
+iptables -P FORWARD DROP<br>
+iptables -t filter -A FORWARD -j BAD_TCP_PACKETS -p tcp<br>
+iptables -t filter -A FORWARD -j ACCEPT -o eth0<br>
+iptables -t filter -A FORWARD -j ACCEPT -m state --state ESTABLISHED,RELATED<br>
+iptables -t filter -A FORWARD -j LOG --log-level DEBUG --log-prefix "IPT
+FORWARD packet died: " -m limit --limit 3/minute --limit-burst 3<br>
+iptables -t nat -A POSTROUTING -j SNAT --to-source 194.136.50.155 -o eth0<br>
+# @(#)LdapEasyInterface - End -<br>
+</small></small><small><span style="font-style: italic; font-weight: bold;">root@me:~/Cdev#</span></small><br>
+<br>
+<span style="font-style: italic; font-weight: bold;">
+</span><span style="text-decoration: underline; font-weight: bold;">Example of script (cron) for updating the interfaces list of every firewall - GNU/Linux - of the intranet:</span><span style="text-decoration: underline; font-weight: bold;"></span><br>
+
+<br>
+
+<small><span style="font-style: italic; font-weight: bold;">root@me:~/Cdev#&nbsp;&nbsp; ldapsearch&nbsp; -x&nbsp; -LLL&nbsp; -h ldap -D "cn=Manager,dc=myDomain" -w mydomain&nbsp; '(ou=</span></small><small style="font-weight: bold;"><span style="font-style: italic;">22:33:44:66:77:88</span></small><small><span style="font-style: italic; font-weight: bold;">)'<br>
+</span><small><span style="font-style: italic;">dn: ou=22:33:44:66:77:88,ou=server,ou=computer,dc=mydomain<br>
+objectClass: LdapEasyInterface<br>
+objectClass: organizationalUnit<br>
+objectClass: top<br>
+seeAlso: relativeDomainName=test,zoneName=mydomain,ou=dns,ou=reseau,dc=mydomain<br>
+ou: 22:33:44:66:77:88<br>
+description: test server</span></small><span style="font-style: italic; font-weight: bold;"><br>
+</span></small><small><span style="font-style: italic; font-weight: bold;">root@me:~/Cdev#&nbsp; <a href="../archives/ldapEasyAdminFrontends/sources/getHostName/">getHostName</a>&nbsp; </span></small><small><span style="font-style: italic; font-weight: bold;">-v&nbsp; -U ldap://ldap&nbsp; -D "cn=Manager,dc=mydomain"&nbsp; -W mydomain&nbsp; --ifacesList</span></small><small><span style="font-style: italic; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # </span><span style="font-style: italic;">--forceMacAddress&nbsp; 22:33:44:66:77:88</span></small><br>
+
+<small><span style="font-style: italic; font-weight: bold;">root@me:~/Cdev#&nbsp;&nbsp;&nbsp;</span></small><small><span style="font-style: italic; font-weight: bold;"> ldapsearch&nbsp; -x&nbsp; -LLL&nbsp; -h ldap -D "cn=Manager,dc=myDomain" -w mydomain&nbsp; '(ou=</span></small><small style="font-weight: bold;"><span style="font-style: italic;">22:33:44:66:77:88</span></small><small><span style="font-style: italic; font-weight: bold;">)'</span></small><small><span style="font-style: italic; font-weight: bold;"><br>
+</span><small><span style="font-style: italic;">dn: ou=22:33:44:66:77:88,ou=server,ou=computer,dc=mydomain<br>
+objectClass: LdapEasyInterface<br>
+objectClass: organizationalUnit<br>
+objectClass: top<br>
+seeAlso: relativeDomainName=test,zoneName=mydomain,ou=dns,ou=reseau,dc=mydomain<br>
+ou: 22:33:44:66:77:88<br>
+description: test server<br><span style="font-weight: bold;"></span></span></small><small><small><span style="font-style: italic;"><span style="font-weight: bold;">
+physicalDeliveryOfficeName: eth0<br>
+</span></span></small></small><small><small><span style="font-style: italic;"><span style="font-weight: bold;">
+physicalDeliveryOfficeName: eth1</span></span></small></small></small><small><small><span style="font-style: italic;"><small><span style="font-weight: bold;"></span><br style="font-weight: bold;">
+<span style="font-weight: bold;">
+physicalDeliveryOfficeName: lo</span></small><br>
+</span></small></small><span style="font-style: italic; font-weight: bold;"></span><br>
+
+<span style="font-style: italic; font-weight: bold;">
+
+</span>
+</div>
+
+<h2><a name="ss16.3"></a>16.3 <a href="../archives/ldapEasyAdminFrontends/">The C++ source</a><br>
+</h2>
+
+
+<div style="text-align: justify; margin-left: 40px;">Version 1.1.3 (20120628) <a href="../archives/ldapEasyAdminFrontends/sources/netfilter.so">here</a>...<br>
+
+<br>
+After compiling:<br>
+<div style="margin-left: 80px;"><small style="font-style: italic;"><span style="font-weight: bold;">me@home:~$&nbsp; </span></small><small style="font-style: italic;"><span style="font-weight: bold;">mv libnetfilter.so&nbsp; /usr/local/bin/</span></small><br>
+<small style="font-style: italic;"><span style="font-weight: bold;">
+me@home:~$&nbsp; </span></small><a href="Howto-5.fr.html"><small style="font-style: italic;"><span style="font-weight: bold;"></span></small></a><small style="font-style: italic;"><a href="Howto-5.en.html">frontend</a><span style="font-weight: bold;">&nbsp; --plugin&nbsp; </span></small><small style="font-style: italic;"><span style="font-weight: bold;">netfilter</span></small><small style="font-style: italic;"><span style="font-weight: bold;"></span></small><br>
+</div>
+
+<small style="font-style: italic;"><span style="font-weight: bold;">or :<br>
+</span></small>
+<div style="margin-left: 80px;"><small style="font-style: italic;"><span style="font-weight: bold;">me@home:~$&nbsp; </span></small><small style="font-style: italic;"><span style="font-weight: bold;">mv </span></small><small style="font-style: italic;"><span style="font-weight: bold;">libnetfilter</span></small><small style="font-style: italic;"><span style="font-weight: bold;">.so&nbsp; /usr/local/bin/</span></small><br>
+<small style="font-style: italic;"><span style="font-weight: bold;">
+</span></small><small style="font-style: italic;"><span style="font-weight: bold;">me@hom</span></small><small style="font-style: italic;"><span style="font-weight: bold;">e:~$&nbsp; </span></small><small style="font-style: italic;"><span style="font-weight: bold;">ln [-s] /usr/local/bin/</span></small><a href="Howto-5.fr.html"><small style="font-style: italic;"><span style="font-weight: bold;"></span></small></a><small style="font-style: italic;"><a href="Howto-5.en.html">frontend</a></small><small style="font-style: italic;"><span style="font-weight: bold;">&nbsp; /usr/local/bin/</span></small><small style="font-style: italic;"><span style="font-weight: bold;">netfilter</span></small><small style="font-style: italic;"><span style="font-weight: bold;">Frontend</span></small><br>
+<small style="font-style: italic;"><span style="font-weight: bold;"></span></small><small style="font-style: italic;"><span style="font-weight: bold;">me@hom</span></small><small style="font-style: italic;"><span style="font-weight: bold;">e:~$&nbsp; netfilter</span></small><small style="font-style: italic;"><span style="font-weight: bold;">Frontend</span></small><br>
+</div>
+
+<small style="font-style: italic;"><span style="font-weight: bold;"></span></small><small style="font-style: italic;"><span style="font-weight: bold;"></span><br></small>
+After compiling the <small><big>extension plugins (eg "iptables --match <span style="font-weight: bold;">time ...</span>"):</big></small><small style="font-style: italic;"><br>
+</small>
+<div style="margin-left: 40px;">
+<div style="margin-left: 40px;"><small style="font-style: italic;"><span style="font-weight: bold;">me@home:~$&nbsp; </span></small><small style="font-style: italic;"><span style="font-weight: bold;">mv <a href="../archives/ldapEasyAdminFrontends/sources/netfilter_match_time.so">libnetfilter_match_time.so</a>&nbsp; /usr/local/bin/<br>
+</span></small><small style="font-style: italic;"><span style="font-weight: bold;">
+me@home:~$&nbsp; </span></small><small style="font-style: italic;"><span style="font-weight: bold;">netfilter</span></small><small style="font-style: italic;"><span style="font-weight: bold;">Frontend</span></small><small style="font-style: italic;"><span style="font-weight: bold;"></span></small><small style="font-style: italic;"><span style="font-weight: bold;"></span></small><small style="font-style: italic;"><span style="font-weight: bold;"></span></small><br>
+</div>
+<small style="font-style: italic;"><span style="font-weight: bold;"></span></small></div>
+
+<small style="font-style: italic;"><span style="font-weight: bold;"><br>
+</span></small>
+
+<span style="text-decoration: underline; color: red;">
+</span></div><br>
+<h2><a name="ss16.4"></a>16.4 Todo :</h2>
+<div style="margin-left: 40px;">- write the missing plugins for all the iptables "match/target" extensions...<br>
+</div>
+<br>
+<hr>Next <a href="Howto-15.en.html">Previous</a> <a href="Howto.en.html">Summary</a>
+
+
+</body></html>

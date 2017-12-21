@@ -1,0 +1,692 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html><head>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <meta name="GENERATOR" content="KompoZer-0.8a4"><title>LdapEasyInterface (libcppei) Mini Howto (English)</title>
+  
+  <link href="LdapcppeiMiniHowto-1.fr.html" rel="next"></head><body>
+<a href="miniHowto-2.en.html">Next</a> <a href="miniHowto.en.html">Previous</a> <a href="miniHowto.en.html">Summary</a> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; (<a href="miniHowto-1.fr.html"><span style="font-weight: bold;">Français</span></a> - <span style="font-weight: bold;">Anglais</span>)
+<hr>
+<h2><a name="S1"><span style="text-decoration: underline;">1. What is GNU/ldapcppei API:</span>
+</a></h2>
+<h2><a name="ss1.1">1.1 OpenLDAP</a></h2>
+<div style="margin-left: 40px;">
+<div style="text-align: justify;"><a href="http://www.openldap.org/">OpenLdap</a> is a free implementation of the LDAP protocol (Lightweight Directory
+Access Protocol). This protocol allows the read and the update of data from directory services.
+OpenLdap implemente the last version of the protocol: <span style="font-weight: bold;">LDAPv3</span>. <span id="result_box" class="" lang="en"><span class="hps">This</span> <span class="hps">free implementation</span> <span class="hps">is developed and</span> <span class="hps">distributed under&nbsp;</span></span><a href="http://www.openldap.org/software/release/license.html">OpenLDAP Public Licence</a>.<br>
+
+<br><a href="http://www.openldap.org/">OpenLdap</a><span style="text-decoration: underline;"> consists of 4 parts:</span><br>
+
+</div>
+<ul><li style="text-align: justify;">the <span style="font-weight: bold;">slapd</span> daemon that<span id="result_box" class="" lang="en"> <span class="hps">receives and processes</span> <span class="hps">query requests</span> <span class="hps">and</span> <span class="hps">update</span> <span class="hps">the directory</span><span class="">,</span></span></li><li style="text-align: justify;">the <span style="font-weight: bold;">slurpd</span> daemon, <span id="result_box" class="" lang="en"><span class="hps">replication
+management tool, that allows the replication and / or distribution of
+the directory database on various other databases, providing greater
+security of information stored and / or optimization of response time
+to client requests. Another more recent replication tool can now do
+this with significantly higher performance within the server daemon
+(slapd) by using an additional software layer (see: replication),</span><span class=""></span></span>
+  </li><li style="text-align: justify;"><span id="result_box" class="" lang="en"><span class="hps">libraries</span> <span class="hps">offering</span> <span class="hps">programming interfaces</span><span>,</span> <span class="hps">including</span> <span class="hps">the C language</span><span class="">,</span></span></li><li style="text-align: justify;"><span id="result_box" class="" lang="en"><span class="hps">tools</span> <span class="hps">and</span> <span class="hps">utilities to</span> <span class="hps">manipulate the data</span> <span class="hps">directory</span><span>,</span> <span class="hps">for example</span> <span class="hps">from</span> <span class="hps">commands</span> <span class="hps atn">"</span><span>Shell</span><span>"</span> <span class="hps">on</span> <span class="hps">GNULinux</span></span> (<span style="font-style: italic;">see: ldapsearch, ldapadd, ldapmodify, ...</span>).<br>
+
+  </li></ul>The following project, <span style="font-weight: bold;">GNU/Ldapcppei</span>, is based on the C <span style="font-weight: bold;">API </span>of the <a href="http://www.openldap.org/">OpenLdap</a> project and provide a C++ programming interface to write C++ applications using an LDAP database (see: the <a href="Frontends/Howto.en.html">GNULdapEasyAdmin</a> project...).<br>
+</div>
+<h2><a name="ss1.2">1.2 The GNU/ldapcppei library</a></h2>
+<div style="margin-left: 40px; text-align: justify;"><a href="./miniHowto-1.en.html">GNU/ldapcppei</a> is a C++ library under licence <a href="http://www.gnu.org/licenses/">GNU version 3</a> whose topic is to provide a C++ programming interface for easy and safe use of LDAP databases.<br><span id="result_box" class="" lang="en"><span class="hps">This library</span> <span class="hps">depends on the package</span> <span class="hps">OpenLDAP</span> <span class="hps atn">(</span><span>client part</span> <span class="hps">only - libldap2-dev)</span><span>,</span> <span class="hps">and therefore requires</span> <span class="hps">its installation</span> <span class="hps">prior to use</span><span class="">.</span></span><br>
+</div>
+<h2><a name="ss1.3">1.3 Why GNU/ldapcppei ?</a></h2>
+<div style="margin-left: 40px;">As mentioned above, <span id="result_box" class="" lang="en"><span class="hps">the</span> <span class="hps">purpose of this study</span> <span class="hps">is</span></span> to provide a simple and safe interface intended for programmers of C++ code under the GNU licence:<br>
+<ul>
+  <li style="text-align: justify;">easy to use for implementing the principles of object-oriented programming (<span id="result_box" class="short_text" lang="en"><span class="hps">well known environment from the C++ programmer</span><span class="hps"></span></span>),</li>
+  <li style="text-align: justify;">standard tools for processing query results,<br>
+  </li>
+
+  <li style="text-align: justify;"><span id="result_box" class="" lang="en"><span class="hps">safe use</span><span>,</span> <span class="hps">because</span> <span class="hps">not conducive</span> <span class="hps">to programming errors</span><span>: no</span> <span class="hps">memory management</span> <span class="hps">to worry</span><span class="">, eliminating</span> <span class="hps">the need to learn</span> a<span class="hps"> large number of</span> <span class="hps">C functions</span> <span class="hps">specific</span> <span class="hps">to the LDAP protocol</span><span>,</span> <span class="hps">the knowledge of their</span> <span class="hps">respective</span> <span class="hps">syntaxes</span> <span class="hps">and rules</span> <span class="hps">governing</span> <span class="hps">their sequence</span> <span class="hps">...</span></span></li>
+</ul>The objective of this API is to simplify the integration of LDAP
+directory services in C++ sources, this reducing the number of
+functions (in this case, it should rather speak of "methods") needed
+for writing, allowing the programmer to remained focused on the
+management rules which he is responsible for implementation.
+
+</div>
+<h2><a name="ss1.4">1.4 Advantages of the GNU/ldapcppei API ?</a></h2>
+
+<div style="margin-left: 40px;">
+<div style="text-align: justify;">Besides the support for <span id="result_box" class="" lang="en"><span class="hps">the</span> <span class="hps">LDAP</span> <span class="hps">query protocol</span><span class=""></span></span>, this interface includes some additional tools that facilitate all programming and <span id="result_box" class="" lang="en">therefore <span class="hps">reduces</span> <span class="hps">the</span> <span class="hps">resulting</span> <span class="hps">source code</span></span>:<br>
+</div>
+<ul>
+  <li style="text-align: justify;">input and output buffers to store the list of "<span style="font-weight: bold;">LDAP entries</span>",
+either for their next treatment, either by receiving the results of the
+last request; these buffers are also containers that maintain
+classified entries by "<span style="font-weight: bold;">dn</span>" (see: "<span style="font-weight: bold;">std::set</span>"),</li>
+  <li style="text-align: justify;"><span id="result_box" class="" lang="en"><span class="hps">Intermediate</span> <span class="hps">buffer</span> <span class="hps">that allows the programmer</span> <span class="hps">to store</span><span>,</span> <span class="hps">for a while</span><span>,</span> <span class="hps">the intermediate results</span> <span class="hps">for their</span> <span class="hps">reuse</span> <span class="hps">in</span> <span class="hps">subsequent treatments</span><span>,</span> <span class="hps">possibly</span> <span class="hps">recursively</span><span class=""></span></span>,</li>
+  <li style="text-align: justify;">possibility of swapping two buffers I / O in order to, for example,
+re-submit directly a new treatment to the outcome of its own processing,</li>
+  <li style="text-align: justify;">operators for all the managed objects allowing an intuitive and more concise programming,</li>
+  <li style="text-align: justify;">...<br>
+  </li>
+
+</ul>
+
+</div>
+
+<h2><a name="ss1.5">1.5 Principles of the GNU/ldapcppei API ?</a></h2>
+<div style="margin-left: 40px;">Six classes are defined:<br>
+
+<ol>
+  <li style="text-align: justify;">The "<a href="archives/libldapcppei/man/man3/byteArea.3.html"><span style="font-weight: bold;">byteArea</span></a>" class that provides<span id="result_box" class="" lang="en"><span class="hps"> a (variable) space for</span> <span class="hps">storing data</span> <span class="hps">and</span> <span class="hps">methods</span> <span class="hps">for the treatment of</span> <span class="hps">its contents</span></span> (eg: assign, append, insert, replace, erase,
+fill, compare, stringEvaluate, (r)indexOf, startsWith, contains, ends,
+trimmed, toLower/Upper, to/fromUtf8, operateurs "+", "-=", "&lt;",
+"[]", "&lt;&lt;", ... <span id="result_box" class="short_text" lang="en"><span class="hps">and many others</span></span>...),<br></li>
+  <li style="text-align: justify;">Class "<a href="archives/libldapcppei/man/man3/berValue.3.html"><span style="font-weight: bold;">berValue</span></a>" derived from the class "<a href="archives/libldapcppei/man/man3/byteArea.3.html"><span style="font-weight: bold;">byteArea</span></a>";
+it instantiates the basic object: "directory data", ie a sequence of
+bytes of known length (note: like a "<span style="font-weight: bold;">BerValue</span>" from <span style="font-weight: bold;">OpenLDAP</span> but not to be confused with the C structure "<span style="font-weight: bold;">BerValue</span>" itself),</li>
+  <li style="text-align: justify;">class "<a href="archives/libldapcppei/man/man3/attribute.3.html"><span style="font-weight: bold;">attribute</span></a>"
+that allows to instantiate the object: "directory attribute", which is
+composed of an identification name associated with one or more "<span style="font-weight: bold;">berValue</span>" (some directory attributes can indeed be multivalued as, for example: "<span style="font-weight: bold;">memberUid</span>"),</li>
+  <li style="text-align: justify;">Class "<a href="archives/libldapcppei/man/man3/entry.3.html"><span style="font-weight: bold;">entry</span></a>" allowing to instantiate the object "<span style="font-weight: bold;">entry</span>" which consists of a "<span style="font-weight: bold;">dn</span>" (<span style="font-style: italic;">Distinguish Name</span>) and all its attached <span style="font-weight: bold;">attributes</span>,</li>
+  <li style="text-align: justify;">Class "<a href="archives/libldapcppei/man/man3/ldapSet.3.html"><span style="font-weight: bold;">ldapSet</span></a>" which allows to instantiate a list of entries sorted by "<span style="font-weight: bold;">dn</span>" (see: "<span style="font-weight: bold;">std::set</span>"),<br>
+  </li>
+  <li style="text-align: justify;">and, finally, the class "<a href="archives/libldapcppei/man/man3/ldapEasyInterface.3.html"><span style="font-weight: bold;">ldapEasyInterface</span></a>" container for directory entries (input/output) and parameters of the connection to its <span style="font-weight: bold;">LDAP</span> database.</li>
+</ol>
+<div style="text-align: justify;">The basic principle of this API is to define (in the class "<a href="archives/libldapcppei/man/man3/ldapEasyInterface.3.html"><span style="font-weight: bold;">ldapEasyInterface</span></a>") an input buffer "<span style="font-weight: bold;">(ldapset*)getInputSet()</span>" that will receive the settings (ie the list of directory entries) of the LDAP queries as well as an output buffer "<span style="font-weight: bold;">(ldapset*)getOutputSet()</span>" that will receive, after query treatment, all the LDAP results (also in a resulting entries list format)...<br>
+
+
+
+
+</div>
+</div>
+
+
+
+
+<h2><a name="ss1.6">1.6 Examples<span id="result_box" class="short_text" lang="en"><span class="hps"> of using</span></span> GNU/ldapcppei API</a></h2>
+
+<div style="margin-left: 40px;"><span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ldapEasyInterface&nbsp;&nbsp;  ldapDesc;<br>
+</span><span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if ( ! ldapDesc.open( </span><span style="font-style: italic;">"<span style="font-weight: bold;">ldap://ldap</span>",</span><span style="font-style: italic;"> "<span style="font-weight: bold;">cn=Manager,dc=myDomain</span>", "<span style="font-weight: bold;">password</span>"</span><span style="font-style: italic; color: black;"> ) ) {<br>
+</span><span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+std::cerr &lt;&lt; ldapDesc.getErrorString() &lt;&lt; std::endl;</span><span style="font-style: italic; color: black;"><br>
+</span><span style="font-style: italic; color: black;"></span><span style="font-style: italic;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return ldapDesc.getErrorNumber();<br></span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+</span><br>
+<big><big><span style="text-decoration: underline; color: black; font-weight: bold;"><a name="ss1.6.1"></a></span><span style="color: black; font-weight: bold;"> </span><span style="text-decoration: underline; color: rgb(204, 153, 51); font-weight: bold;">WRITING:</span></big></big><br style="font-style: italic; color: black;">
+
+<span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ldapDesc.insert( "<span style="font-weight: bold;">ou=domain1,dc=myDomain</span>" )</span><span style="font-style: italic; color: black;">.insertAddAttribute( "<span style="font-weight: bold;">objectClass</span>"</span><span style="font-style: italic; color: black;"> ).insert(</span><span style="font-style: italic; color: black;"> (char </span><span style="font-style: italic; color: black;">const </span><span style="font-style: italic; color: black;">*[]){ "<span style="font-weight: bold;">top</span>",
+"<span style="font-weight: bold;">organizationalUnit</span>", <span style="font-weight: bold;">NULL</span>} )</span><span style="font-style: italic; color: black;">;</span><br style="font-style: italic; color: black;">
+
+
+
+<span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ldapDesc.insertAddAttribute( "<span style="font-weight: bold;">description</span>"</span><span style="font-style: italic; color: black;"> ).insert(</span><span style="font-style: italic; color: black;"> "<span style="font-weight: bold;">My domain number 1</span>" );<br>
+<br style="font-style: italic; color: black;">
+</span>
+
+<span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ldapDesc.insert( "<span style="font-weight: bold;">ou=d</span></span><span style="font-style: italic; color: black;"><span style="font-weight: bold;">omain</span></span><span style="font-style: italic; color: black;"><span style="font-weight: bold;">2,dc=myDomain</span>", <span style="font-weight: bold;">LDAP_MOD_ADD</span></span><span style="font-style: italic; color: black;">,</span><span style="font-style: italic; color: black;"> (char </span><span style="font-style: italic; color: black;">const </span><span style="font-style: italic; color: black;">*[]){ "<span style="font-weight: bold;">top</span>",
+"<span style="font-weight: bold;">organizationalUnit</span>", <span style="font-weight: bold;">nullptr</span> )</span><span style="font-style: italic; color: black;">;</span><br style="font-style: italic; color: black;">
+
+
+
+
+
+
+<span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ldapDesc.insert( "<span style="font-weight: bold;">description</span>"</span><span style="font-style: italic; color: black;">, <span style="font-weight: bold;">LDAP_MOD_ADD</span></span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">, </span><span style="font-style: italic; color: black;">"<span style="font-weight: bold;">My domain number 2</span>" );</span><br style="font-style: italic; color: black;">
+
+
+
+
+
+<span style="font-style: italic; color: black;"><br>
+</span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if ( ldapDesc.doAddEntries().errNo() != LDAP_SUCCESS )</span><br style="font-style: italic; color: black;">
+
+
+
+
+<span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="font-style: italic; color: black;">std::</span><span style="font-style: italic; color: black;">cerr &lt;&lt; ldapDesc.getErrorString() &lt;&lt; std::endl;</span><span style="font-style: italic; color: black;"><br>
+</span><span style="font-style: italic; color: black;"><br style="font-style: italic;">
+</span><span style="color: black;"><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: rgb(153, 51, 153);"> </span></span><span style="text-decoration: underline; font-weight: bold; color: rgb(153, 51, 153);">or:</span></span><span style="font-style: italic; color: black;"><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; attribute&nbsp; *attr[4];<br>
+
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; attr[0] = new
+attribute( "<span style="font-weight: bold;">objectClass</span>", <span style="font-weight: bold;">LDAP_MOD_ADD</span>,&nbsp; (char </span><span style="font-style: italic; color: black;">const </span><span style="font-style: italic; color: black;">*[]){ "<span style="font-weight: bold;">top</span>",
+"<span style="font-weight: bold;">organizationalUnit</span>", <span style="font-weight: bold;"></span></span><span style="font-style: italic; color: black;"><span style="font-weight: bold;">nullptr</span></span><span style="font-style: italic; color: black;"><span style="font-weight: bold;"></span>} );<br>
+
+&nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  attr[1] = new attribute( "<span style="font-weight: bold;">ou</span>", <span style="font-weight: bold;">LDAP_MOD_ADD</span>, "<span style="font-weight: bold;">test</span>" );<br>
+
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; attr[2] = new
+attribute( "<span style="font-weight: bold;">description</span>", <span style="font-weight: bold;">LDAP_MOD_ADD</span>, "<span style="font-weight: bold;">It is just a dem</span>o" );<br>
+
+&nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  attr[3] = <span style="font-weight: bold;">NULL</span>;<br>
+&nbsp;&nbsp; &nbsp;&nbsp;  entry e(</span><span style="font-style: italic; color: black;"> "<span style="font-weight: bold;">ou=test,dc=myDomain</span>",</span><span style="font-style: italic; color: black;"> attr );</span><br>
+<span style="font-style: italic; color: black;">
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">ldapDesc.doAddEntry( e ); &nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; </span><span style="font-style: italic; color: rgb(51, 204, 0);">// or: ldapDesc.insert ( e ); </span><span style="font-style: italic; color: rgb(51, 204, 0);">ldapDesc.doAddEntries();</span><br>
+<span style="font-style: italic; color: black;">&nbsp; &nbsp;&nbsp;&nbsp; if ( ldapDesc.getErrorNumber() )</span><span style="font-style: italic; color: black;"> &nbsp;
+&nbsp;&nbsp; &nbsp; &nbsp; </span><span style="font-style: italic; color: rgb(51, 204, 0);">// or: if ( ! </span><span style="font-style: italic; color: rgb(51, 204, 0);">ldapDesc.doAddEntry (e) ) ...</span><br style="font-style: italic; color: black;">
+
+
+
+
+
+<span style="font-style: italic; color: black;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+std::cerr &lt;&lt; ldapDesc.getErrorString() &lt;&lt; std::endl;<br>
+</span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp; &nbsp; for (&nbsp; attribute** at=attr; *at; at++ )<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  delete *at;<br>
+&nbsp;&nbsp;&nbsp; &nbsp; attr[0] = nullptr;<br>
+</span><span style="font-style: italic; color: black;">
+</span><br style="color: black;"><span style="color: black;"><span style="font-weight: bold;"></span><span style="text-decoration: underline; font-weight: bold;"></span></span><span style="font-style: italic; color: black;"></span><span style="color: black;"><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: rgb(153, 51, 153);"> </span></span><span style="text-decoration: underline; font-weight: bold;"><span style="color: rgb(153, 51, 153);">or, shorter (and safer):</span><br>
+</span></span><span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp; &nbsp; if ( ! ldapDesc.doAddEntry(&nbsp; <span style="font-weight: bold; color: rgb(51, 204, 0);">new</span> entry ( </span><span style="font-style: italic; color: black;">"<span style="font-weight: bold;">ou=test,dc=myDomain</span>",&nbsp; (attribute *[]) {<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  <span style="font-weight: bold; color: red;">new</span> </span><span style="font-style: italic; color: black;">attribute</span><span style="font-style: italic; color: black;">( "<span style="font-weight: bold;">objectClass</span>", <span style="font-weight: bold;">LDAP_MOD_ADD</span>, (char </span><span style="font-style: italic; color: black;">const </span><span style="font-style: italic; color: black;">*[]){ "<span style="font-weight: bold;">top</span>",
+"<span style="font-weight: bold;">organizationalUnit</span>", <span style="font-weight: bold;"></span></span><span style="font-style: italic; color: black;"><span style="font-weight: bold;">nullptr</span></span><span style="font-style: italic; color: black;"><span style="font-weight: bold;"></span>} ),<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  </span><span style="font-style: italic; color: black;"><span style="font-weight: bold; color: red;">new</span> attribute( "<span style="font-weight: bold;">ou</span>", <span style="font-weight: bold;">LDAP_MOD_ADD</span>, "<span style="font-weight: bold;">test</span>" ), <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  </span><span style="font-style: italic; color: black;"><span style="font-weight: bold; color: red;">new</span> attribute( "<span style="font-weight: bold;">description</span>", <span style="font-weight: bold;">LDAP_MOD_ADD</span>, "<span style="font-weight: bold;">It is just a demo</span>" ), <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp; </span><span style="font-style: italic; color: black;"><span style="font-weight: bold;">nullptr</span>}, <span style="color: red; font-weight: bold;">true</span>),</span><span style="font-style: italic; color: black;">&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;</span><span style="font-style: italic; color: black;"> &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; <span style="color: red;">// automatic delete(*) of the attributes...</span></span><br>
+<span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;  <span style="color: rgb(51, 204, 0); font-weight: bold;">true</span></span><span style="font-style: italic; color: black;">&nbsp;</span><span style="font-style: italic; color: black;">) ) )&nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  </span><span style="font-style: italic; color: black;">&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;</span><span style="font-style: italic; color: black;"> &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; <span style="color: rgb(51, 204, 0);">// automatic delete(*) of the entrie...</span></span><br style="font-style: italic; color: black;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-style: italic; color: black;">std::cerr &lt;&lt; ldapDesc.getErrorString().c_str() &lt;&lt; std::endl;<br>
+</span><span style="font-style: italic; color: black;"><br>
+<small style="font-weight: bold;">(*) In fact, this's not really a delete but a direct integration within the object and its memory space...</small></span><span style="font-style: italic; color: black;"><small style="font-weight: bold;"></small><br>
+</span><span style="color: black;"><span style="font-weight: bold;"><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: rgb(153, 51, 153);"> </span></span><span style="text-decoration: underline; font-weight: bold; color: rgb(153, 51, 153);">or, (without memory management</span></span><span style="font-weight: bold; text-decoration: underline; color: rgb(153, 51, 153);" id="result_box" class="short_text" lang="en"><span class="hps"></span></span><span style="color: rgb(153, 51, 153); font-weight: bold; text-decoration: underline;">):</span><br style="font-style: italic; color: black;">
+
+
+<span style="font-style: italic; color: black;">
+
+&nbsp;&nbsp;  &nbsp;&nbsp;  entry e</span><span style="font-style: italic; color: black;"> ( "<span style="font-weight: bold;">ou=test,dc=myDomain</span>" )</span><span style="font-style: italic; color: black;">;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; attribute a</span><span style="font-style: italic; color: black;">( "<span style="font-weight: bold;">objectClass</span>", </span><span style="font-style: italic; color: black;"><span style="font-weight: bold;">LDAP_MOD_ADD</span> );<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="font-style: italic; color: black;">a += berValue("<span style="font-weight: bold;">top</span>"); </span><span style="font-style: italic; color: black;"><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; a += </span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">"</span><span style="font-style: italic; color: black; font-weight: bold;">organizationalUnit</span><span style="font-style: italic; color: black;">";<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; e += a;</span><span style="font-style: italic; color: black;"></span><br>
+
+
+<span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+e += attribute</span><span style="font-style: italic; color: black;">( "<span style="font-weight: bold;">ou</span>" ).ldap_mod_op( </span><span style="font-style: italic; color: black;"><span style="font-weight: bold;">LDAP_MOD_ADD</span></span><span style="font-style: italic; color: black;"> )</span><span style="font-style: italic; color: black;">.insert</span><span style="font-style: italic; color: black;">(</span><span style="font-style: italic; color: black;">"<span style="font-weight: bold;">test</span></span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">");<br></span><span style="font-style: italic; color: black;"></span><br>
+
+<span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; e += </span><span style="font-style: italic; color: black;">attribute(&nbsp;</span><span style="font-style: italic; color: black;">"</span><span style="font-style: italic; color: black; font-weight: bold;">description</span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">"</span><span style="font-style: italic; color: black;">, </span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;"><span style="font-weight: bold;">LDAP_MOD_ADD</span>, "</span><span style="font-style: italic; color: black; font-weight: bold;">It's a demo</span><span style="font-style: italic; color: black;">" ).insert( </span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">(char </span><span style="font-style: italic; color: black;">const </span><span style="font-style: italic; color: black;">*[]){ </span><span style="font-style: italic; color: black;">"</span><span style="font-style: italic; color: black; font-weight: bold;">a great demo</span><span style="font-style: italic; color: black;">"</span><span style="font-style: italic; color: black;">, </span><span style="font-style: italic; color: black;">"</span><span style="font-style: italic; color: black; font-weight: bold;">a really great demo</span><span style="font-style: italic; color: black;">", <span style="font-weight: bold;">nullptr</span> } ).insert( "<span style="font-weight: bold;"></span></span><span style="font-style: italic; color: black;"><span style="font-weight: bold;">And so much more</span></span><span style="font-style: italic; color: black;"><span style="font-weight: bold;">...</span>" );&nbsp;&nbsp;  <span style="color: rgb(51, 204, 0);">// Four values for this new attribute...</span><br>&nbsp;
+</span><span style="font-style: italic; color: black;"><br></span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if ( </span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;"> </span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">ldapDesc.</span><span style="font-style: italic; color: black;">doAddEntry( e ).errNo()</span><span style="font-style: italic; color: black;"> ) {</span><br style="font-style: italic; color: black;">
+
+
+
+
+
+
+<span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+std::cerr &lt;&lt; ldapDesc.getErrorString() &lt;&lt; std::endl;<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; return
+ldapDesc.errNo();<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp; }<br>
+
+</span><br style="color: black;"><big><big><span style="text-decoration: underline; color: black; font-weight: bold;"><a name="ss1.6.2"></a></span><span style="color: black; font-weight: bold;"> </span><span style="text-decoration: underline; color: rgb(204, 153, 51); font-weight: bold;">SEARCHING:</span></big></big><br style="font-style: italic; color: black;">
+
+
+<span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="font-style: italic; color: black;">ldapDesc.</span><span style="font-style: italic; color: black;">doSearchScopeBase( "<span style="font-weight: bold;">dc=myDomain</span>", "<span style="font-weight: bold;">dn</span>"</span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;"> );&nbsp; &nbsp; &nbsp; <span style="color: rgb(51, 204, 0);">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // To get the "dn" ( ~ "1.1"),</span></span><br style="font-style: italic; color: black;">
+
+
+<span style="color: black; font-weight: bold;"></span><span style="font-style: italic; color: black;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; </span><span style="font-weight: bold; color: rgb(153, 51, 153);" id="result_box" class="short_text" lang="en"><span class="hps">or</span></span><span style="color: rgb(153, 51, 153); font-weight: bold;">:</span><br style="font-style: italic; color: black;">
+
+
+
+
+
+<span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ldapDesc.doSearchScopeBase( "<span style="font-weight: bold;">dc=myDomain</span>" ); &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: rgb(51, 204, 0);">// To get all of its attributes...</span></span><span style="color: black; font-weight: bold;"><br>
+</span><span style="font-style: italic; color: black;"></span><span style="color: black; font-weight: bold;"><br>
+</span><span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="text-decoration: underline; font-weight: bold; color: rgb(153, 51, 153);" id="result_box" class="short_text" lang="en"><span class="hps">followed by</span> <span class="hps">the display</span></span><span style="color: rgb(153, 51, 153); font-weight: bold;"><span style="text-decoration: underline;">:</span></span><br style="font-style: italic; color: black;">
+
+
+
+
+<span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if ( ! </span><span style="font-style: italic; color: black;">ldapDesc.find( "<span style="font-weight: bold;"></span></span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;"><span style="font-weight: bold;">dc=test,dc=myDomain</span></span><span style="font-style: italic; color: black;">" ).end()</span><span style="font-style: italic; color: black;">
+)&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; <span style="color: rgb(51, 204, 0);">// search for the entry with this dn.</span><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;</span><span style="font-style: italic; color: black;"> &nbsp;&nbsp;&nbsp;&nbsp; if ( ! </span><span style="font-style: italic; color: black;">ldapDesc.getEntry()-&gt;find( "<span style="font-weight: bold;">description</span>" ).end() )</span><span style="font-style: italic; color: black;">&nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp; <span style="color: rgb(51, 204, 0);">// search for this attribute.</span></span><span style="font-style: italic; color: black;"><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </span><span style="font-style: italic; color: black;">std::</span><span style="font-style: italic; color: black;">cout &lt;&lt; </span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">ldapDesc.getEntry()-&gt;getAttribute()-&gt;name() &lt;&lt; "<span style="font-weight: bold;">: </span>" <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&lt;&lt;  </span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">ldapDesc.getEntry()-&gt;getAttribute()-&gt;getBerValue()-&gt;c_str()</span><span style="font-style: italic; color: black;"> &lt;&lt; </span><span style="font-style: italic; color: black;">std::endl</span><span style="font-style: italic; color: black;">;<br>
+</span><span style="color: black; font-weight: bold;"><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: rgb(153, 51, 153);">or, shortly:</span><span style="text-decoration: underline;"><br>
+</span></span><span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; attribute&nbsp;&nbsp;  *attr;</span><br>
+<span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if ( ! (attr = </span><span style="font-style: italic; color: black;">ldapDesc.getEntry( "<span style="font-weight: bold;"></span></span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;"><span style="font-weight: bold;">dc=test,dc=myDomain</span></span><span style="font-style: italic; color: black;">" )-&gt;getAttribute( "<span style="font-weight: bold;">description</span>" ) )-&gt;isNULL()</span><span style="font-style: italic; color: black;">
+)<br>
+</span><span style="font-style: italic; color: black;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;</span><span style="font-style: italic; color: black;"> &nbsp;&nbsp;&nbsp;&nbsp; </span><span style="font-style: italic; color: black;">std::</span><span style="font-style: italic; color: black;">cout &lt;&lt; </span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">attr-&gt;name() &lt;&lt; "<span style="font-weight: bold;">: </span>" </span><span style="font-style: italic; color: black;">&lt;&lt; attr</span><span style="font-style: italic; color: black;">-&gt;getStrValue()</span><span style="font-style: italic; color: black;"> &lt;&lt; </span><span style="font-style: italic; color: black;">std::endl</span><span style="font-style: italic; color: black;">;</span><br>
+<span style="font-style: italic; color: black;"><br>
+</span><span style="color: black; font-weight: bold;">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: rgb(153, 51, 153);">or:</span><span style="text-decoration: underline;"><br>
+</span></span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;  </span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">if ( </span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">! (*ldapDesc["</span><span style="font-style: italic; color: black;"><span style="font-weight: bold;">dc=test,</span></span><span style="font-style: italic; color: black;"><span style="font-weight: bold;">dc=myDomain</span></span><span style="font-style: italic; color: black;">"])["<span style="font-weight: bold;"></span></span><span style="font-style: italic; color: black;"><span style="font-weight: bold;">description</span></span><span style="font-style: italic; color: black;"><span style="font-weight: bold;"></span>"]-&gt;end() )<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-style: italic; color: black;"> std::cout &lt;&lt; </span><span style="font-style: italic; color: black;">(*ldapDesc["</span><span style="font-style: italic; color: black;"><span style="font-weight: bold;"></span></span><span style="font-style: italic; color: black;"><span style="font-weight: bold;"></span></span><span style="font-style: italic; color: black;">"])["<span style="font-weight: bold;"></span></span><span style="font-style: italic; color: black;"><span style="font-weight: bold;"></span></span><span style="font-style: italic; color: black;">"] &lt;&lt; "<span style="font-weight: bold;">: </span>" &lt;&lt; </span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">(*(*ldapDesc["</span><span style="font-style: italic; color: black;"><span style="font-weight: bold;"></span></span><span style="font-style: italic; color: black;">"])["<span style="font-weight: bold;"></span>"])[""] &lt;&lt; </span><span style="font-style: italic; color: black;">std::endl;</span><br>
+
+<br>
+<big><big><span style="text-decoration: underline; color: black; font-weight: bold;"></span></big></big><span style="color: black; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: rgb(153, 51, 153);"> </span><span style="text-decoration: underline; font-weight: bold; color: rgb(153, 51, 153);">Note</span></span><span style="color: rgb(153, 51, 153); font-weight: bold; text-decoration: underline;">:</span><br style="font-style: italic; color: black;">
+
+
+
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  <span style="font-style: italic; color: black;">ldapDesc.clear();</span><br>
+<span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">&nbsp;</span><span style="font-style: italic; color: black;">&nbsp;&nbsp; &nbsp;&nbsp; if ( ! doSearch</span><span style="font-style: italic; color: black;"><span style="font-weight: bold;"></span></span><span style="font-style: italic; color: black;"><span style="font-weight: bold;"></span></span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">ScopeSubstr( </span><span style="font-style: italic; color: black;">"<span style="font-weight: bold;">dc=myDomain</span>", </span><span style="font-style: italic; color: black;">"<span style="font-weight: bold;">dn</span>"</span><span style="font-style: italic; color: black;">, "<span style="font-weight: bold;">(objectClass=domain)</span>").errNo() ) {...</span><span style="font-style: italic; color: black;"><br>
+</span><span style="color: black; font-weight: bold;"><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  <span style="color: rgb(153, 51, 153);"></span><span style="font-weight: bold; color: rgb(153, 51, 153);">it's the same as</span></span><span style="color: rgb(153, 51, 153); font-weight: bold;">:</span><br>
+<span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">&nbsp; &nbsp; &nbsp;&nbsp; if ( ! doSearchScopeBase( </span><span style="font-style: italic; color: black;">"<span style="font-weight: bold;">dc=myDomain</span>", </span><span style="font-style: italic; color: black;">"<span style="font-weight: bold;">dn</span>" </span><span style="font-style: italic; color: black;">).</span><span style="font-style: italic; color: black;">errNo</span><span style="font-style: italic; color: black;">() &amp;&amp; ! </span><span style="font-style: italic; color: black;">doAddSearchScopeSubstr( </span><span style="font-style: italic; color: black;">"<span style="font-weight: bold;">dc=myDomain</span>", </span><span style="font-style: italic; color: black;">"<span style="font-weight: bold;">dn</span>"</span><span style="font-style: italic; color: black;">,</span><span style="font-style: italic; color: black;"> "<span style="font-weight: bold;">(objectClass=domain)</span>").errNo() ) {...</span><br>
+<span style="font-style: italic; color: black;">&nbsp;</span><span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+<span style="color: rgb(51, 204, 0);">// The first "entryDn" will not be reinserted (no duplicate entity in the std::set !...).</span><br>
+</span><span style="color: black; font-weight: bold;"></span><span style="font-style: italic; color: black;"><br></span><big><big><span style="text-decoration: underline; color: black; font-weight: bold;"><a name="ss1.6.3"></a></span></big></big> <big><big><span style="text-decoration: underline; color: black; font-weight: bold;"></span></big></big><big style="color: rgb(204, 153, 51);"><big><span style="text-decoration: underline; font-weight: bold;">READING:</span></big></big><span style="font-weight: bold;"><br>
+</span>
+<pre wrap=""># define out /*<br>  out=`basename $0|sed -e 's/.[^.]*$//'`<br>  echo "g++ $0 -o $out -std=c++0x -lldap -lldapcppei"<br>  g++ $0 -o $out -std=c++0x -lldap -lldapcppei &amp;&amp; strip $out &amp;&amp; chmod 755 $out<br>  exit $?<br># */<br># undef out</pre>
+<span style="font-style: italic; color: rgb(51, 204, 0);">/</span><span style="font-style: italic; color: rgb(51, 204, 0);">**************************************************************************************************</span><br style="font-style: italic; color: rgb(51, 204, 0);">
+
+<span style="font-style: italic; color: rgb(51, 204, 0);">The next tool must give a (rather - with dn sorted) similar result to :<br>
+&nbsp; ldapsearch -x -LLL -h "ldap" -D "cn=Manager,dc=myDomain" -w "password" -b "dc=myDomain"<br>
+</span><span style="font-style: italic; color: rgb(51, 204, 0);">**************************************************************************************************/</span><span style="font-style: italic; color: rgb(51, 204, 0);"></span><br style="font-style: italic; color: rgb(51, 204, 0);">
+<span style="font-style: italic;">#include &lt;ldapcppei/</span><span style="color: rgb(255, 102, 0); font-style: italic;">ldapEasyInterface.h</span><span style="font-style: italic;">&gt;</span><br style="font-style: italic;">
+<span style="font-style: italic;">#include &lt;iostream&gt;</span><br style="font-style: italic;">
+<span style="font-style: italic;">#include &lt;sstream&gt;</span><br style="font-style: italic;">
+
+<br style="font-style: italic;">
+
+<span style="font-style: italic;">using namespace ldapcppei;</span><br style="font-style: italic;">
+<br style="font-style: italic;">
+<span style="font-style: italic;">void print78 ( std::stringstream&amp; s ) {</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; for ( size_t i(0), j(0); i &lt; s.str().size(); i++ ) {</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if ( j++ &gt;= 78 ) { j=2;</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; std::cout &lt;&lt; "\n ";</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; } std::cout &lt;&lt; s.str().at(i);</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; } std::cout &lt;&lt; std::endl;</span><br style="font-style: italic;">
+<span style="font-style: italic;">}</span><br style="font-style: italic;">
+<br style="font-style: italic;">
+<span style="font-style: italic;">int&nbsp;&nbsp;&nbsp; main ( int, char*[] ) {</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ldapEasyInterface </span><span style="color: black; font-style: italic;">ldapDesc</span><span style="font-style: italic;">( "</span><span style="font-weight: bold; font-style: italic;">ldap://ldap</span><span style="font-style: italic;">" );</span><br style="font-style: italic;">
+
+<br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if ( ! </span><span style="color: black; font-style: italic;">ldapDes</span><span style="font-style: italic;">c.setBindDn( "</span><span style="font-weight: bold; font-style: italic;">cn=Manager,dc=myDomain</span><span style="font-style: italic;">", "</span><span style="font-weight: bold; font-style: italic;">password</span><span style="font-style: italic;">" )</span><span style="color: black; font-style: italic;"></span><span style="font-style: italic;">.open() ) {</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; std::cerr &lt;&lt; </span><span style="color: black; font-style: italic;">ldapDesc</span><span style="font-style: italic;">.getErrorString().c_str()
+&lt;&lt; std::endl;</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return ldapDesc.errNo();</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</span><br style="font-style: italic;">
+
+<br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if ( </span><span style="color: black; font-style: italic;">ldapDesc</span><span style="font-style: italic;">.doSearchScopeSubTree( "</span><span style="font-weight: bold; font-style: italic;">dc=mydomain</span><span style="font-style: italic;">", "" ).errNo() != LDAP_SUCCESS ) {</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if ( ldapDesc.errNo() == LDAP_SIZELIMIT_EXCEEDED ) {</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; std::cout &lt;&lt; "</span><span style="font-weight: bold; font-style: italic;">Size limit exceeded!...</span><span style="font-style: italic;">" &lt;&lt; std::endl;</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; std::cout &lt;&lt; "</span><span style="font-weight: bold; font-style: italic;">Need \"sizelimit unlimited\" in your slapd configuration?...</span><span style="font-style: italic;">)" &lt;&lt; std::endl;</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }else std::cout &lt;&lt; "</span><span style="font-weight: bold; font-style: italic;">Not found!...</span><span style="font-style: italic;">" &lt;&lt; std::endl;</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return ldapDesc.errNo();</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  }</span><br style="font-style: italic;">
+
+<br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; for ( entry *e; ! ldapDesc.end(); ldapDesc.gotoNext() ) {</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; std::stringstream&nbsp;&nbsp;&nbsp; ss;</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; e = ldapDesc.getEntry();</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ss &lt;&lt; "dn: " &lt;&lt; e; print78( ss );</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for ( attribute
+*a; ! e-&gt;end(); e-&gt;gotoNext() ) {</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+a = e-&gt;getAttribute();</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;
+&nbsp;&nbsp; for ( berValue *b; ! a-&gt;end(); a-&gt;gotoNext() ) {</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+std::stringstream&nbsp;&nbsp;&nbsp; ss;</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; b = a-&gt;getBerValue();</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; ss &lt;&lt; a &lt;&lt;
+":";</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if ( b-&gt;size() ) {</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if
+( b-&gt;mustBeEncoded64() )</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; ss &lt;&lt; ": "
+&lt;&lt; b-&gt;toCode64();</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; else&nbsp;&nbsp;&nbsp; ss
+&lt;&lt; " "&nbsp; &lt;&lt; b-&gt;c_str();</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; } print78( ss );</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; } std::cout &lt;&lt; std::endl;</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; }</span><br style="font-style: italic;">
+<span style="font-style: italic;"><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; </span><span style="font-style: italic; color: black;">ldapDesc</span><span style="font-style: italic;">.close();&nbsp;&nbsp;  <span style="color: rgb(0, 153, 0);">// optional (done by the destructor of "ldapDesc")...</span><br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return 0;<br>
+} <span style="color: rgb(0, 153, 0);">// See: </span><a href="archives/otherTools/slapcatdnsorted.cpp">slapcatdnsorted.cpp</a><br>
+</span><br>
+<span style="color: black;">&nbsp;&nbsp;&nbsp; </span><span style="color: rgb(153, 51, 153);"><span style="text-decoration: underline;"></span></span><span style="color: black; font-weight: bold;"><span style="text-decoration: underline;"><span style="color: rgb(153, 51, 153);">or, version for screens 16/9:</span><br>
+</span></span><span style="font-style: italic; color: rgb(51, 204, 0);"></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ...<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for ( </span><span style="font-style: italic;">ldapDesc.gotoBegin() </span><span style="font-style: italic;">; ! ldapDesc.end(); ldapDesc.gotoNext() ) {</span><br style="font-style: italic;"><span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+std::cout &lt;&lt; "dn: " &lt;&lt; ldapDesc.getEntry()-&gt;dn() &lt;&lt;
+std::endl;</span><br style="font-style: italic;"><span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+for ( ldapDesc.getEntry()-&gt;gotoBegin(); ! ldapDesc.getEntry()-&gt;end();
+ldapDesc.getEntry()-&gt;gotoNext() )</span><br style="font-style: italic;"><span style="font-style: italic;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+for ( ldapDesc.getEntry()-&gt;getAttribute()-&gt;gotoBegin(); !
+ldapDesc.getEntry()-&gt;getAttribute()-&gt;end();
+ldapDesc.getEntry()-&gt;getAttribute()-&gt;gotoNext() )</span><br style="font-style: italic;"><span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+std::cout &lt;&lt; ldapDesc.getEntry()-&gt;getAttribute()-&gt;name()
+&lt;&lt; " : " &lt;&lt;
+ldapDesc.getEntry()-&gt;getAttribute()-&gt;getBerValue()-&gt;c_str()
+&lt;&lt; std::endl;</span><br style="font-style: italic;"><span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; std::cout &lt;&lt; std::endl;</span><br style="font-style: italic;"><span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span><br style="font-style: italic;"><span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  ...</span><br style="font-style: italic;">
+<br style="font-style: italic;">
+<span style="font-weight: bold; text-decoration: underline;"></span><span style="color: black;">&nbsp;&nbsp;&nbsp;<span style="color: rgb(153, 51, 153);"> </span></span><span style="color: rgb(153, 51, 153);"><span style="text-decoration: underline;"></span></span><span style="color: rgb(153, 51, 153); font-weight: bold; text-decoration: underline;">or, </span><span style="font-weight: bold; text-decoration: underline; color: rgb(153, 51, 153);" id="result_box" class="short_text" lang="en"><span class="hps">for the fans</span> <span class="hps">of</span> true <span class="hps">C</span></span><span style="color: black; font-weight: bold;"><span style="text-decoration: underline; font-weight: bold; color: rgb(153, 51, 153);">:</span><span style="font-style: italic;">&nbsp;&nbsp; &nbsp;</span></span><small style="font-style: italic; font-weight: bold;"><small> <span style="color: rgb(0, 153, 0);">// printf ( "Goodbye Dennis.\n%s\n", "/*speak for Steve...*/" );</span></small></small><br>
+<span style="font-style: italic; color: rgb(51, 204, 0);"></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ...<br></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; for ( size_t&nbsp; i=0, n=</span><span style="font-style: italic;"></span><span style="font-style: italic; color: black;">ldapDesc</span><span style="font-style: italic;"></span><span style="font-style: italic;">.size(); i &lt; n; i++ ) {</span><br>
+
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; printf ( "dn: %s\n", </span><span style="font-style: italic; color: black;">ldapDesc</span><span style="font-style: italic;"></span><span style="font-style: italic;">[i]-&gt;dn().c_str() );</span><span style="font-style: italic;"></span><span style="font-style: italic;"><br></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; for ( </span><span style="font-style: italic;">size_t&nbsp; j=0, n=</span><span style="font-style: italic;"></span><span style="font-style: italic; color: black;">ldapDesc</span><span style="font-style: italic;"></span><span style="font-style: italic;">[i]-&gt;size(); j &lt; n; j++</span><span style="font-style: italic;"> ) {</span><br>
+
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; for ( </span><span style="font-style: italic;">size_t&nbsp; k=0, n=(*</span><span style="font-style: italic;"></span><span style="font-style: italic; color: black;">ldapDesc</span><span style="font-style: italic;"></span><span style="font-style: italic;">[i])[j]-&gt;size(); k &lt; n; k++</span><span style="font-style: italic;"> ) {</span><br>
+
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; printf
+( "%s: %s\n", (*</span><span style="font-style: italic;"></span><span style="font-style: italic; color: black;">ldapDesc</span><span style="font-style: italic;"></span><span style="font-style: italic;">[i])[j]-&gt;name().c_str(), (*(*</span><span style="font-style: italic;"></span><span style="font-style: italic; color: black;">ldapDesc</span><span style="font-style: italic;"></span><span style="font-style: italic;">[i])[j])[k] );</span><span style="color: rgb(51, 204, 0);"></span><span style="font-style: italic;"><br></span><span style="font-style: italic;"></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; printf ( "\n" );<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</span><span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: rgb(0, 153, 0);">// (to avoid, however, in terms of perfomance ...)</span></span><br>
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  ...<br><span style="color: rgb(0, 153, 0);"></span><br>
+<br></span><span style="font-style: italic;"></span><span style="color: black; font-weight: bold;">&nbsp; &nbsp; <span style="text-decoration: underline; color: rgb(153, 51, 153);">or also, the version for bad guys... :</span></span><br>
+<span style="font-style: italic;"></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; ...<br></span><span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; for ( </span><span style="font-style: italic;"></span><span style="font-style: italic; color: black;">ldapDesc</span><span style="font-style: italic;"></span><span style="font-style: italic;">[0]</span><span style="font-style: italic;">;</span><span style="font-style: italic;"> ! </span><span style="font-style: italic;"></span><span style="font-style: italic; color: black;">ldapDesc</span><span style="font-style: italic;"></span><span style="font-style: italic;">.end(); </span><span style="font-style: italic;"></span><span style="font-style: italic; color: black;">ldapDesc</span><span style="font-style: italic;">++ </span><span style="font-style: italic;"></span><span style="font-style: italic;"></span><span style="font-style: italic;"></span><span style="font-style: italic; color: black;"></span><span style="font-style: italic;"></span><span style="font-style: italic;">) {<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; </span><span style="font-style: italic;">std::</span><span style="font-style: italic;">cout &lt;&lt; "dn: " &lt;&lt; </span><span style="font-style: italic;"></span><span style="font-style: italic; color: black;">ldapDesc</span><span style="font-style: italic;"></span><span style="font-style: italic;">[""]
+&lt;&lt; </span><span style="font-style: italic;">std::</span><span style="font-style: italic;">endl;<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; for ( </span><span style="font-style: italic;"></span><span style="font-style: italic;">(*</span><span style="font-style: italic;"></span><span style="font-style: italic; color: black;">ldapDesc</span><span style="font-style: italic;"></span><span style="font-style: italic;">[""])[0]</span><span style="font-style: italic;"></span><span style="font-style: italic;">; ! </span><span style="font-style: italic;"></span><span style="font-style: italic; color: black;">ldapDesc</span><span style="font-style: italic;"></span><span style="font-style: italic;">[""]-&gt;end(); </span><span style="font-style: italic;"></span><span style="font-style: italic;">(*</span><span style="font-style: italic;"></span><span style="font-style: italic; color: black;">ldapDesc</span><span style="font-style: italic;"></span><span style="font-style: italic;">[""])</span><span style="font-style: italic;">++</span><span style="font-style: italic;"> )<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; for ( </span><span style="font-style: italic;">(*(*</span><span style="font-style: italic;"></span><span style="font-style: italic; color: black;">ldapDesc</span><span style="font-style: italic;"></span><span style="font-style: italic;">[""])[""])</span><span style="font-style: italic;">[0]</span><span style="font-style: italic;">; ! (*</span><span style="font-style: italic;"></span><span style="font-style: italic; color: black;">ldapDesc</span><span style="font-style: italic;"></span><span style="font-style: italic;">[""])[""]-&gt;end(); </span><span style="font-style: italic;"></span><span style="font-style: italic;">(*(*</span><span style="font-style: italic;"></span><span style="font-style: italic; color: black;">ldapDesc</span><span style="font-style: italic;"></span><span style="font-style: italic;">[""])[""])</span><span style="font-style: italic;">++</span><span style="font-style: italic;"> )<br>&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </span><span style="font-style: italic;">std::</span><span style="font-style: italic;">cout &lt;&lt;
+(*</span><span style="font-style: italic;"></span><span style="font-style: italic; color: black;">ldapDesc</span><span style="font-style: italic;"></span><span style="font-style: italic;">[""])[""] &lt;&lt; ": " &lt;&lt;
+(*(*</span><span style="font-style: italic;"></span><span style="font-style: italic; color: black;">ldapDesc</span><span style="font-style: italic;"></span><span style="font-style: italic;">[""])[""])[""]</span><span style="font-style: italic;"> &lt;&lt; </span><span style="font-style: italic;">std::</span><span style="font-style: italic;">endl;</span><span style="font-style: italic;"><br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </span><span style="font-style: italic;">std::</span><span style="font-style: italic;">cout &lt;&lt; </span><span style="font-style: italic;">std::</span><span style="font-style: italic;">endl;<br>
+</span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</span><span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: rgb(0, 153, 0);">// (better about performance...)</span></span><br>
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  ...<br>
+</span><span style="font-style: italic;"><span style="color: rgb(0, 153, 0);"></span><br>
+</span><span style="font-style: italic;"><br>
+</span><span style="font-style: italic;"><br>&nbsp;</span><big><big><span style="text-decoration: underline; color: black; font-weight: bold;"><a name="ss1.6.4"></a></span><span style="color: black; font-weight: bold;"> </span><span style="text-decoration: underline; color: rgb(204, 153, 51); font-weight: bold;">Operators:</span></big></big><br>
+<span style="font-style: italic;"><br>
+<span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; entry e1 = ... , e2 = ... , e3;<br>
+&nbsp;&nbsp;&nbsp; attribute attr1 = ... , attr2=...;<br>
+<br>
+</span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; e1 += e2;</span>&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;  <span style="color: rgb(0, 153, 0);">// if ( e1.dn().compare( e2.dn() ) == 0 ), or simply: if ( e1.isDn( </span><span style="color: rgb(0, 153, 0);">e2.dn() )</span><span style="color: rgb(0, 153, 0);"> ), all </span><span style="color: rgb(0, 153, 0);">the</span><span style="color: rgb(0, 153, 0);"> attributes (and/or values) of "e2"
+will be added to "e1" or, if already present, will replace those of "e1"</span><span style="color: rgb(0, 153, 0);">. Equivalent to: "e1 = e1
++ e2".</span><span style="font-style: italic;"><br>
+
+</span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; e1 += &amp;e2;</span>&nbsp; &nbsp;  <span style="color: rgb(0, 153, 0);">//
+exactly the same résult as before (ie "e1 += e2"), as for all the
+following examples, ie: pointers on second operands are allowed...<br>
+</span>
+
+</div>
+<div style="margin-left: 120px;"><span style="color: rgb(0, 153, 0);">(Note:&nbsp;&nbsp; in case of&nbsp; "entry *e1, *e2;"&nbsp; then the syntaxe should be:&nbsp;
+"*e1 += e2;" or "*e1 += *e2"- otherwise, it would be a simple assignment of the pointer itself, of course!.</span><span style="color: rgb(0, 153, 0);">..).</span><span style="font-style: italic;"></span><br>
+</div>
+<div style="margin-left: 40px;">
+<div style="margin-left: 40px;">
+<span style="font-style: italic;"></span></div>
+
+<span style="font-style: italic;">
+</span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; e1 -= e2;</span>&nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;  <span style="color: rgb(0, 153, 0);">// if ( e1.dn() == e2.dn() )</span><span style="color: rgb(0, 153, 0);">,
+then all the attribute values of "e2" present in the same name
+attributes of "e1" will be erased from "e1". The empty attributes of
+"e1" will be then supressed. </span><span style="color: rgb(0, 153, 0);"></span><span style="color: rgb(0, 153, 0);">Equivalent to: "e1 = e1 - e2", "e1 -= &amp;e2", "e1 = e1 - e2" or "e1 = e1 - &amp;e2"...</span><br>
+<span style="font-style: italic;"></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; e1 &amp;= e2;</span>&nbsp;&nbsp;  &nbsp;&nbsp;  <span style="color: rgb(0, 153, 0);">// if ( e1</span><span style="color: rgb(0, 153, 0);">.dn()
+== e2.dn() )</span><span style="color: rgb(0, 153, 0);">, then</span><span style="color: rgb(0, 153, 0);"> e1 will contain only its attribute</span><span style="color: rgb(0, 153, 0);"> </span><span style="color: rgb(0, 153, 0);">values </span><span style="color: rgb(0, 153, 0);"></span><span style="color: rgb(0, 153, 0);">also </span><span style="color: rgb(0, 153, 0);">present </span><span style="color: rgb(0, 153, 0);">in e2. Equivalent to "e1 = e1 &amp; e2".</span><br>
+
+<span style="font-style: italic;"></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; e1 |= e2;</span>&nbsp;&nbsp;  &nbsp; &nbsp;  <span style="color: rgb(0, 153, 0);"></span><span style="color: rgb(0, 153, 0);">// </span><span style="color: rgb(0, 153, 0);">if</span><span style="color: rgb(0, 153, 0);"> ( e1</span><span style="color: rgb(0, 153, 0);">.dn() == e2.dn() )</span><span style="color: rgb(0, 153, 0);">, then all the</span><span style="color: rgb(0, 153, 0);"></span><span style="color: rgb(0, 153, 0);"> attributes of "e2" not present in "e1" will be added to
+"e1", these present in "e1" will be completed</span><span style="color: rgb(0, 153, 0);">. Equivalent to : "e1 = e1 | e2", ..</span><span style="color: rgb(0, 153, 0);">.</span><br>
+
+<span style="font-style: italic;"></span><span style="font-style: italic;"></span><span style="font-style: italic;"></span><span style="font-style: italic;"><br>
+&nbsp;</span><span style="font-style: italic;">&nbsp;&nbsp; e1 = e2;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;&nbsp; </span><span style="color: rgb(0, 153, 0);">// This is an unconditional copy. Equivalent to: e1 = nullptr !... ;-)</span><span style="color: rgb(0, 153, 0);"></span><br>
+
+<br>
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; e1++;&nbsp;  &nbsp; &nbsp;&nbsp;  &nbsp; &nbsp; &nbsp;  </span><span style="color: rgb(0, 153, 0);">// </span><span style="color: rgb(0, 153, 0);">The current position in the entry "e1" is incremented
+(next attribute - according to the LDAP order) - equivalent to e1.gotoNext().</span><span style="color: rgb(0, 153, 0);"> At the end of the attribute list</span><span style="color: rgb(0, 153, 0);">, the current position will be "e1.end()", (ie null attribute), like: "e1.gotoEnd()".<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; (Note:&nbsp; if "entry *e;", the
+syntax must be : "(*e)++;", of course!... - and, is it necessary to
+precise: with (e != nullptr) ).<br>
+</span>
+
+
+
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; e1--;&nbsp;  &nbsp; &nbsp;&nbsp;  &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;  </span><span style="color: rgb(0, 153, 0);">// </span><span style="color: rgb(0, 153, 0);">The
+current position in the entry </span><span style="color: rgb(0, 153, 0);">"e1"</span><span style="color: rgb(0, 153, 0);"> is decremented by one position
+(previous attribute) - equivalent to e1.gotoPrevious(). By end of the
+list, the current position will be "e1.begin()", ie the first attribute.
+It's like:
+"e1.gotoBegin()". Of course, if: entry *e, then the syntaxe MUST be: (*e)++, with (e != nullptr) !... Obviously...</span><span id="result_box" class="short_text" lang="en"><span class="hps"></span></span><span style="color: rgb(0, 153, 0);"> ;-)</span><br>
+
+
+
+<span style="font-style: italic;"></span><span style="font-style: italic;"><br>
+&nbsp;&nbsp;&nbsp; e1["name"];&nbsp;  &nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp; </span><span style="color: rgb(0, 153, 0);">// The current position of the entry</span><span style="color: rgb(0, 153, 0);"> "e1" will be positioned on the attribute of name "<span style="font-style: italic;">nam</span>e" - if existing, if not: "e1.end()" ...</span><br>
+
+
+&nbsp;&nbsp;&nbsp; e2 += <span style="font-style: italic;">e1["name"];&nbsp;&nbsp;&nbsp;  </span><span style="font-style: italic;"></span><span style="color: rgb(0, 153, 0);">//&nbsp; </span><span style="color: rgb(0, 153, 0);">The attribute of name "<span style="font-style: italic;">name</span>", if it exits in "e1", will be added to "e2".</span><span style="font-style: italic;"><br>
+<br>
+Possible example:<br>
+&nbsp;&nbsp;&nbsp; e3 += entry(e1 | e2)["name"];&nbsp;&nbsp; </span><span style="color: rgb(0, 153, 0);">// </span><span style="color: rgb(0, 153, 0);">The attribute "<span style="font-style: italic;">nam</span>e" </span><span style="color: rgb(0, 153, 0);">eventually</span><span style="color: rgb(0, 153, 0);"> contained in "e1" or "e2" will be added to "e3". "e1" and "e2" remain </span><span style="color: rgb(0, 153, 0);">themselves</span><span style="color: rgb(0, 153, 0);"> unchanged...</span><br>
+<span style="font-style: italic;"><br>
+Between different object types:<br>
+</span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; e1 += attr1;&nbsp;&nbsp;  </span><span style="color: rgb(0, 153, 0);">// </span><span style="color: rgb(0, 153, 0);">The attribute
+"attr1" will be added (except if null) to the list of attributes of "e1"
+or, if it is already existing, their values</span><span style="color: rgb(0, 153, 0);"> will complete it. Equivalent to: "e1 = e1 + attr1".</span><br>
+
+
+<span style="font-style: italic;"></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; e1 -= attr1;&nbsp;&nbsp;&nbsp;  </span><span style="color: rgb(0, 153, 0);">// The attribute</span><span style="color: rgb(0, 153, 0);"> "attr1" will be removed from the attribute of the same name in "e1" and it will be deleted if, consecutively, it is empty...</span><br>
+
+<span style="font-style: italic;"></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; e1 &amp;= attr1;&nbsp; </span><span style="color: rgb(0, 153, 0);">//&nbsp;</span><span style="color: rgb(0, 153, 0);">The attribute</span><span style="color: rgb(0, 153, 0);"> "*(e1-&gt;getAttribute())"</span><span style="color: rgb(0, 153, 0);"> of name "attr1.name()"</span><span style="color: rgb(0, 153, 0);">
+will be completed with the list of values contained in "attr1", only if
+it was already existing; equivalent to : "if ( e1.find ( attr1.name() )
+*(e1.getAttribute()) += attr1;" ...</span><br>
+
+
+<span style="font-style: italic;"></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; e1 |= attr1;&nbsp;&nbsp;  </span><span style="color: rgb(0, 153, 0);">// </span><span style="color: rgb(0, 153, 0);">The attribute of name</span><span style="color: rgb(0, 153, 0);">
+"attr1.name()" will be added (with its values) to the entry "e1", but
+only if it was not already present; equivalent to: "if ( !
+e1.find( attr1.name() ) e1 += attr1;"...</span><br>
+
+<span style="font-style: italic;"></span><span style="font-style: italic;"><br>
+<span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span></span><span style="font-weight: bold;"></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; std::cout/cerr &lt;&lt; e1&nbsp;&nbsp;  </span><span style="color: rgb(0, 153, 0);">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // </span><span style="color: rgb(0, 153, 0);"><span style="font-style: italic;">Display the dn() of the entry to the std/err output.<br>
+</span></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; std::cout &lt;&lt; e1[""] &nbsp;  </span><span style="color: rgb(0, 153, 0);">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; //&nbsp;</span><span style="color: rgb(0, 153, 0);"><span style="font-style: italic;">Display the current attribute id</span></span><span style="color: rgb(0, 153, 0);"><span style="font-style: italic;">, ie: e1.getAttribute()-&gt;name() (type std::string) to the standard output...<br>
+</span></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; std::cout &lt;&lt; e1[2] &nbsp;  </span><span style="color: rgb(0, 153, 0);">&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // </span><span style="color: rgb(0, 153, 0);"><span style="font-style: italic;">Display name() of the attribute number 2 of e1 (or : "" if it doesn't existe).<br>
+</span></span><span style="font-style: italic;"></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; std::cout &lt;&lt; (*e1[""])[""] &nbsp; &nbsp; &nbsp;  </span><span style="color: rgb(0, 153, 0);">// </span><span style="color: rgb(0, 153, 0);"><span style="font-style: italic;">Display the current value (type : char*,
+utf8 encoded) of the current attribute, ie:
+e1.getAttribute()-&gt;getStrValue() ...</span></span><br>
+
+<span style="font-style: italic;"></span><span style="font-style: italic;"><br>
+This</span><span style="font-style: italic;">
+"arithmetic" will be similar (subject to sense - or new suggestion to
+the author... ;-) for objects of type
+"<span style="font-weight: bold;">attribute</span>" and "<span style="font-weight: bold;">berValue</span>" ...<br>
+<br>
+</span><span style="font-style: italic;"></span><br>
+<big><big><span style="text-decoration: underline; color: black; font-weight: bold;"></span><span style="color: black; font-weight: bold;"><a name="ss1.6.5"></a>&nbsp; </span><span style="text-decoration: underline; color: black; font-weight: bold;"><span style="color: rgb(204, 153, 51);">BUFFERS:</span><br>
+</span><small><span style="text-decoration: underline; color: black;"></span><span style="color: black;"><br></span></small></big></big>
+<div style="text-align: justify;"><span id="result_box" class="" lang="en"><span class="hps">The buffers</span> <span class="hps">allow to save</span> <span class="hps">a context</span> <span class="hps atn">(</span><span>list of </span><span class="hps">LDAP</span><span> </span></span><span style="font-weight: bold;" id="result_box" class="" lang="en"><span>entries</span></span><span id="result_box" class="" lang="en"><span>)</span> <span class="hps">queries or</span> <span class="hps">intermediate results</span><span class="hps"></span><span>,</span> <span class="hps">by default:</span> to <span class="hps atn">a stack (</span><span>Last In First Out</span><span>)</span> <span class="hps">or,</span><span class="hps"></span><span></span> <span class="hps">individually:</span><span class=""></span> to <span class="hps">named buffers</span><span class="">.</span></span><big><big><small><span style="color: black;"></span></small></big></big><br>
+<big><big><small><span style="color: black;"></span></small></big></big></div>
+<big><big><small><span style="color: black;">
+<br style="text-decoration: underline;">
+<span style="text-decoration: underline;">Methods of the class "</span><span style="font-weight: bold; text-decoration: underline;">ldapEasyInterface</span><span style="text-decoration: underline;">":</span><br>
+<br>
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; - doSave</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">In</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">Entries</span>(),<br>
+</span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; - </span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">doSave</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">In</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">Entries</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;"></span>("<span style="font-style: italic;">bufferName</span>"),<br>
+</span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; - </span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">doSave</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">Out</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">Entries</span>(),<br>
+</span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; - </span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">doSave</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">Out</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">Entries</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;"></span>(</span></small></big></big><big><big><small><span style="color: black;">"<span style="font-style: italic;"></span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-style: italic;">bufferName</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-style: italic;"></span>"</span></small></big></big><big><big><small><span style="color: black;">).<br>
+<span style="text-decoration: underline;"><br>
+</span></span></small></big><span id="result_box" class="short_text" lang="en"><span class="hps">And</span><span>,</span> <span class="hps">to restore to</span> <span class="hps">the</span> <span class="hps">input or output</span><span class=""> set of the </span></span></big><big><big><small><span style="color: black;">"<span style="font-weight: bold;">ldapEasyInterface</span>"</span></small></big></big><big><span id="result_box" class="short_text" lang="en"><span class="">:</span></span></big><br>
+<big><big><small><span style="color: black;"><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; - <span style="font-weight: bold;">doRestore</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">In</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">Entries</span>(),<span style="font-weight: bold;"><br>
+</span></span></small></big></big><big><big><small><span style="color: black;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; - <span style="font-weight: bold;"></span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">doRestore</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">In</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">Entries</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;"></span>("<span style="font-style: italic;"></span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-style: italic;">bufferName</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-style: italic;"></span>"),<span style="font-weight: bold;"><br>
+</span></span></small></big></big><big><big><small><span style="color: black;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; - <span style="font-weight: bold;"></span></span></small></big></big><big style="font-weight: bold;"><big><small><span style="color: black;">do</span></small></big></big><big style="font-weight: bold;"><big><small><span style="color: black;">Restore</span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">Out</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">Entries</span>(),<br>
+</span></small></big></big><big><big><small><span style="color: black;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; - <span style="font-weight: bold;"></span></span></small></big></big><big style="font-weight: bold;"><big><small><span style="color: black;">do</span></small></big></big><big style="font-weight: bold;"><big><small><span style="color: black;">Restore</span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">Out</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">Entries</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;"></span>(</span></small></big></big><big><big><small><span style="color: black;">"<span style="font-style: italic;"></span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-style: italic;">bufferName</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-style: italic;"></span>"</span></small></big></big><big><big><small><span style="color: black;">).<br>
+</span></small></big></big><br>
+<span style="text-decoration: underline; font-weight: bold;">Note:</span> <span id="result_box" class="" lang="en"><span class="hps">the current positions of</span> <span class="hps">objects</span> <span class="hps">are preserved</span></span> (<span style="font-weight: bold;"></span>current <span style="font-weight: bold;">entry</span>, <span style="font-weight: bold;"></span><span style="font-weight: bold;"></span>current <span style="font-weight: bold;">attribute</span> and current <span style="font-weight: bold;">value</span>...) during these operations.<br>
+<br>
+<big><big><small><span style="color: black;"></span></small><span style="text-decoration: underline; color: black; font-weight: bold;"></span></big></big><span style="font-weight: bold;"></span><span style="font-weight: bold;"><span style="text-decoration: underline;"></span></span>
+</div>
+
+<h2><a href="Frontends/Howto.en.html" name="ss1.7"></a><a href="archives/libldapcppei/man/">1.7 The documentation of the project</a></h2>
+
+<div style="margin-left: 40px;"><b><a href="archives/libldapcppei/man/man3/byteArea.3.html">byteArea</a></b>(3),
+<b><a href="archives/libldapcppei/man/man3/berValue.3.html">berValue</a></b>(3),
+<b><a href="archives/libldapcppei/man/man3/attribute.3.html">attribute</a></b>(3),
+<b><a href="archives/libldapcppei/man/man3/entry.3.html">entry</a></b>(3),
+<b><a href="archives/libldapcppei/man/man3/ldapSet.3.html">ldapSet</a></b>(3),
+<b><a href="archives/libldapcppei/man/man3/ldapEasyInterface.3.html">ldapEasyInterface</a></b>(3).<br>
+<br>
+
+
+</div>
+
+<h2><a name="ss1.8"></a>1.8 Performance?</h2>
+
+
+
+<div style="margin-left: 40px;">
+<span style="text-decoration: underline;">Of course, other tests should be done, but here is an assessment of the </span><span style="text-decoration: underline;"></span><span style="text-decoration: underline;">estimated</span><span style="text-decoration: underline;"> </span><span style="text-decoration: underline;" id="result_box" class="" lang="en"><span class="hps">processing</span></span><span style="text-decoration: underline;"> time</span><span style="text-decoration: underline;"> with</span><span style="text-decoration: underline;"> a test database of 90 entries:</span><br style="text-decoration: underline;">
+<br>
+<div style="margin-left: 40px;">time ldapsearch -x -LLL -h ldap &gt;/dev/null<br>
+real&nbsp;&nbsp;&nbsp; 0m0.065s<br>
+user&nbsp;&nbsp;&nbsp; 0m0.000s<br>
+sys&nbsp;&nbsp;&nbsp; 0m0.000s<br>
+</div>
+<span style="text-decoration: underline;">and:</span><br>
+
+<div style="margin-left: 40px;">time ldapcppeiTest &gt;/dev/null&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; # above version: <span style="font-style: italic;">"<span style="font-weight: bold;">for ( ; ! ldapDesc.end(); ldapDesc.gotoNext() )</span></span><span style="font-style: italic;"><span style="font-weight: bold;"> { ...</span>"</span><br>
+real&nbsp;&nbsp;&nbsp; 0m0.068s<br>
+user&nbsp;&nbsp;&nbsp; 0m0.000s<br>
+sys&nbsp;&nbsp;&nbsp; 0m0.000s<br>
+</div>
+<br>
+<span style="text-decoration: underline;">Or, yet:</span><br>
+<br>
+
+<div style="margin-left: 40px;">time ldapsearch -x -LLL -h ldap -D "cn=Manager,dc=mydomain" -w password &gt;/dev/null<br>
+real&nbsp;&nbsp;&nbsp; 0m0.014s<br>
+user&nbsp;&nbsp;&nbsp; 0m0.000s<br>
+sys&nbsp;&nbsp;&nbsp; 0m0.000s<br>
+</div><span style="text-decoration: underline;">and:</span><br>
+
+
+<div style="margin-left: 40px;">time ldapcppeiTest &gt;/dev/null&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; # version<span style="font-style: italic;">: " <span style="font-weight: bold; color: rgb(0, 153, 0);">/*</span><span style="color: rgb(0, 153, 0);"> ldapDesc.bindDn ( "cn=Manager,dc=myDomain", "mydomain" ); </span><span style="font-weight: bold; color: rgb(0, 153, 0);">*/</span> "<br>
+</span>
+real&nbsp;&nbsp;&nbsp; 0m0.018s<br>
+user&nbsp;&nbsp;&nbsp; 0m0.000s<br>
+sys&nbsp;&nbsp;&nbsp; 0m0.000s<br>
+</div>
+
+<br>
+
+<br>
+</div><h2><a href="Frontends/Howto.en.html" name="ss1.9">1.9 The ldapEasyAdmin project?</a></h2>
+
+
+
+
+
+
+
+
+
+<div style="margin-left: 40px;"><div style="text-align: justify;">It is a set of <a href="Frontends/Howto-7.en.html#ss7.2">GUIs</a> (<a href="Frontends/Howto-13.en.html">frontends</a>) to manage the various parameters of an intranet, using an LDAP database.<br>
+<br>
+
+These GUIs are related to <a href="./Frontends/Howto-12.en.html#ss12.2">configuration tools</a> that can generate the configuration files of daemon and subsystems using data of the LDAP database (<span id="result_box" class="" lang="en"><span class="hps">especially</span> <span class="hps">when they</span> <span class="hps">are</span> <span class="hps">not directly</span> <span class="hps">interfaced with</span> <span class="hps">LDAP</span></span>).<br>
+</div>
+
+<br>
+<span style="text-decoration: underline;">Example of this subsystems:</span><br>
+<ul>
+  <li style="text-align: justify;"><a href="./Frontends/Howto-12.en.html"><span style="font-weight: bold;">rsyncd</span></a> (<span id="result_box" class="" lang="en"><span class="hps">not directly</span> <span class="hps">interfaced with</span> <span class="hps">LDAP</span></span>)<br>
+</li>
+  <li style="text-align: justify;"><a href="./Frontends/Howto-11.en.html#ss11.7"><span style="font-weight: bold;">samba</span></a>
+version 3 (<span id="result_box" class="short_text" lang="en"><span class="hps">partially</span> <span class="hps">interfaced</span> <span class="hps">LDAP</span></span> - <span id="result_box" class="" lang="en"><span class="hps">user identification</span><span>,</span> <span class="hps">not</span> <span class="hps">on</span> <span class="hps">the definition</span> <span class="hps">of shared resources</span></span>),</li>
+  <li style="text-align: justify;"><a href="./Frontends/Howto-14.en.html"><span style="font-weight: bold;">bind</span></a> (<span id="result_box" class="" lang="en"><span class="hps">interfaced</span> <span class="hps">with a patch</span><span>,</span> <span class="hps">but</span> <span class="hps">involving</span> <span class="hps">severe restrictions</span> <span class="hps">of features</span></span>),</li>
+  <li style="text-align: justify;"><span id="result_box" class="" lang="en"><span class="hps">users</span> <span class="hps">and</span> <span class="hps">groups</span><span>,</span> <span class="hps">mail </span></span><span id="result_box" class="" lang="en"><span class="hps">and</span></span><span id="result_box" class="" lang="en"><span class="hps"></span> <span class="hps">proxy</span> <span class="hps atn">(</span><span>almost completely</span> <span class="hps">interfaced</span> <span class="hps">LDAP</span> <span class="hps">-</span> <span class="hps">across implementations</span><span>)</span><span class="">,</span></span></li>
+  <li style="text-align: justify;">the LDAP directory server itself (début d'interfaçage ldap de la configuration d'OpenLDAP),<br>
+  </li>
+  <li style="text-align: justify;"><span id="result_box" class="" lang="en"><span class="hps">The definition</span> <span class="hps">of</span> <span class="hps">roles</span> <span class="hps">of</span> <span class="hps">specific</span> <span class="hps">management applications</span></span> (<span id="result_box" class="short_text" lang="en"><span class="hps">interfaced</span> <span class="hps">sometimes</span><span>,</span> <span class="hps">sometimes</span> <span class="hps">not</span><span class="hps">...</span></span>), such as for example the interfaces of this project itself (<a href="./Frontends/Howto.en.html"><span style="font-weight: bold; text-decoration: underline;">ldapEasyAdmin</span></a>).<br>
+  </li>
+  <li style="text-align: justify;">...</li>
+</ul>And all that the imagination of an administrator of the intranet will be able to design...<br>
+<br>This project is <a href="Frontends/Howto.en.html"><span style="font-weight: bold;">here</span></a>...<br>
+</div>
+<hr><a href="miniHowto-2.en.html">Next</a>
+<a href="miniHowto.en.html">Previous</a> <a href="miniHowto.en.html">Summary</a>
+
+
+
+
+
+
+
+</body></html>

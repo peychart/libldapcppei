@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html><head>
+
+  <meta name="GENERATOR" content="KompoZer-0.8a4"><title>LdapEasyInterface (libcppei) Mini Howto (Français)</title>
+  
+  <link href="LdapcppeiMiniHowto-1.fr.html" rel="next"><style type="text/css">ite-space: pre-wrap; }</style></head><body><a href="Howto-10.fr.html">Page suivante</a> <a href="Howto-8.fr.html">Page précédente</a> <a href="Howto.fr.html">Sommaire</a> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; (<span style="font-weight: bold;">Français</span> - <a href="Howto-9.en.html">English</a>)
+<hr>
+<h2><a name="S9"><span style="text-decoration: underline;">9. L'interface de gestion des groupes d'utilisateurs "posixGroupFrontend" :</span></a></h2>
+<h2 style="margin-left: 40px; font-weight: normal;"><small><small>Cette
+interface graphique permet d'administrer les comptes utilisateurs
+définis dans l'annuaire LDAP (ajout/suppression/modification).</small></small></h2>
+<div style="text-align: center;"><img style="width: 1085px; height: 408px;" alt="images/posixGroupFrontend.png" src="images/posixGroupFrontend.png"><br>
+</div>
+<br>
+
+
+<h2><a name="ss9.1">9.1 Principe
+</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;">Cette interface partage son code avec l'interface "<a href="Howto-6.fr.html#top">domainFrontend</a>". Le nom de l'exécutable doit donc contenir la chaîne de caractères "<span style="font-weight: bold;">Frontend</span>" précédée (sans espace ni autre caractère) par le nom de "l'<span style="font-weight: bold;">objectClass</span>" principal de l'entité gérée (ici : "<span style="font-weight: bold;">person</span>").<br>
+<br>
+Cet exécutable peut être appelé au travers d'un lien symbolique qui
+respecte la même règle ou, à défaut, qui ne contient pas la chaîne
+"Frontend" (cette règle est récursive - lien de lien ...).<br>
+<br>
+<span style="text-decoration: underline;">Le principe de cette interface de gestion des groupes utilisateurs est la constitution dynamique du masque de saisie à partir :</span><br style="text-decoration: underline;">
+
+
+<ul>
+<li>de la liste des "<span style="font-weight: bold;">objectClass</span>" définis par l'administrateur au travers du dernier onglet présent lorsque le rôle "<span style="font-weight: bold;">adminStruct</span>" est activé.<br>
+  </li><li>de la liste des attributs qui composent chacun des "<span style="font-weight: bold;">objectClass</span>" définies pour ce type d'entités ("<span style="font-weight: bold;">posixGroup</span>").<br>
+  </li>
+</ul>Lorsque l'administrateur de l'annuaire LDAP ajoute ou supprime un ou plusieurs "<span style="font-weight: bold;">objectClass</span>",
+cette information est mémorisée dans l'annuaire LDAP. Par la suite,
+toute définition de groupe utilisateur qui sera créée ou modifiée sera obligatoirement impactée par ce nouveau schéma.<br>
+<br>
+Excepté le principe de cette déclaration des "<span style="font-weight: bold;">objectClass</span>" qui composent un groupe d'utilisateurs, le reste du fonctionnement de cette interface est le même que celui de l'interface "<a href="Howto-6.fr.html#top">domainFrontend</a>".
+<small>
+</small></div>
+
+
+<h2><a name="ss9.2">9.2 Modification de la liste des "objectClasses"<br>
+</a></h2>
+<div style="margin-left: 40px;">Il s'agit du même principe que dans l'interface de gestion des personnes "<a href="Howto-8.fr.html#ss8.2">personFrontend</a>" ...</div>
+
+<h2><a name="ss9.3">9.3 Saisie d'informations "X-NOT-HUMAN-READABLE"<br>
+</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;">Même principe que les aides à la saisie détaillées dans la description des interfaces de gestion : "<a href="Howto-6.fr.html#ss6.4">domainFrontend</a>", "<a href="Howto-8.fr.html#ss8.3">personFrontend</a>" ... (ou encore <a href="Howto-11.fr.html#ss11.2">ici</a> et <a href="Howto-11.fr.html#ss11.3">là</a>)
+
+
+
+</div>
+
+
+
+
+<h2><a name="ss9.4"></a>9.4 <a href="../archives/ldapEasyAdminFrontends/sources/domain.so">Les sources C++</a><br>
+</h2>
+<div style="text-align: justify; margin-left: 40px;">Les sources de la dernière version (<span style="font-weight: bold;">20120102</span>) sont <a href="../archives/ldapEasyAdminFrontends/sources/domain.so">ici</a>.<br>
+<br>
+Ce code est partagé avec celui de l'interface graphique "<a href="Howto-6.fr.html#top">domainFrontend</a>".<br>
+<br>
+Après compilation, c'est le nom du programme qui détermine le type de
+données d'annuaire gérées par l'interface graphique d'administration ("<a href="Howto-6.fr.html#top">domainFrontend</a>", "<a href="Howto-8.fr.html#S8">personFrontend</a>", "<span style="font-weight: bold;">posixGroupFrontend</span>", "<a href="Howto-10.fr.html#S10">organizationalRoleFrontend</a>").<br>
+<br>
+<small style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">ln [-s] /usr/local/bin/libdomain.so /usr/local/bin/libposixgroup.so</span><br>
+</small><small style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">ln [-s] /usr/local/bin/<a href="Howto-5.fr.html">frontend</a> /usr/local/bin/</span></small><small style="font-style: italic;"><span style="font-weight: bold;">posixGroup</span></small><small style="font-style: italic;"><span style="font-weight: bold;">Frontend</span></small><br>
+
+<br>
+
+</div>
+<br>
+<hr><a href="Howto-10.fr.html">Page suivante</a> <a href="Howto-8.fr.html">Page précédente</a> <a href="Howto.fr.html">Sommaire</a>
+
+
+
+
+
+</body></html>

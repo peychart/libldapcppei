@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html><head>
+
+  <meta name="GENERATOR" content="KompoZer-0.8a4"><title>LdapEasyInterface (libcppei) Mini Howto (Français)</title>
+  
+  <link href="LdapcppeiMiniHowto-1.fr.html" rel="next"></head><body>Page suivante
+<a href="miniHowto-1.fr.html">Page précédente</a>
+<a href="miniHowto.fr.html">Table des matières</a>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; (<span style="font-weight: bold;">French</span> - <a style="font-weight: bold;" href="miniHowto-2.en.html">English</a>)
+
+<hr>
+
+<h2><a name="S1"><span style="text-decoration: underline;">2.
+Installation de GNU/ldapcppei :</span>
+</a></h2>
+
+
+<h2><a name="ss2.1">2.1 Où récupérer les sources de GNU/ldapcppei ?</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;">L'interface objet se présente sous forme de sources compilables contenues dans un paquet logiciel qui se trouve <a href="http://home.gna.org/ldapcppei/archives/">ici</a> et se présente
+sous la forme d'un fichier d'archivage au format "tar" compressé "gzip" ("<span style="color: rgb(51, 204, 0);">.tgz</span>").<br>
+Il a pour nom :
+"<a href="http://home.gna.org/ldapcppei/archives/libldapcppei/">libldapcppei-$(numéro_de_version).tgz</a>".<br>(Le paquet logiciel "<span style="font-weight: bold;">libldap2-dev</span>" est également nécessaire).<br>
+
+</div>
+
+
+<h2><a name="ss2.2">2.2 Comment préparer la compilation de
+GNU/ldapcppei ?</a></h2>
+
+<div style="margin-left: 40px;">Après téléchargement du paquet logiciel
+(par exemple: dans le répertoire "<span style="color: rgb(51, 204, 0);">/tmp</span>"), taper :<br>
+<br>
+<div style="margin-left: 40px;"><span style="color: rgb(255, 102, 0);"></span>...:~$ <span style="color: rgb(255, 102, 0);">cd /tmp</span><span style="color: rgb(255, 102, 0);"><br>
+</span>...:/tmp/$ <span style="color: rgb(255, 102, 0);">tar xzf libldapcppei-$(version).tgz<br>
+</span>...:/tmp/$ <span style="color: rgb(255, 102, 0);">cd </span><span style="color: rgb(255, 102, 0);">libldapcppei/</span>
+
+</div>
+<br>
+<small>(<span style="text-decoration: underline;">Nota:</span> Un fois
+les opérations de compilation et d'installation - détaillées ci-après -
+effectuées, ce répertoire "<span style="color: rgb(51, 204, 0);">libldapcppei/</span>" et tout son contenu pourra être supprimé par la commande "<span style="font-weight: bold;">rm -r</span> ...").<br>
+</small></div>
+
+
+<h2><a name="ss2.3">2.3 Comment compiler GNU/ldapcppei ?</a></h2>
+
+<div style="margin-left: 40px;">
+
+<div style="text-align: justify;">Dans ce même répertoire (ici :
+"<span style="color: rgb(51, 204, 0);">/tmp/libldapcppei/</span>"), taper la commande "<span style="color: rgb(255, 102, 0);">make</span>". Elle va construire, dans
+le sous répertoire "<span style="color: rgb(51, 204, 0);">./src/</span>", les trois bibliothèques suivantes :<br>
+</div>
+
+<br>
+<ul><li style="text-align: justify;"><span style="color: rgb(51, 204, 0);">libldapcppei.so</span> : bibliothèque pour une édition de lien
+dynamique,<br>
+
+  </li><li style="text-align: justify;"><span style="color: rgb(51, 204, 0);">libldapcppei-dbg.so</span> : contient les informations de
+déboguage (parfois utile aux développeurs ;-),<br>
+  </li><li style="text-align: justify;"><span style="color: rgb(51, 204, 0);">libldapcppei.a</span> : bibliothèque pour une édition de lien en
+statique (code intégré à l'exécutable du programme qui l'utilisera ...).<br>
+  </li></ul>
+
+<br>
+</div>
+
+
+<h2><a name="ss2.4">2.4 Comment installer GNU/ldapcppei ?</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;">Exécuter la commande "<span style="color: rgb(255, 102, 0);">sudo make install</span>" ;
+ainsi, les 3 bibliothèques précédemment générées seront déployées dans
+leur arborescence d'accueil ("<span style="color: rgb(51, 204, 0);">/usr/local/lib</span>") et leur
+emplacement sera déclaré aux applications utilisatrices via le sous-système "<span style="font-weight: bold;">ldconfig</span>".<br>
+<br>
+Les fichiers "<a href="http://home.gna.org/ldapcppei/archives/libldapcppei/sources/libldapcppei/">include.h</a>" seront copiés dans l'arborescence
+"<span style="color: rgb(51, 204, 0);">/usr/local/include/</span>" (par défaut).<br>
+
+</div>
+
+
+<h2><a name="ss2.5">2.5 Comment déployer les sources de GNU/ldapcppei ?</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;">Taper la commande "<span style="color: rgb(255, 102, 0);">sudo make installsrc</span>" ;
+celle-ci aura pour effet de mettre à disposition les sources ("<a href="http://home.gna.org/ldapcppei/archives/libldapcppei/sources/"><span style="font-weight: bold;">*.cpp</span></a>")
+de la bibliothèque dans le répertoire d'accueil
+"<span style="color: rgb(51, 204, 0);">/usr/local/src/ldapcppei/</span>" (par défaut).<br>
+</div>
+
+
+<h2><a name="ss2.6">2.6 Comment désinstaller GNU/ldapcppei ?</a></h2>
+
+
+<div style="margin-left: 40px; text-align: justify;">La commande "<span style="color: rgb(255, 102, 0);">sudo make uninstall</span>" permet de
+désinstaller les bibliothèques précédemment installées, efface les
+fichiers "<span style="font-weight: bold;">include.h</span>" propres à l'interface ainsi que les fichiers sources éventuellement
+installés et leur répertoire de localisation
+("<span style="color: rgb(51, 204, 0);">/usr/local/src/ldapcppei/</span>").
+</div>
+
+
+
+<h2><a name="ss2.7">2.7 Comment obtenir le paquet DEBIAN ?</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;">La commande "<span style="color: rgb(255, 102, 0);">make debian"</span> (nécessite le paquet logiciel "<span style="font-weight: bold;">fakeroot</span>") permet d<span style="font-weight: bold;"></span><span style="color: rgb(51, 204, 0);"></span>'<a href="http://home.gna.org/ldapcppei/archives/libldapcppei/">obtenir le paquet "<span style="font-weight: bold; font-style: italic;">DEBIAN</span>.deb"</a> permettant de distribuer la bibliothèque (avec ses sources et gestion des dépendances) ...<br>
+
+<br>
+<span style="font-weight: bold; text-decoration: underline;">NOTA:</span> <span style="font-style: italic; color: red;">L'installation
+précédemment décrite </span><span style="font-style: italic; color: red; outline-color: navy ! important; outline-style: dashed ! important; outline-width: 2px ! important;">(<a href="#ss2.3">2.3 - 2.6</a>) </span><span style="font-style: italic; color: red;">ne s'applique plus dans ce cas précis puisqu'il
+suffit en effet d'installer tout simplement le paquet ("</span><span style="font-weight: bold; font-style: italic; color: red;">*.deb</span><span style="font-style: italic; color: red;">")
+ainsi obtenu ; l'installation peut alors être réalisée avec l'un des
+utilitaires (en mode commande ou mode graphique) gérant ce type de
+distribution (ex.: "<span style="font-weight: bold;">sudo apt-get install *deb</span>").</span><br>
+</div>
+
+
+<hr>Page suivante <a href="miniHowto-1.fr.html">Page précédente</a>
+
+<a href="miniHowto.fr.html">Table des matières</a></body></html>

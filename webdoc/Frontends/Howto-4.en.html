@@ -1,0 +1,320 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html><head>
+
+  <meta name="GENERATOR" content="KompoZer-0.8a4"><title>LdapEasyInterface (libcppei) Mini Howto (Français)</title>
+  
+  <link href="LdapcppeiMiniHowto-1.fr.html" rel="next"></head><body><a href="Howto-5.en.html">Next</a> <a href="Howto-3.en.html">Previous</a> <a href="Howto.en.html">Summary</a> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; (<a href="Howto-4.fr.html"><span style="font-weight: bold;">Français</span></a> - English)
+<hr>
+<h2><a name="S4"><span style="text-decoration: underline;">4. The navigation interface:</span>
+</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;"><br>
+<div style="text-align: left;"><img style="width: 378px; height: 955px;" alt="images/controlFrontend-treeView.png" src="images/controlFrontend-treeView.png"><br>
+</div>
+
+
+<br>
+Here, for example, <a href="../archives/ldapEasyAdminFrontends/exportLDAP_example.LDIFF">the complet export of a LDAP database</a> (format: LDIFF) allowing to obtain this display (<a href="Howto-2.fr.html#ss2.6">schemas list is here</a>). 
+</div>
+<h2><a name="ss4.1">4.1 Overview
+</a></h2>
+
+
+<div style="margin-left: 40px; text-align: justify;">This GUI handles
+the display aspect and navigation in the LDAP tree that defines the
+intranet parameters stored in the corporate directory.<br>
+<br>All GUIs - described in the following pages - of this suite&nbsp;
+synchronize themselves according the current position in the LDAP tree
+represented here. As soon as the operator changes the current position
+within the GUI of a project, the others are automatically synchronized
+according the new position retained (including, for example when
+changing domain).<br>
+<br><span id="result_box" class="" lang="en"><span class="hps">However</span><span>,</span> <span class="hps">the</span> <span class="hps">actual</span> <span class="hps">current position</span> <span class="hps">does not generate</span> <span class="hps">necessarily</span> <span class="hps">an</span> <span class="hps">effective display</span> <span class="hps">of information</span> <span class="hps">in each of the</span> <span class="hps">active interfaces</span><span class=""> (depending on existing data at this new position).</span></span><br>
+<br>While all "<span style="font-weight: bold;">GNU/LdapEasyInterface</span>"
+GUIs have (or will have eventually in future) some navigation/search
+features (sometimes limited to the current domain), in fact, the
+control interface shown above is the most suitable for direct selection
+of a new current position in directory tree.<br>
+<br>
+<big style="font-weight: bold;"><big><span style="text-decoration: underline;">Settings structure:</span></big></big><br>
+<br>In fact, this control interface does not have specific setting. <span id="result_box" class="" lang="en"><span class="hps">It</span> <span class="hps">actually uses</span> <span class="hps">the setting</span> <span class="hps">of all</span> <span class="hps">other interfaces</span></span> "<span style="font-weight: bold;">LdapEasyInterfaces</span>"
+(whose it takes into account the display) to list in a tree all the managed entities (servers,
+persons, groups, roles, services, ...) associated with each graphic interfaces.<br>
+<br>Of course, all these settings follow a common logic for organizing
+each of the entities represented in the tree display of the form: "<span style="font-weight: bold;">controlFrontend</span>"...<br style="font-weight: bold;">
+<br>
+<span style="text-decoration: underline;">This "common logic" appealed to a notion of hierarchy in defining the parameters of each interface:</span><span style="font-weight: bold; text-decoration: underline;"></span><br style="text-decoration: underline;">
+
+<small><span style="font-style: italic;"><br>
+&nbsp;&nbsp;&nbsp; ou=application</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  -&gt; ou=ldap</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  -&gt; ou=ldapEasyInterface</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; -&gt; ou=controlFrontend</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; -&gt; ou=domainFrontend<br>
+</span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; -&gt; ou=personFrontend<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+seeAlso=<span style="font-weight: bold;">ou=people</span><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; l=<span style="font-weight: bold;">cn</span><br style="font-style: italic;">
+</span>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; ...<br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; -&gt; ou=serverFrontend</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; seeAlso=<span style="font-weight: bold;">ou=server,ou=computer</span>&nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  <small><span style="color: rgb(51, 204, 0);">/* allows to define the storage RDN entity "<span style="font-weight: bold;">server</span>" in the <span style="font-weight: bold;">LDAP</span> directory */</span></small></span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; l=<span style="font-weight: bold;">ou</span>&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+&nbsp;&nbsp; </span><small><span style="font-style: italic;"><span style="color: rgb(51, 204, 0);">/* allows to design the storage attribute for the </span></span><span style="font-style: italic;"><span style="color: rgb(51, 204, 0);">entity "<span style="font-weight: bold;">server</span>" (optional) */</span></span></small><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; -&gt;
+ou=sambaConfigFrontend</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; seeAlso=<span style="font-weight: bold;">ou=sambaConfig</span></span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; l=<span style="font-weight: bold;">ou</span></span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&gt; ou=sambaShareFrontend</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+seeAlso=<span style="font-weight: bold;">ou=shareDefinition</span></span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+l=<span style="font-weight: bold;">sambaShareName</span></span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+-&gt;ou=rsyncConfigFrontend<br>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; ...<br style="font-style: italic;">
+</span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+-&gt;ou=nfsConfigFrontend<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; ...<br style="font-style: italic;">
+</span><span style="font-style: italic;"></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; -&gt; etc.<br>
+</span></small>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><span id="result_box" class="short_text" lang="en"><span class="hps">Thus</span><span>,</span> <span class="hps">we</span> <span class="hps">can</span> <span class="hps">see above</span> <span class="hps">that the</span> <span class="hps">interface settings</span></span> "<a href="Howto-7.fr.html#S7">serverFrontend</a>" - managing the "<span style="font-weight: bold;">server</span>" entity - hosts<span id="result_box" class="short_text" lang="en"> <span class="hps">in</span> its <span class="hps">tree</span> <span class="hps">an other definition of</span> <span class="hps">parameters</span><span class="">,</span></span> here the settings of the interface; "<a href="Howto-11.fr.html#ss11.7">sambaConfigFrontend</a>" - managing the "<span style="font-weight: bold;">samba</span> <span style="font-weight: bold;">service</span>" entity - <span id="result_box" class="" lang="en"><span class="hps">which</span><span>, itself</span><span>,</span> <span class="hps">in turn hosts</span> <span class="hps">a</span> <span class="hps">third</span> <span class="hps">parameter</span> <span class="hps">definition</span><span>,</span> <span class="hps">that of the interface</span></span> "<a href="Howto-11.fr.html#ss11.8">sambaShareName</a>" - managing the "<span style="font-weight: bold;">samba </span><span style="font-weight: bold;">ressources</span>" - ...<br>
+<br>
+<span style="text-decoration: underline;" id="result_box" class="short_text" lang="en"><span class="hps">Why this</span> <span class="hps">nesting?</span></span><br>This allows to indicate to the display interface "<span style="font-weight: bold;">controlFrotend</span>" that entities "<span style="font-weight: bold;">samba </span><span style="font-weight: bold;">services</span>" eventually defined in the database <span id="result_box" class="" lang="en"><span class="hps">belong</span> <span class="hps">each to a</span> <span class="hps">"<span style="font-weight: bold;">server</span>"</span> <span class="hps">and</span>&nbsp;<span class="hps"></span><span class="hps">will</span> <span class="hps">be</span> <span class="hps">displayed</span></span><span id="result_box" class="" lang="en"><span class="">,</span> <span class="hps">if existing,</span> <span class="hps">in</span> <span class="hps">each of their</span> parent <span class="hps">server</span><span>.</span></span><br>
+<br><span id="result_box" class="" lang="en"><span class="hps">In other words</span><span class="">,</span> <span class="hps">for each server</span> <span class="hps">to display</span><span class="">,</span> <span class="hps">it must be ensured</span> <span class="hps">whether the notion</span> <span class="hps">of</span> </span>"<span style="font-weight: bold;">service samba</span>" <span id="result_box" class="" lang="en"><span class="hps">is defined</span><span>, and if so</span><span>,</span> <span class="hps">display it</span> <span class="hps">as a</span> <span class="hps">subfolder</span></span> "<span style="font-weight: bold;">sambaConfig</span>". <span id="result_box" class="" lang="en"><span class="hps">This mechanism</span> <span class="hps">is recursive</span> <span class="hps">(see</span><span>:</span> <span class="hps atn">"</span><span style="font-weight: bold;" class="">sambaShare</span><span>"</span><span>)</span><span class="">.</span></span><br>
+<br><span id="result_box" class="" lang="en"><span class="hps">It may</span> <span class="hps">be the true</span> <span class="hps">for any other service</span> <span class="hps">defined</span> <span class="hps">and</span> <span class="hps">possibly</span> <span class="hps">managed by</span> <span class="hps">an</span> <span class="hps">existing interface</span></span> "<span style="font-weight: bold;">LdapEasyInterface</span>"<span id="result_box" class="" lang="en"><span class=""></span><span class="">,</span> <span class="hps">such as for example</span></span> "<span style="font-weight: bold;">rsyncFrontend</span>", "<span style="font-weight: bold;">nfsFrontend</span>", ...<br>
+<br style="text-decoration: underline;">
+<span style="text-decoration: underline;" id="result_box" class="" lang="en"><span class="hps">The organization of the</span> <span class="hps">LDAP data</span> <span class="hps">structure</span> <span class="hps">associated with this</span> <span class="hps">parameterization</span> <span class="hps">is therefore</span> <span class="hps">as follows</span><span class="">:</span></span><br>
+
+
+<small><span style="font-style: italic;"><br>
+&nbsp;&nbsp;&nbsp; dc=mydomain</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  -&gt; ou=server,ou=computer</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  -&gt; ou=11:22:33:44:55:66</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  description=...</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp; ...<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  -&gt; ou=sambaConfig<br style="font-style: italic;">
+</span><span style="font-style: italic;">&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; -&gt;
+ou='</span><small>netbiosName</small><span style="font-style: italic;">'</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; -&gt; sambaOptionName=description</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; -&gt; sambaOptionName=...</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ...<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; -&gt; ou=shareDefinition<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+-&gt; sambaShareName=`</span><small>shareName1</small><span style="font-style: italic;">`<br>
+</span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; -&gt; sambaOptionName=description</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; -&gt; sambaOptionName=...</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; ..</span><span style="font-style: italic;">.<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+-&gt; sambaShareName=`</span><small>shareName2</small><span style="font-style: italic;">`<br>
+</span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; -&gt; sambaOptionName=description</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; -&gt; sambaOptionName=...</span><br style="font-style: italic;">
+</small>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<span style="font-style: italic;"><small>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; ...</small><br>
+<br>
+</span></div>
+
+
+
+
+
+<h2><a name="ss4.2">4.2 The links desktop</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;">This graphical interface "<span style="font-weight: bold;">controlFrontend</span>" <span id="result_box" class="short_text" lang="en"><span class="hps">has two</span> <span class="hps">views</span></span>. The menu "<span style="font-weight: bold;">display</span>" <span id="result_box" class="" lang="en"><span class="hps">allows</span> <span class="hps">to select</span> <span class="hps">the desired view</span> <span class="hps">and thereby</span> <span class="hps">to switch</span> from <span class="hps">the</span>&nbsp;<span class="hps"></span><span class="hps">display</span> of <span class="hps">the <span style="font-weight: bold;">LDAP</span> tree</span></span> <span id="result_box" class="" lang="en"><span class="hps">to</span> <span class="hps">a</span> <span class="hps">"<span style="font-weight: bold;">desktop</span>"</span> view <span class="hps">that will allow to define</span></span> (<span style="font-weight: bold;">right-click</span>) or to use (<span style="font-weight: bold;">double-click</span>) access links (shortcuts) toward the other graphical interfaces:<br>
+
+<br>
+
+<div style="text-align: center;"><img style="width: 692px; height: 560px;" alt="images/controlFrontend-desktop.png" src="images/controlFrontend-desktop.png"><br>
+</div>
+
+<br>
+</div>
+
+<h2><a href="../archives/ldapEasyAdminFrontends/sources/controlFrontend" name="ss4.3">4.3 The C++ source</a>
+</h2>
+
+
+
+
+
+
+<div style="margin-left: 40px; text-align: justify;"><span id="result_box" class="short_text" lang="en"><span class="hps">L</span><span class="hps">atest version</span></span> (<span style="font-weight: bold;">20110913</span>) <a style="font-weight: bold;" href="../archives/ldapEasyAdminFrontends/sources/controlFrontend">here</a>.<br>
+</div>
+
+<h2><a name="ss4.4">4.4 todo</a>
+</h2>
+
+
+
+
+
+
+<div style="margin-left: 40px; text-align: justify;">- Finalize<span id="result_box" class="" lang="en"> <span class="hps">the search function</span> <span class="hps">of</span> <span class="hps">objects</span> <span class="hps">within the</span> <span class="hps">tree</span><span>.</span></span></div>
+
+<br>
+
+<hr><a href="Howto-5.en.html">Next</a> <a href="Howto-3.en.html">Previous</a> <a href="Howto.en.html">Summary</a> <a href="Howto.fr.html"></a><a href="Howto.en.html"></a>
+
+
+
+
+
+
+
+
+
+</body></html>

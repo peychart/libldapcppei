@@ -1,0 +1,286 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html><head>
+
+
+  <meta name="GENERATOR" content="KompoZer-0.8a4"><title>LdapEasyInterface (libcppei) Mini Howto (Français)</title>
+  
+  <link href="LdapcppeiMiniHowto-1.fr.html" rel="next"></head><body><a href="Howto-7.en.html">Next</a> <a href="Howto-5.en.html">Previous</a> <a href="Howto.en.html">Summary</a> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; (<a href="Howto-6.fr.html"><span style="font-weight: bold;">Français</span></a> - English)
+<hr>
+<h2><a name="top"><span style="text-decoration: underline;">6. The management interface of the LDAP domains:</span>
+</a></h2>
+
+
+<div style="margin-left: 40px; text-align: justify;">This GUI allows to
+manage the LDAP tree for each LDAP domain of the administration of an
+intranet (adding/removing/modifying and parameters setting).<br>
+<br>
+<div style="text-align: center;"><img style="width: 647px; height: 586px;" alt="images/domainFrontend.png" src="images/domainFrontend.png"><br>
+<div style="text-align: left;"><small><small><span style="text-decoration: underline; font-weight: bold;">Note:</span> </small></small><span id="result_box" class="" lang="en"><small><small><span class="hps">The dual</span> <span class="hps">presence of the field</span> <span class="hps">"<span style="font-weight: bold;">streetAddress</span>"</span> <span class="hps">due to an error</span> <span class="hps">in</span> <span class="hps">the schema definition</span> <span class="hps atn">"</span><span style="font-weight: bold;" class="">cosine.schema</span><span>"</span> <span class="hps">made by its</span> <span class="hps"><span style="font-weight: bold;">RFC</span>...</span></small></small><span class=""></span></span></div>
+
+
+<small>
+</small></div>
+</div>
+
+
+<h2><a name="ss6.1">6.1 Overview
+</a></h2>
+
+
+<div style="margin-left: 40px;">
+<div style="text-align: justify;">This GUI shares its code with the three other GUIs: "<a href="Howto-8.en.html">personFrontend</a>", "<a href="Howto-9.en.html">posixGroupFrontend</a>" and "<a href="Howto-10.en.html">organizationalRoleFrontend</a>". <span id="result_box" class="" lang="en"><span class="hps">The name of</span> <span class="hps">its launch</span> <span class="hps">executable</span> <span class="hps">must therefore contain</span> <span class="hps atn">the string</span></span><span id="result_box" class="" lang="en"><span class="hps"></span><span class="hps"> </span></span>"<a style="font-weight: bold;" href="Howto-5.en.html">Frontend</a>" <span id="result_box" class="" lang="en"><span class="hps">preceded</span></span> (without space or other charactere)<span id="result_box" class="" lang="en"> <span class="hps">by the</span> <span class="hps">name of the </span></span>"<span style="font-weight: bold;">object Class</span>" <span id="result_box" class="" lang="en"><span class="hps">of the</span> <span class="hps">entity</span> <span class="hps">that it manages.</span></span> (above: "<span style="font-weight: bold;">domain</span>").<br>
+
+
+
+<br><span id="result_box" class="" lang="en"><span class="hps">Such an</span> <span class="hps">executable</span> <span class="hps">may</span> <span class="hps">be called by a</span> <span class="hps">physical or symbolic</span> <span class="hps">link</span></span> ("<span style="font-weight: bold;">ln [-s]</span>") <span id="result_box" class="" lang="en"><span class="hps">that meets</span> <span class="hps">the above rule</span> <span class="hps">or</span><span class="">, failing that,</span> <span class="hps">that does not contain</span> <span class="hps atn">the string</span></span>
+"<span style="font-weight: bold;">Frontend</span>". <span id="result_box" class="" lang="en"><span class="hps">This rule</span> <span class="hps">is recursive</span><span class="">, and therefore operates</span> <span class="hps">on</span> <span class="hps">links</span> <span class="hps">of links</span><span class="">.</span></span> (<a href="#ss6.6">See below</a>)<br>
+
+<br>
+<span style="font-weight: bold; text-decoration: underline;">The operating principle of this interface of LDAP domains management is the dynamic creation of its input mask from:</span><br>
+<ul>
+<li style="text-align: justify;">the list of "<span style="font-weight: bold;">object Class</span>" <span id="result_box" class="" lang="en"><span class="hps">constituting the</span> <span class="hps">domain</span> <span class="hps">being viewed</span> <span class="hps">(or</span> <span class="hps">created or modified</span></span>),<br>
+  </li><li style="text-align: justify;">and a list of their constituent attributes.</li>
+</ul>
+<br>The architect of the LDAP directory can, on a specific subtree,
+change the composition of subdomains present or future (add or delete
+at will one or more "<span style="font-weight: bold;">objectClasses</span>"). <span id="result_box" class="" lang="en"><span class="hps">These changes will be</span> <span class="hps">inherited by all</span> <span class="hps">their subdomains</span> <span class="hps">to come.</span></span><br>
+<br><span id="result_box" class="" lang="en"><span class="hps">The same</span> <span class="hps">"object</span> <span class="hps">classes</span><span>"</span> than<span class="hps"> those of the </span>parent domain<span class="hps"> are</span> <span class="hps">actually</span> <span class="hps">proposed</span> <span class="hps">automatically by default</span> <span class="hps">when creating</span> <span class="hps">a new</span> <span class="hps">sub-domain</span><span class="">;</span></span> this list of "<span style="font-weight: bold;">objectClasses</span>" may however be subject, at any time, to modifications (add/remove) <span id="result_box" class="" lang="en"><span class="hps">by the operator</span><span>,</span> <span class="hps"></span></span><span id="result_box" class="" lang="en"><span class="hps">as well as</span></span><span id="result_box" class="" lang="en"><span class="hps"></span> this one <span class="hps">owns the rights to</span> <span class="hps">change</span> <span class="hps">the structure of</span> the <span class="hps">objects managed by</span> <span class="hps">this interface</span></span> (role: "<span style="font-weight: bold;">adminStruct</span>").<br>
+<small><span style="font-weight: bold; color: black;"></span></small><br><span id="result_box" class="" lang="en"><span class="hps">Thus</span><span>,</span> <span class="hps">for example</span> <span class="hps">to create</span> <span class="hps">a</span> <span class="hps">subdomain</span> <span class="hps">of the root</span><span>,</span> <span class="hps">the following query</span> <span class="hps">will list the</span> <span class="hps atn">"</span><span style="font-weight: bold;" class="">objectClasses</span><span>"</span> <span class="hps">to consider</span> <span class="hps atn">(</span><span>the field</span> <span class="hps">"<span style="font-weight: bold;">top</span>"</span> <span class="hps">being of course</span> <span class="hps">excluded</span><span class="">)</span><span class="">:</span></span><br>
+
+
+
+<div style="margin-left: 40px;"><span style="color: rgb(255, 102, 0);">m_connectForm-&gt;getLdapHandle()-&gt;doSearchScopeBase ( m_connectForm-&gt;getRootEntry(), "objectClass" ) ;</span><br>
+</div>
+
+<span style="text-decoration: underline;"></span><br>The result could be:<br>
+
+
+
+<div style="margin-left: 40px; font-style: italic;"><small><span style="text-decoration: line-through; color: rgb(51, 102, 255);">objectClass: top</span><br style="color: rgb(51, 102, 255);">
+
+<span style="color: rgb(51, 102, 255);">objectClass: domain</span><br style="color: rgb(51, 102, 255);">
+
+<span style="color: rgb(51, 102, 255);">objectClass: dcObject</span><br style="color: rgb(51, 102, 255);">
+
+<span style="color: rgb(51, 102, 255);">objectClass: qmailUser<br>
+</span><span style="color: rgb(51, 102, 255);">objectClass: sambaGroupMapping</span><br>
+
+
+</small></div>
+
+<br>From this list, for each <span id="result_box" class="" lang="en"><span class="hps">occurrence</span></span>
+found, can be extract from the LDAP schema the list of mandatory and
+optional attributes needed to dynamically construct the display mask
+the form of a window with tabs ordered by "<span style="font-weight: bold;">object Classes</span>" ("QTabWidget")..<br>
+</div>
+<span style="text-decoration: underline;"></span><br>
+
+<span style="text-decoration: underline;" id="result_box" class="" lang="en"><span class="hps">The LDAP query</span> <span class="hps">for extracting</span> </span><span style="text-decoration: underline;">the definition of an "<span style="font-weight: bold;">objectClass</span>"</span><span id="result_box" class="" lang="en"><span style="text-decoration: underline;"> </span><span style="text-decoration: underline;" class="hps">within the</span><span style="text-decoration: underline;"> </span><span style="text-decoration: underline;" class="hps">schema</span><span style="text-decoration: underline;"> </span><span style="text-decoration: underline;" class="hps">will be as follows</span><span class="">:</span></span>
+
+<div style="margin-left: 40px;"><span style="color: rgb(255, 102, 0);">m_connectForm-&gt;getLdapHandle()-&gt;doSearchScopeBase ( "cn=subschema", "objectClasses" );</span><span style="color: rgb(255, 102, 0);"><br>
+</span></div>
+<br><span style="text-decoration: underline;" id="result_box" class="short_text" lang="en"><span class="hps">Extract</span> <span class="hps">of a possible result:</span><span class=""></span></span><br>
+
+<div style="margin-left: 40px;"><small><span style="color: rgb(51, 102, 255); font-style: italic;">...</span><br style="color: rgb(51, 102, 255); font-style: italic;">
+<span style="color: rgb(51, 102, 255); font-style: italic;">objectClasses: ( 1.3.6.1.4.1.1466.344 NAME 'dcObject' DESC 'RFC2247: domain component object' SUP top AUXILIARY MUST dc )</span><br style="color: rgb(51, 102, 255); font-style: italic;">
+<span style="color: rgb(51, 102, 255); font-style: italic;">...</span></small>
+
+<br>
+</div>
+<br>
+
+<div style="text-align: justify;">The function "<span style="font-weight: bold;">LDAPObjectClass* ldap_str2objectclass ()</span>" (from the LDAP-client library) allows the interface converting each result string to a structure <span style="font-weight: bold;">"LDAPObjectClass"</span> <span id="result_box" class="short_text" lang="en"><span class="hps">and extract</span> <span class="hps">the desired information</span> <span class="hps">easily</span></span> ("<span style="font-weight: bold;">oc-&gt;oc_at_oids_must</span>" and "<span style="font-weight: bold;">oc-&gt;oc_at_oids_may</span>" in the format "<span style="font-weight: bold;">char ** - null terminated</span>").<br>
+
+</div>
+
+<br>
+<br>
+<small><span style="font-weight: bold; color: black;"></span><big><span style="text-decoration: underline; font-weight: bold; color: rgb(255, 102, 0);">Nota :</span> </big></small><span style="font-weight: bold;">OpenLdap</span> does not allow, at present, to change the "<span style="font-weight: bold;">DN</span>" of an entry if it is not a leaf of the LDAP tree... The GUI "<a href="Howto-6.en.html">domainFrontend</a>" <span id="result_box" class="" lang="en"><span class="hps">emulates</span> <span class="hps">however</span></span> (<span id="result_box" class="" lang="en"><span class="">with the</span> <span class="hps">operator</span> <span class="hps">profiles</span></span> "<span style="font-weight: bold;">adminStruct</span>") this kind of "<span style="font-weight: bold;">DN</span>" modification (<span id="result_box" class="" lang="en"><span class="">except</span> <span class="hps">of course</span> <span class="hps">the root</span> <span class="hps">directory</span><span class="">:</span> </span>"<span style="font-weight: bold;">rootEntry</span>")&nbsp;<span id="result_box" class="" lang="en"><span class=""> by moving</span> <span class="hps">- ie: copy</span><span class="hps">+</span><span class="hps">delete -</span> <span class="hps">any</span> <span class="hps">of</span> <span class="hps">the</span> <span class="hps">tree</span> <span class="hps">on a such</span> <span class="hps">request.</span></span><big> <span style="text-decoration: underline; color: rgb(204, 0, 0);">Beware of writing volumes in the database that can be generated by such queries...</span><br>
+</big>
+</div><h2><a name="ss6.2">6.2 <span id="result_box" class="short_text" lang="en"><span class="hps">Management of</span> <span class="hps">Multi-valued</span><span class=""></span></span>
+</a></h2>
+
+
+<div style="margin-left: 40px; text-align: justify;"><span id="result_box" class="" lang="en"><span class="hps">For</span> <span class="hps">possibly</span> <span class="hps">multivalued</span> <span class="hps">parameters</span><span>,</span> <span class="hps">the following window</span> <span class="hps">is</span> <span class="hps">used</span> <span class="hps">and allows editing</span> <span class="hps">of</span> <span class="hps">all the desired values</span> <span class="hps">&#8203;&#8203;for the parameter</span><span class="">.</span></span><span style="font-weight: bold; text-decoration: underline;"></span><br>
+<br>
+<img style="width: 369px; height: 401px;" alt="images/domainFrontend-attrEdit.png" src="images/domainFrontend-attrEdit.png"><br>
+
+
+
+
+<br>
+<span style="font-weight: bold; text-decoration: underline;">Note:</span> <span id="result_box" class="" lang="en"><span class="hps">The different values</span> <span class="hps">&#8203;&#8203;are automatically</span> <span class="hps">sorted alphabetically</span><span class="">,</span></span> the first one appears implicitly in the mask main screen of the interface. <span id="result_box" class="" lang="en"><span class="hps">To force the order</span><span class="">,</span> <span class="hps">the syntax:</span></span> "{1}<span id="result_box" class="" lang="en"><span class="hps">parameter1</span><span class=""></span></span>, {2}<span id="result_box" class="" lang="en"><span class="hps">parameter2</span><span class=""></span></span>, ..." <span id="result_box" class="" lang="en"><span class="hps">is obviously</span> <span class="hps">useful</span></span>...<br>
+<br>
+
+<small>
+</small></div>
+
+
+<h2><a name="ss6.3">6.3 Trigger on input
+</a></h2>
+
+
+
+<div style="margin-left: 40px; text-align: justify;"><span id="result_box" class="" lang="en"><span class="hps">The definition</span> <span class="hps">of</span> <span class="hps">triggers</span> <span class="hps">is called</span> <span class="hps">through the</span> <span class="hps">menu</span><span class="">:</span></span> "<span style="font-weight: bold;">Settings/Triggers for <span style="text-decoration: underline;">E</span>diting fields</span>".<br>
+<br>These triggers can handle the case of some specific data when
+entered by the operator for example, to meet their formatting or to
+comply with certain consistency rules that may exist (not necessarily
+known from the authorized operator to manipulate this kind of data).<br>
+<br>This allows also simply to appeal to other specific interfaces that
+are better adapted to the handling of certain data type, such as for
+example an image picker for entering the parameter "<span style="font-weight: bold;">jpegPhoto</span>"...<br>
+<br>
+<div style="text-align: center;"><img style="width: 757px; height: 421px;" alt="images/triggersEditDefinition.png" src="images/triggersEditDefinition.png"><br>
+</div><br>Such a mask defining the triggers is accessible to the operator in editing mode only if the role "<span style="font-weight: bold;">adminStruct</span>" has previously been assigned.<br>
+
+<br>
+<br>The external command (format "<span style="font-weight: bold;">Unix Shell</span>")
+defined within each trigger is called automatically by the GUI when the
+operator attempts to edit the fields for which the trigger is defined.<br>
+<br>During the execution of each trigger, the external command that defines it, is called with, in its standard input (<span style="font-weight: bold;">stdin</span>),
+the current value of the trigger field. It goes without saying that the
+external command can of course ignore this value if it does not need it
+at runtime.<br>
+<br>
+<span style="text-decoration: underline;" id="result_box" class="" lang="en"><span class="hps">Each</span> <span class="hps">external command invoked</span> <span class="hps">by a trigger</span> <span class="hps">should be</span> <span class="hps">written</span> <span class="hps">so as to</span> <span class="hps">return with:</span></span><br>
+<ul>
+  <li>either, the new input validated by the operator (possibly including "", null value) to standard output (<span style="font-weight: bold;">stdout</span>) of the process, validated by a return code equal to: <span style="font-weight: bold;">0 (zero)</span>,</li>
+  <li>either, <span id="result_box" class="" lang="en"><span class="hps">on</span> breaking <span class="hps">or</span> on <span class="hps">runtime error</span><span class="">,</span></span> a return code <span style="font-weight: bold;">different from 0 (zero)</span>, <span id="result_box" class="" lang="en"><span class="hps">possibly</span></span> completed with an error message on the error output "<span style="font-weight: bold;">stderr</span>" of the process, <span id="result_box" class="" lang="en"><span class="hps">to</span> <span class="hps">inform</span> <span class="hps">the operator</span> <span class="hps">about the cause of</span> <span class="hps">failure.</span></span></li>
+</ul>The value string (or, more generally octects, depending on the
+nature of the information captured) and properly returned will be the
+new contents of the trigger field.<br>
+<br>
+<span style="text-decoration: underline; font-weight: bold;">Use of </span><span style="font-weight: bold; text-decoration: underline;">attribut values</span><span style="text-decoration: underline; font-weight: bold;"> :</span><br>
+<span id="result_box" class="" lang="en"><span class="hps">The values &#8203;&#8203;of</span> <span class="hps">the other attributes</span> <span class="hps">of the input mask</span> <span class="hps atn">(</span><span>attributes of the</span> <span class="hps">object</span> <span class="hps">being edited</span><span>)</span> can be <span class="hps">used in</span> <span class="hps">the definition</span> <span class="hps">of</span> any <span class="hps">trigger</span> <span class="hps">by</span> <span class="hps">the following syntax</span><span class="">:</span></span> "%<span style="font-weight: bold; font-style: italic;">attributeName</span><span style="font-weight: bold;"></span>" ...<br>
+<br>
+<span style="text-decoration: underline;">For example:</span> "<span style="font-weight: bold;">%dn</span>" or "<span style="font-weight: bold;">%uid</span>" <span id="result_box" class="" lang="en"><span class="hps">will be replaced by</span> <span class="hps">the values &#8203;&#8203;in</span> <span class="hps">these attributes</span> <span class="hps">just</span> <span class="hps">before executing</span> <span class="hps atn">the command </span></span>"<span style="font-weight: bold;">shell</span>" <span id="result_box" class="" lang="en"><span class="hps">that will define</span> <span class="hps">the trigger</span> <span class="hps">using them</span><span>.</span></span><br>
+<br>
+<span style="text-decoration: underline;" id="result_box" class="" lang="en"><span class="hps">Example of</span> <span class="hps">external command</span> <span class="hps">callable</span> <span class="hps">within</span> <span class="hps">a trigger</span><span class="">:</span></span> "<a href="../archives/ldapEasyAdminFrontends/sources/slappassword/"><span style="font-weight: bold;">/usr/local/bin/slappassword</span></a>"<span style="text-decoration: underline;"><br>
+<br>
+</span>
+<div style="text-align: center;"><img style="width: 842px; height: 375px;" alt="images/slappassword.png" src="images/slappassword.png"><br>
+</div>
+<br>This graphical interface "<a href="../archives/ldapEasyAdminFrontends/sources/slappassword/">slappassword</a>" (version 0.2 - 20100921) offers, <span id="result_box" class="" lang="en"><span class="">in this case</span><span>,</span> <span class="hps">a graphical frontend</span> <span class="hps">to</span> <span class="hps">the console command</span><span class="">:</span></span> "<span style="font-weight: bold;">slappasswd</span>" from project <a href="http://www.openldap.org">OpenLDAP</a>.<br>
+<br>
+<span style="font-style: italic;">
+</span>
+
+</div>
+
+
+<h2><a name="ss6.4">6.4 Triggers on display</a></h2>
+
+<div style="margin-left: 40px;"><span id="result_box" class="" lang="en"><span class="hps">This notion</span> <span class="hps">was</span> <span class="hps">introduced by</span> <span class="hps">version</span></span> 1.7 (20110803) <span id="result_box" class="" lang="en"><span class="hps">of this</span> <span class="hps">Admin GUI</span><span class="">.</span></span> <span id="result_box" class="" lang="en"><span class="hps">The definition of such</span> <span class="hps">triggers</span> <span class="hps">is done through the</span> <span class="hps">menu</span><span class="">:</span></span> "<span style="font-weight: bold;">Settings/Triggers on <span style="text-decoration: underline;">D</span>isplaying</span>".<br>
+<br>
+<span style="text-decoration: underline;">Example :</span><br>
+<div style="text-align: center;"><img style="width: 965px; height: 608px;" alt="images/triggersOnDisplaying.png" src="images/triggersOnDisplaying.png"><br>
+</div>
+<br>
+</div><h2><a name="ss6.5">6.5 Triggers on backup
+</a></h2>
+
+
+<div style="margin-left: 40px; text-align: justify;"><span id="result_box" class="" lang="en"><span class="hps">This notion</span> <span class="hps">was</span> <span class="hps">introduced by</span> <span class="hps">version</span></span> 1.3 (20100926) <span id="result_box" class="" lang="en"><span class="hps">of this</span> <span class="hps">Admin GUI</span><span class="">.</span></span> <span id="result_box" class="" lang="en"><span class="hps">The definition of such</span> <span class="hps">triggers</span> <span class="hps">is done through the</span> <span class="hps">menu</span><span class="">:</span></span> "<span style="font-weight: bold;">Settings/Triggers on <span style="text-decoration: underline;">B</span>ackup</span>".<br>
+<br>This is actually the same principle as above but, in this case,
+defined triggers will be awakened at the time of the backup in the LDAP
+database of the creation/ editing of each attribute concerned with the
+definition of such triggers.<br>
+<br>
+<span style="text-decoration: underline;">Example :</span> update of the attributes "<a href="Howto-11.en.html#ss11.6">sambaPwdLastSet</a>" and "<a href="Howto-11.en.html#ss11.6">sambaPwdCanChange</a>" on backup of the new "<a href="Howto-11.en.html#ss11.3.2">sambaNTPassword</a>" (modified or created) by the adequate external commands.<br>
+<br>These specific triggers are recursive. This means that if a trigger
+on update has the effect of changing another attribute, so this other
+attribute will trigger its own trigger (and so on) ...<br>
+<span style="text-decoration: underline;"></span><br>
+<span style="font-weight: bold; text-decoration: underline; color: rgb(255, 102, 0);">Note:</span><span style="color: rgb(255, 102, 0);"> </span><span style="font-weight: bold;"><span style="color: rgb(204, 0, 0);">Watch out for circular references in the definitions of triggers</span></span><span style="font-weight: bold;"><span style="color: rgb(204, 0, 0);">
+(modification of another attribute, changing it himself the previous one) !...</span><br>
+<br></span><big><span style="font-weight: bold;" id="result_box" class="" lang="en"><span class="hps">Nevertheless</span><span>,</span> <span class="hps">in order</span> <span class="hps">not to allow</span> <span class="hps">triggers</span> <span class="hps">in</span> <span class="hps">infinite loops</span><span>,</span> <span class="hps">the number of</span> <span class="hps">recursions</span> <span class="hps">is arbitrarily</span> <span class="hps atn">(</span><span>by</span> <span class="hps">program</span><span>)</span> <span class="hps">limited to 15</span><span class="hps">...</span></span></big><span style="font-weight: bold;"><br>
+</span>
+
+</div>
+<h2><a name="ss6.6">6.6 </a>The plugins</h2>
+
+
+
+<div style="margin-left: 40px;">
+<div style="text-align: justify;"><span id="result_box" class="" lang="en"><span class="hps">If</span> the <span class="hps">one or the</span> <span class="hps">other</span> <span class="hps">extensions</span></span> ("plugins") "<a href="Howto-11.en.html">libsambadomain.so</a>" or "<a href="Howto-14.en.html">libbind9domain.so</a>" <span id="result_box" class="" lang="en"><span class="hps">is available</span> <span class="hps">at the launch</span> <span class="hps">of the execution</span> <span class="hps">of the graphical interface</span></span> "<a href="#top">libdomain.so</a>", so<span id="result_box" class="" lang="en"> <span class="hps">this extension</span> <span class="hps">will</span> <span class="hps">be inserted</span> <span class="hps">automatically</span> <span class="hps">in a new tab</span> <span class="hps">within the</span> <span class="hps">mask</span> <span class="hps">interface,</span></span> like a new "<span style="font-weight: bold;">objectClass</span>", <span id="result_box" class="" lang="en"><span class="">completing</span> <span class="hps">this way</span> <span class="hps">the possibilities</span> <span class="hps">of</span> <span class="hps">managing</span></span> <span id="result_box" class="" lang="en"><span class="hps">for configuring the</span></span> LDAP domains:<br>
+
+<br>
+
+</div>
+<div style="text-align: center;"><img style="width: 647px; height: 522px;" alt="images/domainFrontend-pluginBind.png" src="images/domainFrontend-pluginBind.png"><br>
+</div>
+
+<br>
+
+<div style="text-align: center;"><img style="width: 647px; height: 522px;" alt="images/domainFrontend-pluginSmb.png" src="images/domainFrontend-pluginSmb.png"><br>
+</div>
+
+
+<br>
+</div>
+<h2><a name="ss6.7">6.7 </a><a href="../archives/ldapEasyAdminFrontends/sources/domain.so">The C++ source</a></h2>
+
+
+
+
+
+<div style="margin-left: 40px; text-align: justify;">The code of this GUI is currently shared with three other interfaces of LDAP administration.<br>
+<br><span id="result_box" class="short_text" lang="en"><span class="hps">L</span><span class="hps">atest version</span><span class=""></span></span> (<span style="font-weight: bold;">20120102</span>) <a href="../archives/ldapEasyAdminFrontends/sources/domain.so">here.</a><br>
+<br><span id="result_box" class="" lang="en"><span class="hps">After compiling</span></span> (<span id="result_box" class="" lang="en"><span class="hps atn"></span><span class="">and</span> <span class="hps">use</span> <span class="hps atn">the command</span></span> "<span style="font-weight: bold;">ln [-s]</span>"),
+it will be the call name of the program that will determine the
+administrative interface to be execute, and thus, the type of directory
+data to be managed by the operator ("<span style="font-weight: bold;">domainFrontend</span><span style="font-weight: bold;"></span>", "<a href="Howto-8.en.html#S8">personFrontend</a>", "<a href="Howto-9.en.html#S9">posixGroupFrontend</a>" or "<a href="Howto-10.en.html#S10">organizationalRoleFrontend</a>").<br>
+<br>
+<span style="text-decoration: underline; font-weight: bold;" id="result_box" class="short_text" lang="en"><span class="hps">Examples of definitions</span></span><span style="text-decoration: underline; font-weight: bold;"><span style="text-decoration: underline; font-weight: bold;">:</span><br>
+<br>
+</span>
+<div style="margin-left: 40px;">
+<div style="margin-left: 80px;"><span style="font-style: italic; font-weight: bold;">ln -s /usr/local/bin/<a href="Howto-5.en.html">frontend</a> /usr/local/bin/<a href="#top">domainFrontend</a></span><br style="font-style: italic; font-weight: bold;">
+<span style="font-style: italic; font-weight: bold;">ln -s /usr/local/bin/libdomain.so /usr/local/bin/libperson.so</span><br style="font-style: italic; font-weight: bold;">
+<span style="font-style: italic; font-weight: bold;">ln -s /usr/local/bin/<a href="Howto-5.en.html">frontend</a> /usr/local/bin/<a href="Howto-8.en.html">personFrontend</a></span><br style="font-style: italic; font-weight: bold;">
+<span style="font-style: italic; font-weight: bold;">ln -s
+/usr/local/bin/libdomain.so /usr/local/bin/libposixgroup.so</span><br style="font-style: italic; font-weight: bold;">
+<span style="font-style: italic; font-weight: bold;">ln -s /usr/local/bin/<a href="Howto-5.en.html">frontend</a> /usr/local/bin/<a href="Howto-9.en.html">posixgroupFrontend</a></span><br style="font-style: italic; font-weight: bold;">
+<span style="font-style: italic; font-weight: bold;">ln -s
+/usr/local/bin/libdomain.so /usr/local/bin/liborganizationalrole.so</span><br style="font-style: italic; font-weight: bold;">
+<span style="font-style: italic; font-weight: bold;">ln -s
+/usr/local/bin/<a href="Howto-5.en.html">frontend</a> /usr/local/bin/<a href="Howto-10.en.html">organizationalroleFrontend</a></span><br>
+</div>
+<span style="font-style: italic; font-weight: bold;"></span></div>
+
+
+
+
+
+
+<span style="font-style: italic; font-weight: bold;"><br>
+</span><span style="text-decoration: underline; font-weight: bold;" id="result_box" class="short_text" lang="en"><span class="hps">Examples of calling</span> <span class="hps">GUI</span><span class="">:</span></span><span style="font-style: italic; font-weight: bold;"><br style="font-style: italic; font-weight: bold;">
+</span>
+
+<br>
+<div style="margin-left: 40px;">
+<div style="margin-left: 80px;"><span style="font-style: italic;">me@home:~$ </span><span style="font-weight: bold; font-style: italic;">domainFrontend<br>
+</span><span style="font-style: italic;">me@home:~$ </span><span style="font-weight: bold; font-style: italic;">frontend --plugin person<br>
+</span><span style="font-style: italic;">me@home:~$ </span><span style="font-weight: bold; font-style: italic;">personFrontend</span><br>
+<span style="font-weight: bold; font-style: italic;"></span><span style="font-style: italic;"></span><span style="font-weight: bold; font-style: italic;"></span><span style="font-weight: bold; font-style: italic;"></span><span style="font-style: italic;">me@home:~$ </span><span style="font-weight: bold; font-style: italic;">frontend --plugin libposixgroup.so</span><br>
+<span style="font-weight: bold; font-style: italic;"></span><span style="font-style: italic;"></span><span style="font-weight: bold; font-style: italic;"></span><span style="font-style: italic;">me@home:~$ </span><span style="font-weight: bold; font-style: italic;">organizationalroleFrontend</span><br>
+<span style="font-weight: bold; font-style: italic;"></span><span style="font-style: italic;">...</span><span style="font-weight: bold; font-style: italic;"></span><br>
+</div>
+<span style="font-weight: bold; font-style: italic;"></span></div>
+<span style="font-weight: bold; font-style: italic;"></span><br>
+</div>
+
+<h2><a name="ss6.8">6.8 Todo</a></h2>
+<div style="margin-left: 40px; text-align: justify;"><span id="result_box" class="short_text" lang="en"><span class="hps">Tests</span></span>...</div>
+
+
+<hr><a href="Howto-7.en.html">Next</a> <a href="Howto-5.en.html">Previous</a> <a href="Howto.en.html">Summary</a>
+
+
+
+
+
+
+
+
+</body></html>

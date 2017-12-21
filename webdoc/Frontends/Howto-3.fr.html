@@ -1,0 +1,281 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html><head>
+
+  <meta name="GENERATOR" content="KompoZer-0.8a4"><title>LdapEasyInterface (libcppei) Mini Howto (Français)</title>
+  
+  <link href="LdapcppeiMiniHowto-1.fr.html" rel="next"></head><body><a href="Howto-4.fr.html">
+Page suivante</a>
+<a href="Howto-2.fr.html">Page précédente</a> <a href="Howto.fr.html">Sommaire</a> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; (<span style="font-weight: bold;">Français</span> - <a href="Howto-3.en.html">English</a>)
+<hr>
+
+
+
+<h2><a name="S3"><span style="text-decoration: underline;">3. La forme de connexion :</span>
+</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;"><br>
+<div style="text-align: center;"><img style="width: 405px; height: 326px;" alt="images/connectForm.png" src="images/connectForm.png"><br>
+</div>
+
+<br>
+
+</div>
+
+<h2><a name="ss3.1">3.1 Principe de fonctionnement
+</a></h2>
+
+
+<div style="margin-left: 40px; text-align: justify;">Cet objet est implémenté par la classe "<span style="font-weight: bold;">connectFrontend</span>".<br>
+<br>
+Il est appelé par toutes les interfaces graphiques d'administration (cf. menuBar : "<span style="font-weight: bold;">Action/Connect</span>"),
+aussi bien en mode interactif (par la forme ci-dessus) que lors d'une
+connexion automatique, telle que, par ordre de priorité :<br>
+<ul>
+  </ul>
+<ol>
+  <li>par passage des arguments de connexion, via la ligne de commande, lors du lancement d'une interface,</li>
+  <li>via le rappel des paramètres éventuellement sauvegardés par l'opérateur lors de la dernière session de travail (fichier : <span style="color: rgb(51, 204, 0);">~/.frontends/"nom_de_l'interface".xml</span>),</li>
+  <li>via la mémoire partagée (<span style="font-weight: bold;">IPC - shared memory</span>) préalablement initialisée par une autre session d'interface déjà en cours d'utilisation, sous le même login Unix ...</li>
+  <li>par connection interactive.<br>
+  </li>
+
+</ol>
+<ul>
+
+  
+  
+</ul>
+
+<br>
+<span style="text-decoration: underline;">Le principe d'une connexion interactive est le suivant :</span><br style="text-decoration: underline;">
+<ol>
+  <li><span style="text-decoration: underline; font-weight: bold;">Clic sur le bouton &lt;Connect&gt; :</span> la forme étant renseignée, une première connexion à l'annuaire définie par le champ "<span style="font-weight: bold;">Uri</span>" est réalisée en mode <span style="font-style: italic;">"</span><span style="font-weight: bold; font-style: italic;">anonymous</span><span style="font-style: italic;">"</span>. Si cette connexion n'est pas possible (URI
+erronée, droits insuffisants ...), la procédure est abandonnée.<br>
+</li>
+  <li><span style="font-weight: bold; text-decoration: underline;">Recherche du "DN"
+de l'utilisateur renseigné :</span> S'il n'existe pas ou que l'information
+est ambiguë (ie: plusieurs occurrences trouvées), la procédure est
+interrompue. Dans le cas d'un DN ambigu (plusieurs occurrences
+trouvées), il reste à l'utilisateur la possibilité d'indiquer le "<span style="font-weight: bold;">DN</span>" complet de son identifiant de connexion (<span style="font-weight: bold;">exemple</span>: "<span style="font-weight: bold; color: rgb(51, 204, 0);">cn=Manager, dc=mydomain</span>") au lieu de la simple information de <span style="font-weight: bold;">login</span> (ici "<span style="font-weight: bold;">Manager</span>") ...<br>
+  </li>
+  
+  <li><span style="text-decoration: underline; font-weight: bold;">Reconnexion automatique sous l'identité de l'utilisateur renseigné :</span> ce dernier
+doit disposer, en pratique, de certains accès définis par
+l'administrateur de l'annuaire. Il doit notamment avoir
+à minima accès en lecture à l'arborescence de paramétrage des frontaux
+d'administration "<span style="font-weight: bold;">LdapEasyInterface</span>" (voire même, selon certains
+profils qui lui seront accordés, l'accès en écriture à certaines partie
+de cette arborescence). Il doit aussi avoir, bien évidement, l'accès
+aux informations gérées au travers de l'interface ...<br>
+  </li><li><span style="text-decoration: underline; font-weight: bold;">Vérification de l'existence de l'arborescence de
+paramétrage de l'interface graphique d'appel :</span> à défaut, l'objet "<span style="font-weight: bold;">connectFrontend</span>" va essayer de créer cette arborescence ; il convient donc dans ce
+cas que l'utilisateur connecté soit effectivement un administrateur de
+la base, sinon l'utilisateur sera
+informé du manque des droits nécessaires à une telle
+initialisation et sera déconnecté. En revanche, si cette vérification est
+correcte et que l'objet "<span style="font-weight: bold;">connectFrontend</span>" trouve ce dont il a besoin, le programme continuera directement à <span style="font-weight: bold;">l'étape 9 décrite ci-dessous</span>. Si
+il y a besoin d'initialiser certaines informations de paramétrage absentes, le programme continuera à <span style="font-weight: bold;">l'étape 5</span> suivante.<br>
+</li>
+  <li><span style="font-weight: bold; text-decoration: underline;">Création de l'arborescence de paramétrage de l'interface graphique d'administration :</span> A défaut d'un paramétrage complet existant, une fenêtre de
+dialogue va donc s'afficher, précédée de son "aide en ligne"
+expliquant ce qui est attendu de l'opérateur. Dans un premier temps, il peut être demandé de situer <span style="font-style: italic; font-weight: bold;">la racine de l'arborescence de paramétrage</span><span style="font-weight: bold;"></span> commune à l'ensemble des interfaces d'administration (par exemple, cela pourrait être "<span style="font-weight: bold; color: rgb(51, 204, 0);">ou=LdapEasyInterface</span><span style="color: rgb(51, 204, 0);">,</span><span style="font-style: italic; color: rgb(51, 204, 0);">ou=ldap,ou=application</span><span style="color: rgb(51, 204, 0);">,</span><span style="font-weight: bold; color: rgb(51, 204, 0);">dc=mydomain</span>"). Si cette saisie n'est pas menée à
+terme, l'utilisateur sera déconnecté car aucun fonctionnement
+d'aucune des interfaces graphiques d'administration ne sera dans ce cas possible.<br>
+  </li>
+  
+  <li><span style="font-weight: bold; text-decoration: underline;">Vérification des rôles applicatifs accessibles à l'utilisateur :</span> En cas de succès de l'étape 5 précédente, il peut être signalé à
+l'opérateur qu'aucun rôle n'est encore défini dans l'annuaire actuel pour l'interface en cours
+d'utilisation. Deux solutions existent :</li>
+
+  <ol>
+    <li>soit l'interface en cours est justement celle
+permettant de
+définir de tels rôles (auquel cas, l'opérateur aura tout loisir de
+mener à terme cette définition, tout autant bien sûr qu'il possède au
+niveau de l'annuaire les droits d'administration suffisants),</li>
+    <li>soit, il sera indiqué à l'opérateur qu'il peut trouver un modèle de
+définition des rôles nécessaires dans le menu "aide" de l'application en cours. Ce modèle (au format <span style="font-weight: bold;">LDIFF</span>)
+ne concerne que les rôles spécifiques à l'application en cours
+d'exécution ; il sera donc nécessaire de ré-itérer la même opération pour chaque
+interface soumise à une gestion des rôles dans son utilisation ; le contenu "<span style="font-weight: bold;">LDIFF</span>" proposé
+pourra être copié à la souris et coller dans un fichier texte pour
+ensuite être éventuellement adapté et appliqué à la base d'annuaire (<span style="font-weight: bold;">ldapadd</span> - c'est l'une des raisons pour
+lesquelles cette tâche devra de préférence être menée par l'administrateur de la base
+...).<br>
+    </li>
+  </ol>
+  <li><span style="text-decoration: underline; font-weight: bold;">Vérification de définition du domain "corbeille" :</span> Si cela n'a encore jamais été fait, l'objet "<span style="font-weight: bold;">connectFrontend</span>" va demander à l'opérateur de <a href="Howto-2.fr.html#ss2.4.3"><span style="font-weight: bold; text-decoration: underline;">localiser la corbeille</span></a> dans la base d'annuaire. Il s'agira d'un nom de domaine (en "<span style="font-weight: bold; color: rgb(51, 204, 0);">dc=...</span>" ; par exemple : "<span style="color: rgb(51, 204, 0);"><span style="font-style: italic;">dc=_deleted</span><span style="font-weight: bold;">,dc=mydomain</span></span>")
+dans lequel seront localisés tous les effacements logiques futurs de
+l'annuaire (via les fonctions de suppression des interfaces graphiques
+d'administration "<span style="font-weight: bold;">LdapEasyAdmin</span>").
+Ce domaine spécifique (ou corbeille) devra être par ailleurs créé par l'administrateur (par
+exemple, via
+l'interface graphique de gestion des domaines "<a href="Howto-6.fr.html"><span style="font-weight: bold;">domainFrontend</span></a>" ;-), faute de quoi, le
+profil "<span style="font-weight: bold;">autorisation des suppressions</span>" éventuellement accordé à l'utilisateur en cours sera temporairement désactivé sur de telles actions ...<br>
+  </li>
+  <li><span style="font-weight: bold; text-decoration: underline;">Vérification de définition de la localisation des objects gérés par l'interface :</span> Dans cette étape, si besoin est, quelques informations supplémentaires seront demandées à l'opérateur, à savoir : <span style="font-weight: bold; font-style: italic;">la localisation de l'arborescence de stockage</span>, le nom de l'attribut de stockage de
+l'identifiant de l'objet géré par l'interface en court, ...
+Des aides en lignes guident l'opérateur en proposant&nbsp; des valeurs
+par défaut ...<br>
+  </li>
+  <li><span style="text-decoration: underline; font-weight: bold;">Choix du profile de connexion :</span> L'utilisateur
+étant identifié et le paramétrage de l'interface vérifié, il reste maintenant à définir
+le profil (et ses rôles associés) qu'il aura pendant la prochaine
+session de
+travail. Si aucun profil défini n'est trouvé par l'object "<span style="font-weight: bold;">connectFrontend</span>" dans la base d'annuaire pour
+l'utilisateur sollicitant la connexion,
+la procédure s'arrêtera là et l'utilisateur sera éjecté de
+l'application. En revanche, si un profil existe effectivement, la procédure de
+connexion sera effectuée. Si plusieurs profils
+existent (cas de "responsabilités multiples" affectées à une
+même personne), alors la liste des profils trouvés sera affichée (avec détails en
+info-bulles/tooltips) dans la partie basse de
+la forme
+de connexion. Il ne restera donc plus à l'opérateur qu'à sélectionner l'un des profils de
+connexion qui se proposent à lui, ceci en fonction du travail qu'il souhaite
+réaliser et du
+profil d'administration requis pour cela ...</li>
+
+  
+  <li><span style="font-weight: bold; text-decoration: underline;">Fin de la procédure de connexion à l'annuaire :</span> Une fois la sélection validée (double-clic ou action du bouton &lt;<span style="font-weight: bold;"><span style="text-decoration: underline;">S</span>elected
+profile</span>&gt;), la forme de connexion sera fermée, la connexion à l'annuaire sera effective et l'objet "<span style="font-weight: bold;">connectFrontend</span>" passera la
+main à l'interface graphique d'administration qui disposera dorénavant des
+possibilités de gestion définies pour le profil de connexion validé.</li></ol>
+  
+  Les accès effectifs pour l'utilisateur maintenant connecté correspondent à des <a href="Howto-2.fr.html#ss2.4.2">profils</a>, des <a href="Howto-2.fr.html#ss2.5">rôles</a>
+et des domaines autorisés qui ont préalablement été définis par l'administrateur de l'annuaire,
+ pour le
+compte de connexion de cet utilisateur ...
+<br>
+<br>
+A
+tout moment, l'utilisateur pourra revenir à cette forme de connexion afin,
+par exemple, de changer de profil de connexion, ou éventuellement, de se
+reconnecter sous un éventuel autre compte de connexion ...<br>
+<ol>
+
+</ol>
+
+<br>
+<span style="text-decoration: underline; font-weight: bold;">Quelques remarques :</span> <br>
+<br>
+<span style="font-style: italic; font-weight: bold;">&nbsp;&nbsp;&nbsp; - concernant la gestion des profils :</span><br>
+<ol>
+  <li>L'utilisation de profils multiples n'est pas obligatoire. Un seul
+profil par utilisateur peut être défini et regrouper l'ensemble des
+rôles applicatifs attribués à un utilisateur donné, cela pour l'ensemble (ou pas) des
+interfaces de gestion. La façon de gérer ces rôles restera à
+l'initiative de l'administrateur en charge de cette tâche ...<br>
+</li>
+  <li>le champ "<span style="font-weight: bold;">Uri</span>" doit
+impérativement (bien sûr : hors cas de connexions pour simples
+consultations) renseigner un annuaire de référence (writable), et non l'une de ses
+réplications
+éventuelles dans le cas d'une architecture d'annuaires dupliqués et/ou déportés !... ;-)<br>
+</li>
+  <li>les
+droits attribués sur chaque domaine réseau de compétence sont
+valables pour toute l'arborescence située sous ce domaine (ou
+sous-domaine) ; ils sont donc notamment hérités automatiquement dans
+les
+sous domaines fils éventuellement définis sous cette racine
+(ie. depuis le domaine père) ...<br>
+  </li>
+
+
+
+
+  
+</ol>
+<br>
+<span style="font-weight: bold; font-style: italic;">&nbsp;&nbsp;&nbsp; - concernant l'étape 4 :</span><br>
+<br>
+Lorsque il s'agit de la première fois qu'une GUI appelant cette forme de connexion ("<span style="font-weight: bold;">connectForm</span>")
+est lancée, aucun paramétrage n'est encore défini relativement à cette nouvelle GUI au sein de l'annuaire. Ainsi, la forme de
+connexion "<span style="font-weight: bold;">connectForm</span>" va détecter cette absence de paramétrage et va déclencher, si besoin est, l'appel automatique au masque d'écran ci-dessous qui
+permettra ainsi, à l'administrateur de l'annuaire, de renseigner le
+paramétrage absent.<br>
+<br>
+Si en outre<span style="font-weight: bold;"></span>, il s'agit d'un premier lancement toutes interfaces <span style="font-weight: bold;">LdapEasyInterface </span>confondues, l'object "<span style="font-weight: bold;">connectForm</span>"
+appellera préalablement deux autres formes supplémentaires pour
+permettre de définir : d'une part, la localisation souhaitée du domaine
+"<span style="font-weight: bold;">corbeille</span>" au sein de
+l'arborescence LDAP et, d'autre part, la localisation de la racine
+commune de tous les paramétrages d'interfaces graphiques du projet "<span style="font-weight: bold;">LdapEasyInterface</span>" ...<br>
+<br>
+<span style="text-decoration: underline;">Voici un aperçu du masque de saisie permettant de définir le paramétrage spécifique à chacune des Interfaces graphiques :</span><br>
+<br>
+
+<div style="text-align: center;"><img style="width: 503px; height: 152px;" alt="images/connectForm-setup.png" src="images/connectForm-setup.png"><br>
+</div>
+
+<br>
+<ol>
+  <li>le champs "<span style="font-weight: bold;">rdn</span>" permet de spécifier le <span style="font-weight: bold;">rdn</span> de stockage des objets gérés par l'interface graphique en cours d'exécution (ici, par exemple, les objets "serveurs"),</li>
+  <li>le champs "<span style="font-weight: bold;">dn</span>" n'est qu'un champs de visualisation du "<span style="font-weight: bold;">dn"</span> résultant de la définition du "<span style="font-weight: bold;">rdn</span>" précédent. Sur la copie d'écran ci-dessus, il indique que tout serveur, défini dans l'annuaire "<span style="font-weight: bold;">dc=</span><small style="font-weight: bold;"><span style="font-style: italic;">mydomain</span></small>",
+sera physiquement stocké au sein de son sous-domaine d'appartenance, et
+dans un sous-répertoire de nom (choisi par l'administrateur) : "<small style="font-weight: bold;"><span style="font-style: italic;">ou=server,ou=computer</span></small>".</li></ol>
+Quoiqu'il en soit, des valeurs de paramètres par défaut sont
+proposées, soit au niveau des aides spécifiques sur chacun des champs
+(<span style="font-weight: bold;">toolButton</span>), soit par des valeurs pré-renseignées dans les champs de saisie
+eux-mêmes.<br>
+<br style="text-decoration: underline;">
+<span style="text-decoration: underline;">Voici un exemple d'arborescence de configuration obtenue :</span><br>
+<br>
+<div style="text-align: center;"><img style="width: 323px; height: 763px;" alt="images/configuration.png" src="images/configuration.png"><br>
+</div>
+<br>Voici un <a href="../archives/ldapEasyAdminFrontends/sources/connectFrontend/setting_example.LDIFF">exemple au format "LDIFF" de paramétrage obtenu</a> ...<br>
+
+</div>
+
+<h2><a name="ss3.2">3.2 Quelques fonctionnalités supplémentaires<br>
+</a></h2>
+
+
+
+<div style="margin-left: 40px; text-align: justify;">Cette <a href="#S3">forme de connexion</a> est donc implémentée au sein de la classe "<span style="font-weight: bold;">connectFrontend</span>" qui est utilisée par chacun des programmes d'interfaces graphiques d'administration du projet "<span style="font-weight: bold;">GNU/LdapEasyAdmin</span>". Il
+s'agit par conséquent d'un espace commun de définition de fonctionnalités partagées
+par l'ensemble des interfaces graphiques d'administration.<br>
+<br>
+C'est pourquoi on trouve notamment dans cette classe la gestion de la mémoire partagée (cf. "<span style="font-weight: bold;">man ipc</span>") qui va être utilisée par chacun des processus GUI pour communiquer avec les autres (y compris d'ailleurs, par <a href="Howto-11.fr.html#ss11.3.2">certains outils d'aide à la saisie</a>).<br>
+<br>Ainsi, la connexion courante de l'utilisateur (identification et
+profil sélectionné) y sera en premier lieu renseignée, chacune des
+nouvelles GUI lancées se synchronisant (lors des rafraîchissements d'affichages) sur le
+changement éventuel de
+connexion opéré (login/profil) au sein de l'une d'entre elles.<br>
+<br>
+On trouve également dans de cette classe, la gestion de la position
+courante au sein de l'arborescence LDAP (current index) qui, modifiée par action de
+l'utilisateur au sein de l'une des interfaces ouvertes, sera
+répercutée en temps réel à toutes les autres interfaces graphiques en cours
+d'exécution sur le poste de l'utilisateur (cela, relativement à son login
+unix de connexion).<br>
+ </div><h2><a href="../archives/ldapEasyAdminFrontends/sources/connectFrontend" name="ss3.3">3.3 Les sources C++</a>
+</h2>
+
+
+
+
+<div style="margin-left: 40px; text-align: justify;">Les sources de la dernière version (<span style="font-weight: bold;">20110921</span>) sont <a style="font-weight: bold;" href="../archives/ldapEasyAdminFrontends/sources/connectFrontend">ici</a>.<br>
+<br>
+Cette classe sera compilée et pourra faire l'objet d'une bibliothèque en mode
+statique ou dynamique, à l'instar de l'API LDAP C++ : "<a style="font-weight: bold;" href="../miniHowto.fr.html">ldapcppei</a>".<br>
+<br>Depuis la version 1.0 (juillet 2010), une gestion de version de cette classe de connexion
+permet dans ce cas un contrôle automatique de cohérence à chaque lancement de l'une des interfaces.<br>
+</div><br><span style="font-weight: bold;"><big><span style="text-decoration: underline;"></span></big></span>
+<hr><a href="Howto-4.fr.html">Page suivante</a>
+<a href="Howto-2.fr.html">Page précédente</a> <a href="Howto.fr.html">Sommaire</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body></html>

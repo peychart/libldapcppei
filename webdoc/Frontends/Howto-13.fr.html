@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html><head>
+
+  <meta name="GENERATOR" content="KompoZer-0.8a4"><title>LdapEasyInterface (libcppei) Mini Howto (Français)</title>
+  
+  <link href="LdapcppeiMiniHowto-1.fr.html" rel="next"></head><body><a href="Howto-14.fr.html">
+Page suivante</a>
+<a href="Howto-12.fr.html">Page précédente</a> <a href="Howto.fr.html">Sommaire</a> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; (<span style="font-weight: bold;">Français</span> - <a href="Howto-13.en.html">English</a>)
+<hr>
+<h2><a name="S13"><span style="text-decoration: underline;">13. L'interface de gestion de la configuration du service NFSD :</span></a></h2>
+
+
+
+
+<h2><a name="ss13.1">13.1 Définition des services et ressources "NFS"
+</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;"><span style="text-decoration: underline; font-weight: bold;">Masque de saisie des paramètres du daemon "nfsd" :</span>
+<div style="text-align: center;"><span style="text-decoration: underline; font-weight: bold;"></span><img style="width: 975px; height: 662px;" alt="images/nfsFrontend.png" src="images/nfsFrontend.png"><br>
+</div>
+<br>
+<a href="../archives/ldapEasyAdminFrontends/sources/sambaconfig/nfsConfigFieldsDefinition_example.LDIFF">Ici se trouve la définition</a><span style="font-weight: bold;"></span>, au format "<span style="font-weight: bold;">LDIFF</span>", du masque "<span style="font-weight: bold;">nfsConfigFrontend</span>" en exemple et <a href="../archives/ldapEasyAdminFrontends/sources/sambaconfig/nfsShareFieldsDefinition_example.LDIFF">là se trouve</a> celle du masque "<span style="font-weight: bold;">nfsShareFrontend</span>" ...<br>
+<br>
+Le principe de définition de ce masque et le même que celui de "<a href="Howto-11.fr.html#ss11.7.1">sambaConfigFrontend</a>" ...<br style="font-weight: bold;">
+<span style="text-decoration: underline; font-weight: bold;"></span><br>
+</div>
+
+<h2><a name="ss13.2">13.2 L'interface de paramétrage système
+</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;">Voici l'interface de paramétrage de "<span style="font-weight: bold;">nfsd</span>": <a href="../archives/ldapEasyAdminFrontends/sources/getHostName/">doNfsdConf</a>. Elle partage ses sources avec <a href="Howto-7.fr.html#ss7.3">getHostName</a>. Elle peut donc être utilisée ainsi :<br>
+
+
+<span style="font-style: italic;"><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; </span></span><span style="font-weight: bold; font-style: italic;">getHostName&nbsp; --nfsdConf</span><span style="font-style: italic;"></span><br>
+
+
+ou bien :&nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp; &nbsp; <span style="font-style: italic;"></span><span style="font-weight: bold; font-style: italic;">ln&nbsp; -s&nbsp; /usr/local/bin/getHostName&nbsp; /usr/local/bin/</span><span style="font-weight: bold; font-style: italic;">doNfsdConf</span><span style="font-weight: bold; font-style: italic;">&nbsp; ;&nbsp; </span><span style="font-weight: bold; font-style: italic;">doNfsdConf</span><span style="font-weight: bold; font-style: italic;"></span><span style="font-style: italic;"></span><br>
+
+
+<br>
+
+
+Ce programme permet la génération automatique (déclenchée soit par "<span style="font-weight: bold;">cron</span>",
+soit au niveau des procédures de démarrage du système destinataire) du
+fichier de configuration "<span style="font-weight: bold;">nfsd</span>" ("<span style="font-weight: bold; font-style: italic;">/etc/exports</span>") à partir des informations (si elles existent) contenues dans
+la base LDAP et concernant l'adresse MAC du serveur courant (où la
+commande est lancée) :<br>
+<div style="text-align: center;"><span style="font-weight: bold; font-style: italic;">doNfsdConf -v -U ldap://ldap... &gt;&gt;/etc/exports</span><br>
+</div>
+
+
+
+<br>
+
+
+<span style="text-decoration: underline; font-weight: bold;">Exemple de </span><span style="text-decoration: underline; font-weight: bold;">shell-</span><span style="text-decoration: underline; font-weight: bold;">script de démarrage à installer (/etc/init.d/) sur chacun des serveurs de l'intranet à administrer :<br>
+</span><span style="font-weight: bold;"></span><small><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  ...</span><br style="font-style: italic;">
+<span style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; # </span><a style="font-style: italic;" href="Howto-12.fr.html#ss12.2">previous setting...</a><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  ...<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; </span><span style="font-style: italic;">NFSDCONFFILE</span><span style="font-style: italic;">="/etc</span><span style="font-style: italic;"></span><span style="font-style: italic;">/exports</span><span style="font-style: italic;"></span><span style="font-style: italic;">"<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; TMP=/tmp/.doNfsdConf.$$<br>
+&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="font-style: italic;">&lt;</span><span style="font-style: italic;">$</span><span style="font-style: italic;"></span><span style="font-style: italic;">NFSDCONFFILE</span><span style="font-style: italic;"> </span><span style="font-style: italic;">awk '{</span><span style="font-style: italic;">if ($0 ~ /@\(#)LdapEasyInterface - Nfsd -/) bool=1;</span><span style="font-style: italic;"> </span><span style="font-style: italic;">if (!bool) print $0</span><span style="font-style: italic;">;</span><span style="font-style: italic;"> </span><span style="font-style: italic;">if ($0 ~ /@\(#)LdapEasyInterface - End -/) bool=0</span><span style="font-style: italic;">}' &gt;$TMP</span><br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; <span style="font-style: italic;">2&gt;/dev/null ${BIN}/<a href="../archives/ldapEasyAdminFrontends/sources/getHostName/">getHostName</a> --nfsdConf&nbsp; &gt;&gt;$TMP<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; [ $? -eq 0</span><span style="font-style: italic;">
+] &amp;&amp;</span><span style="font-style: italic;"> cat &lt;$TMP &gt;$NFSDCONFFILE</span><br>
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  </span><span style="font-style: italic;">rm -f&nbsp; $TMP</span><span style="font-style: italic;"></span><span style="font-style: italic;"></span><span style="font-style: italic;"></span><span style="font-style: italic;"></span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  ...<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  # <a href="Howto-14.fr.html#ss14.2"><span style="text-decoration: underline;">next setting...</span></a><br>
+</span><span style="text-decoration: underline;"></span>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  ...</small>
+
+
+
+
+
+
+
+
+<br>
+<br>
+
+
+<span style="text-decoration: underline; font-weight: bold;">Exemple d'utilisation de cette interface sur la "</span><a style="text-decoration: underline; font-weight: bold;" href="../archives/ldapEasyAdminFrontends/exportLDAP_example.LDIFF">base de tests</a><span style="text-decoration: underline; font-weight: bold;">" :</span><br>
+
+
+<br>
+
+
+<small><span style="font-style: italic; font-weight: bold;">root@me:~/Cdev#&nbsp; <a href="../archives/ldapEasyAdminFrontends/sources/getHostName/">doNfsdConf</a>&nbsp; -v --forceMacAddress&nbsp; 11:22:33:44:55:66</span><br style="font-style: italic;">
+<span style="font-style: italic;"></span></small><small><span style="font-style: italic;">multimedia&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; </span><span style="color: rgb(0, 153, 0); font-style: italic;">// Here, it's "stderr"</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; </span><span style="color: rgb(0, 153, 0); font-style: italic;">// Now, it's "stdout"...</span></small><small><span style="font-style: italic;"></span><span style="color: rgb(0, 153, 0); font-style: italic;"></span><br style="font-style: italic;">
+<span style="font-style: italic;"># @(#)LdapEasyInterface - Nfsd - Definitions of Shares:<br>
+/pub/music *.local.mydomain(all_squash,anongid=nobody,anonuid=nobody,insecure,ro)<br>
+/pub/picture *.local.mydomain(ro,all_squash,anongid=nobody,insecure)<br>
+/pub/video\&nbsp; *.local.mydomain(ro,all_squash,anongid=nobody,insecure)<br>
+# @(#)LdapEasyInterface - End -<br>
+</span><span style="font-style: italic;"></span><br style="font-style: italic;">
+<span style="font-style: italic; font-weight: bold;">root@me:~/Cdev#&nbsp; echo $?<br>
+</span><span style="font-style: italic;">0
+</span><span style="font-style: italic; font-weight: bold;"><br>
+root@me:~/Cdev#</span></small>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+<h2><a name="ss13.3"></a>13.3 <a href="../archives/ldapEasyAdminFrontends/">Les sources C++</a><br>
+</h2>
+
+
+<div style="text-align: justify; margin-left: 40px;">La dernière version (<span style="font-weight: bold;">20110913</span>) des sources communes à <a href="../archives/ldapEasyAdminFrontends/sources/sambaconfig.so">"libnfsconfig.so" et "libnfsshare.so" est là</a>.<br>
+
+<br>
+<small style="font-style: italic;"><span style="font-weight: bold;">&nbsp;</span></small><small style="font-style: italic;"><span style="font-weight: bold;">&nbsp;&nbsp; - nfsConfigFrontend</span> s'obtient par les commandes SHELL :<br>
+</small><small style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">ln [-s] /usr/local/bin/libsambaconfig.so /usr/local/bin/libnfsconfig.so</span><br>
+</small><small style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">ln [-s] /usr/local/bin/<a href="Howto-5.fr.html">frontend</a> /usr/local/bin/nfsConfigFrontend</span></small><small style="font-style: italic;"><span style="font-weight: bold;"><br>
+&nbsp; &nbsp; - nfsShareFrontend</span> s'obtient par la commande SHELL :<br>
+</small><small style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">ln [-s] /usr/local/bin/libsambaconfig.so /usr/local/bin/libnfsshare.so</span><br>
+</small><small style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">ln [-s] /usr/local/bin/<a href="Howto-5.fr.html">frontend</a> /usr/local/bin/nfsShareFrontend<br>
+</span></small>Ces mêmes sources gèrent aussi la définition de l'interface de paramétrage des services réseau : "<a href="Howto-11.fr.html#ss11.7"><span style="font-weight: bold;">Samba</span></a>" &amp; "<a href="Howto-12.fr.html"><span style="font-weight: bold;">Rsyncd</span></a>" ...<br>
+
+
+</div>
+<br>
+<hr><a href="Howto-14.fr.html">Page suivante</a>
+<a href="Howto-12.fr.html">Page précédente</a> <a href="Howto.fr.html">Sommaire</a>
+
+
+</body></html>

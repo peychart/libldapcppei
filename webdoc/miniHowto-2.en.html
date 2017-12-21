@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html><head>
+
+
+
+  <meta name="GENERATOR" content="KompoZer-0.8a4"><title>LdapEasyInterface (libcppei) Mini Howto (English)</title>
+  
+  <link href="LdapcppeiMiniHowto-1.fr.html" rel="next"></head><body>Next
+<a href="miniHowto-1.en.html">Previous</a> <a href="miniHowto.en.html">Summary</a> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; (<a href="miniHowto-2.fr.html"><span style="font-weight: bold;">Français</span></a> - <span style="font-weight: bold;">Anglais</span>)
+
+<hr>
+
+<h2><a name="S1"><span style="text-decoration: underline;">2.
+Installing the GNU/ldapcppei API:</span></a></h2>
+
+<h2><a name="ss2.1">2.1 Where to get the sources of the GNU/ldapcppei API?</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;">The API <span id="result_box" class="" lang="en"><span class="hps">is in the form</span> <span class="hps">of</span> <span class="hps">compilable</span> <span class="hps">sources</span> <span class="hps">contained in</span> <span class="hps">a</span> <span class="hps">software</span> <span class="hps">package</span> <span class="hps">that is</span></span> <a href="http://home.gna.org/ldapcppei/archives/">here</a> <span id="result_box" class="" lang="en"><span class="hps">and</span> <span class="hps">comes in the</span> <span class="hps">form of</span> <span class="hps">an archive file</span> <span class="hps">format</span></span> "tar" <span id="result_box" class="" lang="en"><span class="hps">compressed</span></span> "gzip" ("<span style="color: rgb(51, 204, 0);">.tgz</span>").<br>Its name is:
+"<a href="http://home.gna.org/ldapcppei/archives/libldapcppei/">libldapcppei-$(version_number).tgz</a>".<br>
+(The "<span style="font-weight: bold;">libldap2-dev</span>" package is also needed).<br>
+
+</div>
+
+
+<h2><a name="ss2.2">2.2 How to prepare the compile of the
+GNU/ldapcppei API?</a></h2>
+
+<div style="margin-left: 40px;">After downloading the package (for example: to the directory "<span style="color: rgb(51, 204, 0);">/tmp</span>"), type:<br>
+<br>
+<div style="margin-left: 40px;"><span style="color: rgb(255, 102, 0);"></span>...:~$ <span style="color: rgb(255, 102, 0);">cd /tmp</span><span style="color: rgb(255, 102, 0);"><br>
+</span>...:/tmp/$ <span style="color: rgb(255, 102, 0);">tar xzf libldapcppei-$(version).tgz<br>
+</span>...:/tmp/$ <span style="color: rgb(255, 102, 0);">cd </span><span style="color: rgb(255, 102, 0);">libldapcppei/</span>
+
+</div>
+<br>
+<small>(<span style="text-decoration: underline;">Note:</span> Once operations build and installation finished (- detailed below -), this directory "<span style="color: rgb(51, 204, 0);">libldapcppei/</span>" and all its contents could be deleted by the command: "<span style="font-weight: bold;">rm -r</span> ...").<br>
+</small></div>
+
+
+<h2><a name="ss2.3">2.3 How to compile the GNU/ldapcppei API?</a></h2>
+
+<div style="margin-left: 40px;">
+
+<div style="text-align: justify;">In this same directory (here:
+"<span style="color: rgb(51, 204, 0);">/tmp/libldapcppei/</span>"), type the commande "<span style="color: rgb(255, 102, 0);">make</span>". It will build, in the subdirectory "<span style="color: rgb(51, 204, 0);">./src/</span>", the three following libraries:<br>
+</div>
+
+<br>
+<ul><li style="text-align: justify;"><span style="color: rgb(51, 204, 0);">libldapcppei.so</span> : <span id="result_box" class="short_text" lang="en"><span class="hps">library for</span> <span class="hps">dynamic linking,</span></span>
+
+  </li><li style="text-align: justify;"><span style="color: rgb(51, 204, 0);">libldapcppei-dbg.so</span> : <span id="result_box" class="" lang="en"><span class="hps">contains the</span> <span class="hps">debugging information</span> <span class="hps atn">(</span><span>sometimes useful</span> <span class="hps">to developers</span></span> ;-),<br>
+  </li><li style="text-align: justify;"><span style="color: rgb(51, 204, 0);">libldapcppei.a</span> : <span id="result_box" class="" lang="fr"><span class="hps">library for linking in static mode (embedded code to the executable program to use ...).</span><span class=""></span></span><span id="result_box" class="" lang="fr"><span class=""></span></span>
+  </li></ul>
+
+<br>
+</div>
+
+
+<h2><a name="ss2.4">2.4 How to install the GNU/ldapcppei API?</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;">Run the command "<span style="color: rgb(255, 102, 0);">sudo make install</span>"; <span id="result_box" class="" lang="en"><span class="">so</span> <span class="hps">the</span> <span class="hps">previously</span> <span class="hps">generated</span> <span class="hps">three</span> <span class="hps">libraries</span> <span class="hps">will be deployed</span> <span class="hps">in their</span> <span class="hps">host</span> <span class="hps">tree</span></span> ("<span style="color: rgb(51, 204, 0);">/usr/local/lib</span>") <span id="result_box" class="" lang="en"><span class="hps">and</span> <span class="hps">their location will be</span> <span class="hps">declared</span> <span class="hps">to</span> <span class="hps">user applications</span> <span class="hps">via the</span> <span class="hps">subsystem</span></span> "<span style="font-weight: bold;">ldconfig</span>".<br>
+<br>Files "<a href="http://home.gna.org/ldapcppei/archives/libldapcppei/sources/libldapcppei/">include.h</a>" will be copied in the tree
+"<span style="color: rgb(51, 204, 0);">/usr/local/include/</span>" (default).<br>
+
+</div>
+
+
+<h2><a name="ss2.5">2.5 How to deploy the sources of the GNU/ldapcppei API?</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;">If needed, run the command "<span style="color: rgb(255, 102, 0);">sudo make installsrc</span>"; <span id="result_box" class="" lang="en"><span class="hps">it</span> <span class="hps">will effectively</span> <span class="hps">make available the</span> <span class="hps">sources</span></span> ("<a href="http://home.gna.org/ldapcppei/archives/libldapcppei/sources/"><span style="font-weight: bold;">*.cpp</span></a>") <span id="result_box" class="" lang="en"><span class="hps">of the library in</span> <span class="hps">the home directory</span></span>
+"<span style="color: rgb(51, 204, 0);">/usr/local/src/ldapcppei/</span>" (default).<br>
+</div>
+
+
+<h2><a name="ss2.6">2.6 How to uninstall GNU/ldapcppei ?</a></h2>
+
+
+<div style="margin-left: 40px; text-align: justify;">The command "<span style="color: rgb(255, 102, 0);">sudo make uninstall</span>" allows to uninstall the librairies previously installed, to delete the "<span style="font-weight: bold;">include.h</span>" specific files, source files eventually installed and the default directory location ("<span style="color: rgb(51, 204, 0);">/usr/local/src/ldapcppei/</span>") of this package.
+</div>
+
+
+
+<h2><a name="ss2.7">2.7 How to get the DEBIAN package?</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;">The command "<span style="color: rgb(255, 102, 0);">make debian</span>" (needs the "<span style="font-weight: bold;">fakeroot</span>" package installed) allows to <a href="http://home.gna.org/ldapcppei/archives/libldapcppei/">get the "<span style="font-weight: bold; font-style: italic;">DEBIAN</span>.deb"</a> (containing sources and dependencies management)...<br>
+
+<br>
+<span style="font-weight: bold; text-decoration: underline;">NOTE:</span> <span style="font-style: italic; color: red;">The installation described above (<a href="#ss2.3">2.3 - 2.6</a>) no longer applies in this case since it suffices to simply install the package ("</span><span style="font-weight: bold; font-style: italic; color: red;">*.deb</span><span style="font-style: italic; color: red;">")
+thus obtained; the API can then be performed with one of utilities (command mode or graphics mode) managing this type of
+distribution (eg "<span style="font-weight: bold;">sudo apt-get install *.deb</span>").</span><br>
+</div>
+
+
+<hr>Next <a href="miniHowto-1.en.html">Previous</a> <a href="miniHowto.en.html">Summary</a>
+</body></html>

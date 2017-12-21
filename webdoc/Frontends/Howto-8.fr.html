@@ -1,0 +1,286 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html><head>
+
+
+
+  <meta name="GENERATOR" content="KompoZer-0.8a4"><title>LdapEasyInterface (libcppei) Mini Howto (Français)</title>
+  
+  <link href="LdapcppeiMiniHowto-1.fr.html" rel="next"><style type="text/css">ite-space: pre-wrap; }</style></head><body><a href="Howto-9.fr.html">Page suivante</a> <a href="Howto-7.fr.html">Page précédente</a> <a href="Howto.fr.html">Sommaire</a> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; (<span style="font-weight: bold;">Français</span> - <a href="Howto-8.en.html">English</a>)
+<hr>
+<h2><a name="S8"><span style="text-decoration: underline;">8. L'interface de gestion des utilisateurs "personFrontend" :</span></a></h2>
+<h2 style="margin-left: 40px; font-weight: normal;"><small><small>Cette
+interface permet d'administrer les comptes utilisateurs
+définis dans l'annuaire LDAP (ajout/suppression/modification).</small></small></h2>
+<div style="text-align: left;"><img style="width: 887px; height: 553px;" alt="images/personFrontend.png" src="images/personFrontend.png"><br>
+</div>
+<br>
+
+
+<h2><a name="ss8.1">8.1 Principe</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;">Cette interface partage son code avec l'interface "<a href="Howto-6.fr.html#top">domainFrontend</a>". Le nom de l'exécutable doit donc contenir la chaîne de caractères "<span style="font-weight: bold;">Frontend</span>" précédée (sans espace ni autre caractère) par le nom de "l'<span style="font-weight: bold;">objectClass</span>" principal de l'entité gérée (ici : "<span style="font-weight: bold;">person</span>", soit : "<span style="font-weight: bold;">personFrontend</span>").<br>
+<br>
+Cet exécutable peut être appelé au travers d'un lien symbolique qui
+respecte la même règle ou, à défaut, qui ne contient pas la chaîne
+"<span style="font-weight: bold;">Frontend</span>" (cette règle est récursive - donc valable sur lien de lien ...).<br>
+<br>
+<span style="text-decoration: underline;">Le principe de cette interface de gestion des comptes utilisateurs est la constitution dynamique du masque de saisie à partir :</span><br style="text-decoration: underline;">
+
+
+<ul>
+<li>de la liste des "<span style="font-weight: bold;">objectClass</span>" définis par l'administrateur au travers du dernier onglet présent lorsque le rôle "<span style="font-weight: bold;">adminStruct</span>" est activé.<br>
+  </li><li>de la liste des attributs qui composent chacun des "<span style="font-weight: bold;">objectClass</span>" définies pour ce type d'entités ("<span style="font-weight: bold;">person</span>").<br>
+  </li>
+</ul>Lorsque l'administrateur de l'annuaire LDAP ajoute ou supprime un ou plusieurs "<span style="font-weight: bold;">objectClasses</span>",
+cette information est mémorisée dans l'annuaire LDAP. Par la suite,
+toute définition de compte utilisateur qui sera créée ou modifiée sera obligatoirement impactée par ce nouveau schéma.<br>
+<br>
+Excepté le principe de cette déclaration des "<span style="font-weight: bold;">objectClass</span>" qui composent un compte utilisateur, le reste du fonctionnement de cette interface est le même que celui de l'interface "<a href="Howto-6.fr.html#top">domainFrontend</a>".
+<small>
+</small></div>
+
+
+<h2><a name="ss8.2">8.2 Modification de la liste des "objectClasses"
+</a></h2>
+<div style="margin-left: 40px;">En mode "édition" :<br>
+<div style="text-align: center;"><img style="width: 672px; height: 467px;" alt="images/personFrontend-addObjectClasses.png" src="images/personFrontend-addObjectClasses.png"><br>
+</div><br><span style="text-decoration: underline;">
+Remarque :</span><br>
+<div style="margin-left: 40px; text-align: justify;">- la liste des "objectClasses <span style="font-weight: bold;">inheriting</span>" (ici absente car vide, compte tenu des définitions déjà intégrées à l'objet courant) est fonction des "<span style="font-weight: bold;">objectClasses</span>" constituant déjà l'objet.<br>
+</div>
+<br>
+<span style="font-weight: bold; text-decoration: underline;">Résultat :</span><br>
+<br>
+<div style="text-align: left;"><img style="width: 253px; height: 165px;" alt="images/personFrontend-new.png" src="images/personFrontend-new.png"><br>
+</div>
+
+<br>
+
+<div style="text-align: justify;">
+Pour supprimer un "<span style="font-weight: bold;">objectClass</span>", il suffit de fermer son onglet correspondant ; cependant, "l'<span style="font-weight: bold;">objectClass</span>" de base (ici "<span style="font-weight: bold;">person</span>") ne peut être supprimé, de même que tout "<span style="font-weight: bold;">objectClass</span>" dont dépendent d'autres "<span style="font-weight: bold;">objectClasses</span>" déjà présents dans l'objet courant.<br>
+
+<br>
+
+L'ordre des onglets peut être modifié (par drag &amp; drop) et sera
+sauvegardé automatiquement lors de la sortie de l'interface, ceci à
+condition que le rôle "<span style="font-weight: bold;">adminStruct</span>" soit affecté au compte de connexion qui a été utilisé lors de la session courante.<br>
+
+<small>
+</small></div>
+</div>
+
+<h2><a name="ss8.3">8.3 Saisie de mots de passe, saisie d'images, saisie de groupes d'appartenance ou liste d'utilisateurs existants
+</a></h2>
+<div style="margin-left: 40px; text-align: justify;">Cette saisie est basée sur la notion de déclencheurs détaillée <a href="Howto-6.fr.html#ss6.3">ici</a> ... L'un des utilitaires pouvant être appelé pour effectuer des saisies spécifiques est par exemple : "<a href="../archives/ldapEasyAdminFrontends/sources/slappassword/">slappassword</a>".<br>
+<br>
+Cet utilitaire du projet "<a href="Howto.fr.html">LdapEasyInterface</a>" constitue une interface graphique à la commande "<span style="font-weight: bold;">slappasswd</span>" spécifique au projet "<a href="http://www.openldap.org">openLdap</a>".
+Il peut aussi être utilisé de façon autonome pour modifier ou vérifier
+un mot de passe dans l'annuaire LDAP, y compris par tentative de
+connexion (cf.: "<span style="font-weight: bold;">slappassword&nbsp; --help</span>").<br>
+<br>
+<div style="text-align: center;"><img style="width: 750px; height: 386px;" alt="images/slappassword2.png" src="images/slappassword2.png"><br>
+</div>
+<br>
+<span style="text-decoration: underline; font-weight: bold;">Syntaxe :</span><br><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold; font-style: italic;">slappassword&nbsp;&nbsp;</span><span style="font-weight: bold; font-style: italic;"> </span><span style="font-weight: bold; font-style: italic;"></span><span style="font-weight: bold; font-style: italic;">[ (-H/--host "hostname[:port]")&nbsp; /&nbsp; ("anIPCLdapConnectionIsActive")&nbsp; --dn "userDn"&nbsp; </span><span style="font-weight: bold; font-style: italic;"> [--update</span><span style="font-weight: bold; font-style: italic;">] ]</span><span style="font-weight: bold; font-style: italic;">&nbsp; </span><span style="font-weight: bold; font-style: italic;">[--date "</span><span style="font-weight: bold; font-style: italic;">secondesSince1970</span><span style="font-weight: bold; font-style: italic;">"]</span><span style="font-weight: bold; font-style: italic;">&nbsp; [--minLength/-m #]</span><span style="font-weight: bold; font-style: italic;">&nbsp;</span><span style="font-weight: bold; font-style: italic;"></span><span style="font-weight: bold; font-style: italic;"> [{scheme}currentHashedPassword / --stdin]</span><br>
+<ul>
+  <li>L'option <span style="font-weight: bold;">--host/-H</span> : sert à indiquer le nom du serveur hébergeant l'annuaire <span style="font-weight: bold;">LDAP</span> (pour le test de connexion et/ou l'option "<span style="font-weight: bold;">--update</span>").
+Cette option n'est pas nécessaire si une connexion est par ailleurs active en mémoire
+partagée (autre interface ldapEasyInterface en cours d'exécution et
+elle-même connectée). Cette dernière sera alors utilisée pour établir la connexion <span style="font-weight: bold;">LDAP </span>de l'utilitaire à l'annuaire<span style="font-weight: bold;"></span>.<br>
+</li>
+  <li>L'option <span style="font-weight: bold;">--dn/-d</span> : sert à indiquer le <span style="font-weight: bold;">DN</span>
+de l'identifiant de connexion pour lequel on souhaite vérifier/mettre à
+jour le mot de passe. Elle est associée à l'option précédente "<span style="font-weight: bold;">-H</span>" ou bien à la connexion IPC (shared memory) courante.</li>
+<li style="text-align: justify;">L'option "<span style="font-weight: bold; font-style: italic;">--date</span><span style="font-weight: bold; font-style: italic;"></span>"
+permet de spécifier une date de référence (au format UNIX : secondes
+depuis 1970) avant laquelle la modification du mot de passe ne sera pas autorisée (cf. <a href="Howto-11.fr.html#ss11.3">ici</a>),<br>
+  </li>
+
+  <li>L'option <span style="font-weight: bold;">--update</span> :
+permet de spécifier que, si le test de connexion a bien abouti (ou qu'une connexion d'interface&nbsp; "<span style="font-weight: bold;">ldapEasyInterface</span>" est déjà active - décrite en "<span style="font-weight: bold;">shared memory</span>") et qu'un
+nouveau mot de passe a été saisi , alors la mise à jour de ce nouveau
+mot de passe dans l'annuaire sera effectivement tentée lorsque l'interface sera quittée par le bouton "<span style="font-weight: bold;">Ok</span>". L'attribut "<span style="font-weight: bold;">userPassword</span>" sera donc mis à jour (si les droits LDAP le permettent).
+Attention à l'utilisation de cette option lorsque l'interface
+est appelée à partir d'une interface graphique d'administration telle
+que "<span style="font-weight: bold;">personFrontend</span>" ou "<a href="Howto-9.fr.html#S9">posixGroupFrontend</a>".
+En effet, cela pourrait entrer en conflit avec la mise à jour réalisée
+par l'interface appelante elle-même lors de la validation<span style="font-weight: bold;"> </span>...</li>
+  <li>Le dernier paramètre est la valeur de hachage que l'on souhaite
+voir retournée par l'interface de saisie en cas d'abandon (clic sur le
+bouton "<span style="font-weight: bold;">Cancel</span>"). Cela permet à
+l'interface d'appel de ne pas modifier la valeur de son champ de saisie
+(ou : remplacer l'ancienne valeur par la même) en cas abandon de la
+nouvelle saisie (clic sur "<span style="font-weight: bold;">Cancel</span>").</li>
+  <li>Ce dernier paramètre peut être remplacé par l'option "<span style="font-weight: bold;">--stdin</span>" ou simplement "<span style="font-weight: bold;">-</span>"
+; auquel cas la valeur d'abandon retournée par l'interface sera lue
+directement sur l'entrée standard de son processus d'exécution (option
+utilisée dans le cas d'un interfaçage avec les interfaces "<span style="font-weight: bold;">ldapEasyInterface</span>" telles que "<span style="font-weight: bold;">personnFrontend</span>".
+Dans ce cas, la longueur de cette valeur n'est alors pas limitée,
+contrairement au passage par paramètre sur ligne de commande - même si
+en l'occurrence ici, dans le cas de saisie de mots de passe, le
+problème ne se pose pas réellement ...).<br>
+  </li>
+</ul>
+<small>(Tous ces paramètres sont optionnels - signification habituelle des "<span style="font-weight: bold;">[]</span>" ... ;-).</small><br>
+<br>
+Les sources de "<a href="../archives/ldapEasyAdminFrontends/sources/slappassword/">slappassword</a>" (version 0.3 - 20101006) sont <a href="../archives/ldapEasyAdminFrontends/sources/slappassword/">ici</a> ...<br>
+
+<br>
+<br>
+<span style="text-decoration: underline; font-weight: bold;"></span><span style="text-decoration: underline; font-weight: bold;">Limitation :</span> Comme expliqué ci-dessus, cette interface graphique utilise, pour fonctionner, l'utilitaire "<span style="font-weight: bold;">slappasswd</span>" du projet "<a href="http://www.openldap.org">openLdap</a>". Aussi, "<a href="../archives/ldapEasyAdminFrontends/sources/slappassword/">slappassword</a>" ne permet-elle de faire que ce que permet de faire "<span style="font-weight: bold;">slappasswd</span>" en mode commande "<span style="font-weight: bold;">shell</span>" ...<br>
+A ce jour (2010/08), "<span style="font-weight: bold;">slappasswd</span>" gère la liste des formats suivants : "<span style="font-weight: bold;">SHA, SSHA, MD5, SMD5, CRYPT et Plain Text</span>" ; il ne permet pas la vérification des mots de passe au format "<span style="font-weight: bold;">SSHA</span>" et "<span style="font-weight: bold;">SMD5</span>", mais uniquement leur définition (le bouton "<span style="font-weight: bold;">Check</span>" de l'interface graphique "<a href="../archives/ldapEasyAdminFrontends/sources/slappassword/">slappassword</a>" restera donc invalide lorsque le mot de passe courant sera dans l'un de ces deux formats).<br>
+<span style="text-decoration: underline; font-weight: bold;"><br>
+Nota :</span> le source de la commande "<a href="../archives/ldapEasyAdminFrontends/sources/slappassword/">slappassword</a>" est le même que celui de la commande "<a href="Howto-11.fr.html#ss11.3">ntpassword</a>" (cf. "<span style="font-weight: bold;">slappassword -help</span>"). De fait, les options [<span style="font-weight: bold;">-L / -N</span>] de la commande "<a href="Howto-11.fr.html#ss11.3">ntpassword</a><span style="font-weight: bold;"></span>" sont utilisables sur "<a href="../archives/ldapEasyAdminFrontends/sources/slappassword/">slappassword</a>", le fonctionnement résultant étant dans ce cas effectivement celui de la commande "<a href="Howto-11.en.html#ss11.3">ntpassword</a>"<br>
+
+<br>
+<br>
+<span style="text-decoration: underline; font-weight: bold;">Autre exemple d'appel d'utilitaire externe pour la saisie d'informations spécifiques "</span><small><span style="text-decoration: underline;"><a href="../archives/ldapEasyAdminFrontends/sources/imageSelector/"><big><big>imageSelector</big></big></a></span></small><span style="text-decoration: underline; font-weight: bold;">":</span><br>
+<br>
+<div style="text-align: center;"><img style="width: 758px; height: 638px;" alt="images/imageSelector.png" src="images/imageSelector.png"><br>
+</div>
+<br>
+<span style="text-decoration: underline; font-weight: bold;">Syntaxe :</span><span style="font-weight: bold;">&nbsp;  &nbsp;&nbsp;  &nbsp;  <span style="font-style: italic;">imageSelector [ -/--stdin ]</span><br>
+</span><br>
+<span style="text-decoration: underline; font-weight: bold;"></span>Le fonctionnement est similaire à celui de l'utilitaire précédent ("<a href="../archives/ldapEasyAdminFrontends/sources/slappassword/">slappassword</a>") quant à la valeur d'abandon passée en entrée standard du processus d'exécution ...<br>
+<br>
+Cette interface permet donc de visualiser l'image courante (passée sur
+l'entrée standard) ou bien, d'en sélectionner une nouvelle qui sera
+envoyée sur la sortie standard du processus d'exécution lors de
+validation de la sélection par le bouton "<span style="font-weight: bold;">Ok</span>"
+... Si aucune image n'est sélectionnée lors de la validation, aucune
+image ne sera envoyée (sortie standard vide). Cela permettra en
+l'occurence d'effacer le contenu éventuel de l'attribut d'appel ("<span style="font-weight: bold;">jpegPhoto</span>", par exemple) du masque "<span style="font-weight: bold;">personFrontend</span>" (par exemple), contrairement à la frappe du bouton "<span style="font-weight: bold;">Cancel</span>"
+qui, renvoyant "<span style="font-weight: bold;">exit 1</span>", laissera au
+final son contenu inchangé au sein de l'interface graphique appelante ... )<br>
+<br>
+
+Le code source de "<a href="../archives/ldapEasyAdminFrontends/sources/imageSelector/">imageSelector</a>" (version 0.2 - 20100921) est <a href="../archives/ldapEasyAdminFrontends/sources/imageSelector/">ici</a> ...<br>
+<br>
+<br>
+<span style="text-decoration: underline; font-weight: bold;">Saisie d'</span><small><span style="text-decoration: underline;"></span></small><span style="text-decoration: underline; font-weight: bold;">utilisateurs existants ou de groupes d'appartenance - utilitaire "<a href="../archives/ldapEasyAdminFrontends/sources/sambaSidSelector/">groupSelector</a>" :</span><br>
+
+<br>
+L'utilitaire "<span style="font-weight: bold;">groupSelector</span>" s'obtient par : "<span style="font-weight: bold; font-style: italic;">ln&nbsp; [-s]&nbsp; <a href="Howto-11.fr.html#ss11.2">sambaSidSelector</a>&nbsp; groupeSelector</span>" ... (dont il partage le source).<br>
+<br>
+<span style="text-decoration: underline;">Syntaxe :</span>&nbsp;&nbsp;&nbsp; "<span style="font-style: italic; font-weight: bold;">groupSelector --domain "dnsDomainName" [--uidNumber "minUidNumber"] [--gidNumber </span><span style="font-style: italic; font-weight: bold;">"minGidNumber"</span><span style="font-style: italic; font-weight: bold;">] [-t/--type "sambaSamAccount/sambaGroupMapping/posixUser/posixGroup"]&nbsp; [--stdin /&nbsp; "currentValue"]</span>"<br>
+
+
+<ul>
+<li style="text-align: justify;">L'option obligatoire "<span style="font-weight: bold;">-d/--domain</span>" permet de renseigner le nom du domaine dans lequel rechercher la racine du "<span style="font-weight: bold;">SID</span>".</li><li style="text-align: justify;">Les options "<span style="font-weight: bold;">--uidNumber/-u</span>" et "<span style="font-weight: bold;">--gidNumber/-g</span>" servent à renseigner les valeurs minimales des "<span style="font-weight: bold;">id</span>" qui pourront être affichées <span style="font-weight: bold;"></span><span style="font-weight: bold;"></span><span style="font-weight: bold;"></span><span style="font-weight: bold;"></span><span style="font-weight: bold;"></span><span style="font-weight: bold;"></span><span style="font-weight: bold;"></span><span style="font-weight: bold;"></span><span style="font-weight: bold;"></span>dans la liste de sélection ...</li>
+  <li style="text-align: justify;">l'option "<span style="font-weight: bold;">-t/--type</span>"
+permet de figer la première liste de valeurs (comboBox) du masque
+d'édition afin de limiter les valeurs sélectionnables aux informations
+cohérentes au contexte d'appel de l'utilitaire ...</li>
+  <li style="text-align: justify;">une valeur initiale de "<span style="font-weight: bold;">uidNumber</span>" ou "<span style="font-weight: bold;">gidNumber</span>" peut être passée en argument de la commande (ou bien : "<span style="font-weight: bold;">--stdin/-</span>" si la valeur doit être passée en entrée standard du processus, comme dans le cas des interfaces "<span style="font-weight: bold;">ldapEasyInterface-Frontend</span>") pour permettre à l'utilitaire "<span style="font-style: italic; font-weight: bold;">groupSelector</span>" de suggérer une valeur initiale à l'opérateur.</li>
+</ul>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;">Nota</span></span><span style="text-decoration: underline; font-weight: bold;"> :</span>&nbsp;&nbsp;&nbsp; Cet utilitaire d'aide à l'édition "<span style="font-style: italic; font-weight: bold;">groupSelector</span>" se connecte à l'annuaire <span style="font-weight: bold;">LDAP</span> avec les informations de connexion de l'interface appelante (via les <span style="font-weight: bold;">IPC</span>
+- <span style="font-weight: bold;">shared memory</span>). Il
+ne peut pas, en effet, se connecter seul à l'annuaire pour y rechercher
+les informations qui lui permettront de déterminer une valeur cohérente
+de "<span style="font-weight: bold;">SID</span>" ; une session de connexion doit donc déjà être active via
+l'une des interfaces graphiques d'administration "<span style="font-weight: bold;">ldapEasyInterface</span>" ...<br>
+<br>
+<a href="Howto-11.fr.html#ss11.2.1">Ici se trouvent deux exemples
+d'utilisation dans la définition des déclencheurs de l'interface
+d'administration de gestion des comptes et groupes "<span style="font-weight: bold;">posix</span>" ...</a><br>
+<br>
+
+
+</div>
+
+
+<h2><a name="ss8.4">8.4 Contraintes d'intégrité
+</a></h2>
+<div style="margin-left: 40px; text-align: justify;">Elles peuvent être gérées directement par la base d'annuaire LDAP (certaines possibilités existent déjà au sein du projet "<span style="font-weight: bold;">OpenLdap</span>"), ou bien, des outils spécifiques peuvent être développés et utilisés comme <a href="Howto-6.fr.html#ss6.3">déclencheurs</a>, notamment "<a href="Howto-11.fr.html#ss11.6">sur mise à jour</a>" ... (Exemples : "<a href="Howto-11.fr.html#ss11.2">sambaSidSelector</a>" ou "<a href="../archives/ldapEasyAdminFrontends/sources/setAttribute/">setAttribute</a>").<br>
+<br>
+<span style="text-decoration: underline; font-weight: bold;">Exemple :</span> création d'un "<span style="font-weight: bold;">uidNumber</span>" ou "<span style="font-weight: bold;">gidNumber</span>" posix, unique dans tout l'annuaire, cela grâce à l'utilitaire "<a href="../archives/ldapEasyAdminFrontends/sources/getNewPosixUid/">getNewPosixUid</a>".<br>
+<br>
+<span style="text-decoration: underline;">Syntaxe :</span>&nbsp;&nbsp;&nbsp; "<span style="font-style: italic; font-weight: bold;">getNewPosixUid
+&nbsp; [-g/--group] &nbsp; [-min "minValueOfId"] &nbsp; [ --stdin /
+"theValue" ]&nbsp;&nbsp; [ -q/--quiet ]&nbsp;&nbsp; [ --onError "Value"
+]</span>"<br>
+
+
+
+<ul>
+<li style="text-align: justify;">L'option "<span style="font-weight: bold;">-g/--group</span> permet d'obtenir un identifiant de groupe ("<span style="font-weight: bold;">gidNumber</span>") plutôt qu'un "<span style="font-weight: bold;">uidNumber</span>" (équivalent à la commande "<span style="font-weight: bold;">getNewPosixGid</span>"). Pour la commande "<span style="font-weight: bold;">getNewPosixGid</span>", l'option "<span style="font-weight: bold;">-u/--user</span>" permet d'en obtenir le comportement de la commande "<span style="font-weight: bold;">getNewPosixUid</span>" ...</li><li style="text-align: justify;">L'option "<span style="font-weight: bold;">--min</span>" permet de spécifier une valeur minimale d'identifiant ...</li>
+  <li style="text-align: justify;">l'option "<span style="font-weight: bold;">--</span><span style="font-weight: bold; font-style: italic;">stdin</span><span style="font-style: italic; font-weight: bold;">/-</span> " (ou bien, la valeur simplement passée en argument de la ligne de commande, hors option) permet
+d'indiquer une valeur initiale. Si cette valeur est conforme avec l'éventuelle option "<span style="font-weight: bold;">--min</span>", alors elle est conservée (répétée en sortie standard).<br>
+  </li>
+  <li style="text-align: justify;">l'option "<span style="font-weight: bold;">-q/--quiet</span>" permet de supprimer les affichages en cas d'erreur d'exécution.</li>
+  <li style="text-align: justify;">l'option "<span style="font-weight: bold;">--onError</span>" permet de retourner une valeur spécifique (passée en argument de l'option) sur échec de la commande.</li>
+</ul>
+
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;">Nota</span></span><span style="text-decoration: underline; font-weight: bold;"> :</span>&nbsp;&nbsp;&nbsp; Cet utilitaire d'aide à l'édition "<span style="font-style: italic; font-weight: bold;">getNewPosixUid</span><span style="font-style: italic; font-weight: bold;"></span>" se connecte à l'annuaire <span style="font-weight: bold;">LDAP</span> avec les informations de connexion de l'interface appelante (via les <span style="font-weight: bold;">IPC</span>
+- <span style="font-weight: bold;">shared memory</span>). Une session de connexion doit donc déjà être active via
+par exemple l'une des interfaces graphiques d'administration "<span style="font-weight: bold;">ldapEasyInterface</span>" ...<br>
+<br>
+<span style="text-decoration: underline;">Exemple de définition de déclencheur dans l'interface de gestion des utilisateurs "<a href="Howto-8.fr.html#S8">personFrontend</a>" :<br>
+<br>
+</span>
+<div style="text-align: center;"><span style="text-decoration: underline;"><img style="width: 593px; height: 172px;" alt="images/triggerDefinition_getUidNumber.png" src="images/triggerDefinition_getUidNumber.png"></span><br>
+<span style="text-decoration: underline;"></span></div>
+<span style="text-decoration: underline;"><br>
+Exemple de définition de déclencheur dans l'interface de gestion des groupes posix "</span><a style="text-decoration: underline;" href="Howto-9.fr.html#S9">posixGroupFrontend</a><span style="text-decoration: underline;">" :</span><br>
+<br>
+<div style="text-align: center;"><img style="width: 617px; height: 172px;" alt="images/triggerDefinition_getGidNumber.png" src="images/triggerDefinition_getGidNumber.png"><br>
+</div>
+<br>
+L'option "<span style="font-weight: bold; font-style: italic;">[ -g ]</span>" est équivalente à l'utilisation de la commande "<span style="font-weight: bold;">getNewPosixGid</span>" obtenue ainsi :&nbsp; "<span style="font-weight: bold; font-style: italic;">ln&nbsp; [-s]&nbsp; getNewPosixUid&nbsp; getNewPosixGid</span>" ...<br>
+<br>
+Le code source de cet utilitaire est&nbsp; <a href="../archives/ldapEasyAdminFrontends/sources/getNewPosixUid/">ici</a> ...<br>
+<br>
+</div>
+<h2><a name="ss8.5"></a>8.5 <a href="../archives/ldapEasyAdminFrontends/">Les sources C++</a><br>
+</h2><br>
+<div style="text-align: justify; margin-left: 40px;">Les sources de la dernière version (<span style="font-weight: bold;">20120102</span>) sont <a href="../archives/ldapEasyAdminFrontends/sources/domain.so">ici</a>.<br>
+<br>
+Ce code est partagé avec celui de l'interface graphique "<a href="Howto-6.fr.html#top">domainFrontend</a>".<br>
+<br>
+Après compilation, c'est le nom du programme qui détermine le type de
+données d'annuaire gérées par l'interface graphique d'administration ("<a href="Howto-6.fr.html#top">domainFrontend</a>", "<span style="font-weight: bold;">personFrontend</span>", "<a href="Howto-9.fr.html#S9">posixGroupFrontend</a>", "<a href="Howto-10.fr.html#S10">organizationalRoleFrontend</a>").<br>
+
+<br>
+<small style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">ln [-s] /usr/local/bin/libdomain.so /usr/local/bin/libperson.so</span><br>
+
+</small><small style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">ln [-s] /usr/local/bin/<a href="Howto-5.fr.html">frontend</a> /usr/local/bin/</span></small><small style="font-style: italic;"><span style="font-weight: bold;">person</span></small><small style="font-style: italic;"><span style="font-weight: bold;">Frontend</span></small><br>
+
+
+
+
+</div>
+
+<h2><a name="ss8.6">8.6 A faire :</a><span style="text-decoration: underline;"></span><br>
+</h2>
+
+
+
+
+
+
+<div style="margin-left: 40px; text-align: justify;">tester ...<br></div>
+
+
+<hr><a href="Howto-9.fr.html#S9">Page suivante</a> <a href="Howto-7.fr.html#S7">Page précédente</a> <a href="Howto.fr.html">Sommaire</a>
+
+
+
+
+
+
+
+
+</body></html>

@@ -1,0 +1,16 @@
+Package:
+Source: ldapEasyInterface
+Version: 
+Architecture: 
+Maintainer: C++ Developer <philippe.eychart@mail.pf>
+Depends: libldap-2.4-2 (>= 2.4.23), libldap2-dev (>= 2.4.23), g++ (>= 4:4.5.2), libstdc++6 (>= 4.5.2)
+Section: libs
+Priority: optional
+Filename: 
+Installed-Size: 
+HomePage: http://homepage.gna.org/ldapcppei/miniHowto.en.html
+Description: LDAP C++ libraries (with sources) - GPL-3.0+
+ Run-time libraries for the LdapEasyAdminInterfaces project (cf. http://homepage.gna.org/ldapcppei/Frontends/Howto.fr.html). 
+ This package also allow C++ development of LDAP applications using OpenLDAP libraries. 
+ It's include headers, all sources, libraries and all links to allow static and dynamic linking.
+

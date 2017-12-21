@@ -1,0 +1,251 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html><head>
+
+
+  <meta name="GENERATOR" content="KompoZer-0.8a4"><title>LdapEasyInterface (libcppei) Mini Howto (Français)</title>
+  
+  <link href="LdapcppeiMiniHowto-1.fr.html" rel="next"></head><body><a href="Howto-6.en.html">Next</a> <a href="Howto-4.en.html">Previous</a> <a href="Howto.en.html">Summary</a> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; (<a style="font-weight: bold;" href="Howto-5.fr.html">Français</a> - English)
+<hr>
+<h2><a name="S5"><span style="text-decoration: underline;">5 - The common interface of extensions:</span>
+</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;"><br>
+<div style="text-align: center;"><img style="width: 678px; height: 276px;" alt="images/frontend.png" src="images/frontend.png"><br>
+</div>
+
+
+<br>
+</div>
+
+<h2><a name="ss5.1">5.1 - Overview
+</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;"><span id="result_box" class="short_text" lang="en"><span class="hps">This interface</span> <span class="hps">is</span> <span class="hps">the basis</span> <span class="hps">of all</span> <span class="hps">GUIs</span></span> (<span id="result_box" class="" lang="en"><span class="hps">exception</span><span class="">, however</span><span class="">:</span></span> "<a href="Howto-4.en.html">controlFrontend</a>").<br>
+<br><span id="result_box" class="" lang="en"><span class="hps">It manages</span> <span class="hps">all possible actions</span> <span class="hps atn">(</span><span>all the</span> <span class="hps">icons</span> <span class="hps">of the three</span> <span class="hps">toolbars</span><span>)</span> <span class="hps">for all</span> <span class="hps">administration </span></span><span id="result_box" class="" lang="en"><span class="hps">GUIs</span></span><span id="result_box" class="" lang="en"><span class="hps"></span><span class="">:</span></span> <span id="result_box" class="" lang="en"><span class="hps">connect to</span> <span class="hps">the directory,</span> <span class="hps">save</span> <span class="hps">changes made to</span> <span class="hps">the</span> <span class="hps">current</span> <span class="hps">object</span><span>,</span> <span class="hps">refresh the display</span><span>,</span> <span class="hps">zoom in or out</span> <span class="hps">in the</span> <span class="hps">case of </span></span><span id="result_box" class="" lang="en"><span class="hps"></span> <span class="hps">graphic</span></span><span id="result_box" class="" lang="en"><span class="hps"> masks</span><span class="hps"></span><span>,</span> <span class="hps">closure of the</span> <span class="hps">interface</span><span>,</span> <span class="hps">creating a</span> <span class="hps">new object</span><span>,</span> <span class="hps">editing</span> <span class="hps">the current object</span><span class="">,</span> <span class="hps">deletion, cancellation</span> <span class="hps">actions</span>, <span class="hps">navigation</span><span class="hps">/</span><span class="hps">search</span><span class=""> and customization of the display.</span></span><br>
+<br><span id="result_box" class="" lang="en"><span class="hps">It cannot</span> <span class="hps">be run</span> <span class="hps">alone.</span> It<span class="hps"> needs</span> <span class="hps">to</span> <span class="hps">be</span> <span class="hps">called with</span> <span class="hps">at least one extension</span> name <span class="hps atn">(</span><span class="">option</span> <span class="hps atn">"<span style="font-weight: bold;">--</span></span><span style="font-weight: bold;" class="hps">plugin</span><span>"</span><span>)</span> <span class="hps">on the command line or through its call name.</span><span class=""></span></span><br>
+<br>
+<span style="text-decoration: underline;">Examples :</span><br>
+<div style="margin-left: 40px;"><small><span style="font-weight: bold;">
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; </span><span style="font-style: italic; font-weight: bold;">frontend --plugin sambaconfig</span></small><br>
+
+or:<br><small style="font-weight: bold;">
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-style: italic;">frontend --plugin /usr/local/bin/<a href="Howto-11.en.html#ss11.10">libsambaconfig.so</a></span></small><br>
+
+or:<br><small style="font-weight: bold;">
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-style: italic;">ln&nbsp; [-s]&nbsp; /usr/local/bin/frontend&nbsp; /usr/local/bin/sambaconfigFrontend&nbsp; ;&nbsp; </span><a style="font-style: italic;" href="Howto-11.en.html#ss11.7">sambaconfigFrontend</a></small><br>
+<span style="font-style: italic;"></span></div>
+
+
+<span style="font-style: italic;">
+</span><br><big><span style="font-weight: bold;" id="result_box" class="" lang="en"><span class="hps">These
+are the extensions that define and code the rules of the managed
+objects they support: </span></span></big><big><span style="font-weight: bold;" id="result_box" class="" lang="en"><span class="hps">storage format information in the directory,
+the display format, the modification rules ...</span><span class="hps"></span></span></big><br>
+
+<br><span id="result_box" class="" lang="en"><span class="hps">If necessary</span><span>,</span> <span class="hps">multiple interfaces</span> <span class="hps atn">(</span><span class="hps">"<span style="font-weight: bold;">plugins</span>"</span><span>) can be called</span> <span class="hps">simultaneously</span>;<span class="hps"> the</span> <span class="hps">central window</span> <span class="hps">of</span> <span class="hps atn">"</span><span style="font-weight: bold;">frontend</span><span>"</span> <span class="hps">is</span> <span class="hps">a</span> <span class="hps atn">"</span><span style="font-weight: bold;" class="">QStackedWidget</span><span class="">"</span><span class="">.</span></span> <span id="result_box" class="" lang="en"><span class="hps">The extensions</span> <span class="hps">are therefore</span> <span class="hps">stacked</span> <span class="hps">and displayed</span> <span class="hps">in sequence</span></span> (<a href="#ss5.4">cf. 5.4</a>). <span id="result_box" class="" lang="en"><span class="hps">Of course</span><span class="">,</span> <span class="hps">several</span> <span class="hps">different sessions</span> <span class="hps">of</span> <span class="hps atn">"</span><span class="">frontend</span><span class="">"</span> <span class="hps atn">(</span><span class="">one</span> <span class="hps">for each</span> <span class="hps atn">"</span><span class="">plugin</span><span>"</span> <span class="hps">desired</span><span>)</span> <span class="hps">can</span> <span class="hps">also</span> <span class="hps">be launched simultaneously</span><span class="">.</span></span><br>
+
+</div>
+
+
+<h2><a name="ss5.2">5.2 - The extensions
+</a></h2>
+<div style="text-align: justify; margin-left: 40px;"><span style="font-weight: bold; text-decoration: underline;"></span><span style="font-weight: bold; text-decoration: underline;"></span><span id="result_box" class="" lang="en"><span class="hps">The definition interface for all extensions is implemented </span><span class="hps"></span></span><a href="../archives/ldapEasyAdminFrontends/sources/frontend/pluginInterface.h">here ("PluginInterface.h")</a> <span id="result_box" class="" lang="en"><span class="">as</span> <span class="hps">a header file</span><span class="hps"></span></span>...<br>
+
+<br>The set of <span style="font-weight: bold;">pure virtual</span> methods <span id="result_box" class="" lang="en"><span class="hps">declared in</span> <span class="hps">this <a href="../archives/ldapEasyAdminFrontends/sources/frontend/pluginInterface.h">header file</a></span> <span class="hps">must be defined in</span> each<span class="hps"> extension</span> <span class="hps">that will be written</span> <span class="hps">to be compatible</span> <span class="hps">(and therefore</span> <span class="hps">usable</span><span class="">)</span> <span class="hps">with</span></span> "<span style="font-weight: bold;">frontend</span>". This concept allows the implementation with a low-effort of new management interfaces of administrable (LDAP) entities.<span id="result_box" class="" lang="en"><span class=""></span></span><br>
+
+<br><span style="text-decoration: underline;">
+
+Example of already existing extensions ("plug-ins"):</span> définition of <a href="Howto-7.en.html">servers</a>, "<a href="Howto-11.en.html#ss11.8">samba</a>" ressources, "<a href="Howto-14.en.html">dns</a>", "<a href="Howto-16.en.html">netfilter</a>" service, ...<br>
+
+<br>
+
+<span style="text-decoration: underline;">Notice:</span> <span id="result_box" class="" lang="en"><span class="hps">The signals comments</span></span> (<span id="result_box" class="" lang="en"><span class="hps">heading</span><span class=""></span></span>: "<span style="font-weight: bold;">signals</span>") are <a href="../archives/ldapEasyAdminFrontends/sources/frontend/pluginInterface.h">here</a> for reference. <span id="result_box" class="" lang="en"><span class="hps">However</span><span class="">,</span> <span class="hps">each of these signals</span> <span class="hps">will</span> <span class="hps">actually</span> <span class="hps">be</span> <span class="hps">defined</span> <span class="hps">within</span> <span class="hps">each of the extensions</span>;<span class="hps"> they</span> <span class="hps">are actually used</span> <span class="hps">by the interface</span></span> "<span style="font-weight: bold;">frontend</span>" (<span id="result_box" class="short_text" lang="en"><span class="hps">through the</span> <span class="hps">method</span></span> "<span style="font-weight: bold;">fromCurrentPlugin()-&gt;widget()</span>", pointer to the "<span style="font-weight: bold;">Qt</span>" widget of the plugin). <span id="result_box" class="" lang="en"><span class="hps">Indeed</span><span class=""></span></span>, <span style="text-decoration: underline;"></span><a href="http://en.wikipedia.org/wiki/Qt">Qt4</a> does seem (?), at present, <span id="result_box" class="" lang="en"><span class="hps">manage</span> <span class="hps">the recovery</span> <span class="hps">of</span> <span class="hps">signals</span> <span class="hps">directly</span> <span class="hps">through the</span> <span class="hps">extension interfaces</span></span>...<br>
+
+<br>
+<big><span style="text-decoration: underline; font-weight: bold;"><small>Trick:</small><br>
+</span></big><span id="result_box" class="short_text" lang="en"><span class="hps">Besides</span> <span class="hps">their ability to be</span> <span class="hps">called</span></span> from "<span style="font-weight: bold;">frontend</span>",
+some extensions may wisely be called from a "parent" extension,
+especially when the respective topics of an extension and of its
+"parent" correspond to a same
+logic.<br>
+
+<br>
+
+<span style="text-decoration: underline;">For example:</span> the "<a href="Howto-11.en.html">sambaDomain</a>" and "<a href="Howto-14.en.html">bind9domain</a>"  extensions <span id="result_box" class="short_text" lang="en"><span class="hps">can be used</span> <span class="hps">within</span> <span class="hps">the same</span></span> initial plugin  "<a href="Howto-6.en.html#ss6.6">domain</a>", thus providing additional tabs (and complementary information) to this GUI for the management of LDAP domain names ("<span style="font-weight: bold;">domainFrontend</span>" or "<span style="font-weight: bold;">frontend --plugin domain</span>")...<br>
+<br><span id="result_box" class="short_text" lang="en"><span class="hps">They may of course</span> <span class="hps">also</span> <span class="hps">be called</span> <span class="hps">separately</span> <span class="hps">with</span></span> "<span style="font-weight: bold;">frontend</span>" : "<span style="font-weight: bold;">sambaDomainFrontend</span>" (link to "<span style="font-weight: bold;">frontend</span>") or "<span style="font-weight: bold;">frontend --plugin sambadomain</span>" and "<span style="font-weight: bold;">bind9Frontend</span>" (link to "<span style="font-weight: bold;">frontend</span>", too) or "<span style="font-weight: bold;">frontend --plugin bind9domain</span>" ...<br>
+</div>
+<br>
+<h2><a name="ss5.3">5.3 - The triggers</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;"><span style="font-weight: bold; text-decoration: underline;"></span><span style="font-weight: bold; text-decoration: underline;"></span><span id="result_box" class="short_text" lang="en"><span class="hps">Since version</span> <span class="hps">1.8 of</span> <span class="hps">the connection class</span></span> "<a href="Howto-3.en.html">connectWindow</a>", the trigger notion is accessible to all extensions, through the descriptor of their connection to the LDAP directory.<br>
+<br>
+<span style="font-weight: bold; font-style: italic;"><a name="ss5.3.1"></a></span><big style="font-weight: bold;"><span style="text-decoration: underline;">5.3.1 - Six methods are available for this interfacing:</span></big><br>
+
+<br>
+<div style="margin-left: 40px;"><a name="ss5.3.1.a"></a>
+- <span style="text-decoration: underline; color: rgb(0, 153, 0);"> void connectWindow::resetTriggers ( void ) :</span> <span id="result_box" class="" lang="en"><span class="hps">resets</span> <span class="hps">all the sets</span></span> of trigger definitions from the current context, particular so that future context calls (<span style="font-weight: bold;">see:</span> <a href="#ss5.3.1.b">setTriggers()</a> below) cause an actual rereading of the definitions from the LDAP database where they are stored.<br>
+<br>
+<a name="ss5.3.1.b"></a>
+- <span style="text-decoration: underline; color: rgb(0, 153, 0);">bool connectWindow::setTriggers ( const char*<span style="color: black;"> contextName, </span>const char* <span style="font-style: italic; color: black;">description</span> ) :</span> <span id="result_box" class="" lang="en"><span class="hps">initializes</span> <span class="hps">a new context</span> <span class="hps">or</span> <span class="hps">switch to an already</span> open <span class="hps">context</span><span class="hps"></span></span><span id="result_box" class="" lang="en"><span class="hps"></span><span class=""></span></span><span id="result_box" class="" lang="en"><span class="hps"></span><span class="hps"></span><span class="">.</span></span> <span id="result_box" class="" lang="en"><span class="hps">Returns</span></span> "<span style="font-weight: bold;">true</span>" for existing définitions, "<span style="font-weight: bold;">false</span>" otherwise. Examples : "<span style="font-weight: bold;">setTriggers</span> ( "<span style="font-style: italic;">triggerOnEdit</span>", "<span style="font-style: italic;">triggers on fields edition</span>" ), <span style="font-weight: bold;">setTriggers</span> ( "<span style="font-style: italic;">triggerOnBackup</span>", "<span style="font-style: italic;">triggers on fields backup"</span> ), <span style="font-weight: bold;">setTriggers</span> ( "<span style="font-style: italic;">triggerOnDelete</span>", "<span style="font-style: italic;">triggers on fields delete</span>" ), <span style="font-weight: bold;">setTriggers</span> ( "<span style="font-style: italic;">triggerOnDisplay</span>", "<span style="font-style: italic;">triggers on fields displaying</span> ), ...<br>
+<br>
+<a name="ss5.3.1.c"></a>
+
+- <span style="text-decoration: underline; color: rgb(0, 153, 0);">bool connectWindow::hasTrigger ( const char* </span><span style="text-decoration: underline; color: rgb(0, 153, 0);"><span style="font-style: italic; color: black;">fieldName</span></span><span style="text-decoration: underline; color: rgb(0, 153, 0);"> ) :</span> <span id="result_box" class="" lang="en"><span class="hps">indicates whether</span> <span class="hps">a</span> <span class="hps">trigger is defined</span> <span class="hps atn">for the field</span></span> (attribute) of name "<span style="font-style: italic;">fieldName</span>".<br>
+<br>
+<a name="ss5.3.1.d"></a>
+
+-&nbsp;<span style="text-decoration: underline;"></span><span style="text-decoration: underline; color: rgb(0, 153, 0);">void connectWindow::insertTriggeredField ( const char* <span style="font-style: italic; color: black;">fieldName</span> ) :</span>
+adds a new attribute name to the current context which could then be
+possibly associated with a description of trigger (when calling to <a href="#ss5.3.1.e">openTriggersForm()</a>, detailed<span id="result_box" class="short_text" lang="en"><span class="hps"> below</span></span>).<br>
+<br>
+<a name="ss5.3.1.e"></a>
+
+
+-&nbsp;<span style="text-decoration: underline;"></span><span style="text-decoration: underline; color: rgb(0, 153, 0);">void connectWindow::openTriggersForm ( bool <span style="font-style: italic; color: black;">writable</span> ) :</span> <span id="result_box" class="" lang="en"><span class="hps">opens the</span> <span class="hps">edit </span></span><span id="result_box" class="" lang="en"><span class="hps">window </span></span><span id="result_box" class="" lang="en"><span class="hps">triggers </span></span>(or display if "<span style="font-style: italic;">writable=FALSE</span>").<br>
+<br>
+<a name="ss5.3.1.f"></a>
+
+
+
+- <span style="text-decoration: underline; color: rgb(0, 153, 0);">bool connectWindow::triggerEvaluation ( std::string&amp; <span style="font-style: italic; color: black;">fieldName</span><span style="color: black;">,</span> QString&amp; <span style="font-style: italic; color: black;">previousValue</span><span style="color: black;">,</span> QString&amp; <span style="font-style: italic; color: black;">newValue</span><span style="color: black;">,</span> entry* <span style="font-style: italic; color: black;">mask</span><span style="color: black;">,</span> QWidget* <span style="font-style: italic; color: black;">parent</span> = NULL ) :</span> <span id="result_box" class="" lang="en"><span class="hps">can</span> <span class="hps">trigger the execution of</span> <span class="hps">a trigger.</span></span> Returns "<span style="font-style: italic;">true</span>" on&nbsp; correct execution of the trigger or
+"<span style="font-style: italic;">false</span>" on runtime error or on stop by the operator of an interactif trigger...<br>
+<ul style="margin-left: 40px;">
+  <li><span style="text-decoration: underline;">"</span><span style="font-style: italic; font-weight: bold; text-decoration: underline;">fieldName</span><span style="text-decoration: underline;">"</span> defines the attribute which is
+affected by the trigger. The
+initial value of this variable may have been changed during the trigger
+return. This will indicate to the developper than some other attributes
+of
+the mask (whose names will be then present in the variable "<span style="font-style: italic; font-weight: bold;">fieldName</span>") have been affected by the trigger execution. <span id="result_box" class="long_text" lang="en"><span class="hps">It can then be</span> <span class="hps">wise to</span> <span class="hps">generate</span><span>,</span> <span class="hps">within the program</span><span>,</span> <span class="hps">a</span> <span class="hps">display refresh</span> <span class="hps">to provide</span> <span class="hps">the operator the</span> <span class="hps">visualization</span> <span class="hps">of the actual changes made</span><span class="">.</span></span></li>
+  <li><span style="text-decoration: underline;">
+
+"</span><span style="font-weight: bold; font-style: italic; text-decoration: underline;">previousValue</span><span style="text-decoration: underline;">"</span>
+allows to set the trigger with the attribute value before it starts (this
+value will be passed as standard input of the trigger control and can
+therefore be used by it, if necessary). This value is referenced by "%<span style="font-style: italic; font-weight: bold;">fieldName</span>" in the trigger definition.</li>
+  <li><span style="text-decoration: underline;">
+
+"</span><span style="font-weight: bold; font-style: italic; text-decoration: underline;">newValue</span><span style="text-decoration: underline;">"</span> allows to reference the new value of the attribute which is subject to validation (referenced by "%<span style="font-style: italic; font-weight: bold;">this</span>"
+in the trigger definition) and upon return, allows to reference the
+validated value (ie: <span id="result_box" class="short_text" lang="en"><span class="hps">may be modified or</span> <span class="hps">replaced from</span> <span class="hps">the initial value</span></span>) resulting from the
+trigger execution (especially in case of interactif trigger).</li>
+  <li><span style="text-decoration: underline;">
+
+"</span><span style="font-style: italic; font-weight: bold; text-decoration: underline;">mask</span><span style="text-decoration: underline;">"</span> allows to provide (to use or modify) all attribute values &#8203;&#8203;of the mask during the trigger definition (syntax "%<span style="font-style: italic;"><span style="font-weight: bold;">attribut</span></span><span style="font-style: italic; font-weight: bold;">Name</span>") or during the execution of the trigger itself (using the contents of these attributes referenced by this argument).</li>
+  <li><span style="text-decoration: underline;">
+
+"</span><span style="font-style: italic; font-weight: bold; text-decoration: underline;">parent</span><span style="text-decoration: underline;">"</span>
+allows (when given) to reference the calling widget whose will inherit
+all the windows possibly generated during the execution of the trigger
+(especially in case of interactif trigger).<br>
+  </li>
+</ul>
+</div>
+
+
+ <br>
+<big style="font-style: italic;"><span style="font-weight: bold;"><a name="ss5.3.2"></a></span></big><big style="text-decoration: underline; font-weight: bold;">5.3.2 - The use principle:</big><br>
+<br>
+<div style="margin-left: 40px;">Should be opened as needed one or more
+contexts of triggers definitions (eg,&nbsp; context of triggers on
+editing fields of the input mask, context of triggers on their backup
+in the directory, on display...).<br>
+<br>The active current context is the last which is called. To change
+the current context, it suffices, at any time, to recall the name of
+the wanted context with the method: "connectWindow::<a href="Howto-5.fr.html#ss5.3.1.b">setTriggers(<span style="font-style: italic;">context, description</span>)</a><span style="font-style: italic;"></span><span style="font-style: italic;"></span>".
+The parameter "description" will simply allow to give a title to the editing
+window of the corresponding triggers (according to the current context)
+when this window will be opened.<br>
+<br>The first opening of a given context gets from the LDAP directory
+all the definitions that are already stored under the name of this
+context. <span id="result_box" class="" lang="en"><span class="hps">Any</span> <span class="hps">subsequent calls</span> <span class="hps">to</span> <span class="hps">this context</span> <span class="hps">no longer requires</span> <span class="hps">access</span> <span class="hps">to the LDAP directory</span><span class="">,</span></span> except on call of "connectWindow::<a href="Howto-5.fr.html#ss5.3.1.a">resetTriggers()</a>" where all contexts already opened will be reset.<br>
+<br><span id="result_box" class="" lang="en"><span class="hps">It will</span> <span class="hps">then be inserted</span> <span class="hps">in this current context</span> <span class="hps">all</span> the <span class="hps">attribute names that</span> <span class="hps">will accommodate</span> <span class="hps">new definitions</span> <span class="hps atn">of triggers</span></span> ("connectWindow::<a href="Howto-5.fr.html#ss5.3.1.d">insertTriggeredField()</a>"). <span id="result_box" class="" lang="en"><span class="hps">In practice</span><span class="">,</span> <span class="hps">this will include for</span> <span class="hps">example</span> <span class="hps">the list</span> <span class="hps">of all</span> attributes<span class="hps"> defined</span> <span class="hps">in the</span> <span class="hps">input mask</span> <span class="hps">of the current interface.</span></span><br>
+<br>
+
+Thus, <span id="result_box" class="" lang="en"><span class="hps">when desired</span></span> (<span id="result_box" class="" lang="en"><span class="hps">for example,</span> <span class="hps">activating the</span> <span class="hps">menu</span></span> "<span style="font-style: italic; text-decoration: underline;">plugin menu / edition triggers</span>" <span id="result_box" class="" lang="en"><span class="hps">of</span> <span class="hps">the GUI</span></span>), a window is opened ("connectWindow::<a href="Howto-5.fr.html#ss5.3.1.e">openTriggersForm()</a>") with the current context of triggers.
+If this window is set readonly, this will be a display window. <span id="result_box" class="short_text" lang="en"><span class="hps">Otherwise</span><span class="">, </span></span>the
+operator could edit, modify or erase the definitions of any field in
+the display list of attributes (previously settled; see "connectWindow::<a href="Howto-5.fr.html#ss5.3.1.d">insertTriggeredField()</a>"). <span id="result_box" class="" lang="en"><span class="hps">On</span> <span class="hps">closing the window</span><span class="">, the operator can</span> <span class="hps">save</span> <span class="hps atn">(</span><span>or not)</span> <span class="hps">all changes</span><span class="">,</span> <span class="hps">which will become</span> <span class="hps">effective</span> <span class="hps">immediately</span><span class="">.</span></span><br>
+<br><span id="result_box" class="" lang="en"><span class="hps">Then, on any retained</span> <span class="hps">action (data entry, backup or just displaying, ..., any place of the code) which is the</span> <span class="hps">object</span> <span class="hps">of</span> <span class="hps">an active (selected) context</span></span> and for each mask attribute of the GUI,<span id="result_box" class="" lang="en"><span class="hps"> it will be verified</span> <span class="hps">if</span> <span class="hps">a</span> <span class="hps">trigger definition is </span><span class="hps">involved in the current action</span> (corresponding context) <span class="hps">and</span><span>,</span> <span class="hps">if</span> <span class="hps">this happens</span><span class="">,</span> <span class="hps">the action performed</span> </span>will generate (<span id="result_box" class="" lang="en"><span class="hps atn"></span><span class="">or</span><span class="">:</span> <span class="hps">will be conditioned</span> <span class="hps">by the result of</span></span>) the execution of the defined command to trigger on this attribute ("connectWindow::<a href="Howto-5.fr.html#ss5.3.1.f">triggerEvaluation()</a>").<br>
+</div>
+
+
+
+
+
+
+
+<br>
+
+<br>
+
+<big style="font-style: italic;"><span style="font-weight: bold;"><a name="ss5.3.3"></a></span></big><big style="font-weight: bold;"><span style="text-decoration: underline;">5.3.3 - Example</span></big><big style="font-weight: bold;"><span style="text-decoration: underline;"> definitions</span></big><big style="font-weight: bold;"><span style="text-decoration: underline;"> of triggers:</span></big><big style="font-style: italic;"><span style="font-weight: bold;"><br>
+</span></big><br>
+<div style="margin-left: 40px;">Some example are <a href="Howto-6.en.html#ss6.3">here</a>, <a href="Howto-11.en.html#ss11.2.1">here</a> and <a href="Howto-11.en.html#ss11.3.2">there</a>...<br>
+<br>
+<span style="text-decoration: underline;" id="result_box" class="" lang="en"><span class="hps">Here are</span> <span class="hps">also</span> <span class="hps">described</span> <span class="hps">below</span> <span class="hps">the possibility of interaction</span> <span class="hps">between several</span> <span class="hps">input fields</span> <span class="hps">for screen mask</span><span class="">:</span></span><span style="text-decoration: underline;"></span><br>
+<span style="text-decoration: underline;"></span></div>
+
+
+<span style="text-decoration: underline;"><br>
+</span><span style="text-decoration: underline; font-weight: bold;">
+</span>
+<div style="text-align: center;"><img style="width: 791px; height: 524px;" alt="images/triggerDefinition_otherExample.png" src="images/triggerDefinition_otherExample.png"><br>
+</div>
+
+<big style="font-style: italic;"><span style="font-weight: bold;"></span></big><br>
+<div style="margin-left: 40px;">
+<div style="text-align: justify;"><span id="result_box" class="short_text" lang="en"><span class="hps">Thus</span><span>,</span> <span class="hps">in this example</span><span>,</span> <span class="hps">on</span> input of <span class="hps">the attribute</span></span> "<span style="font-weight: bold;">uid</span>", the other attribute "<span style="font-weight: bold;">homeDirectory</span>" <span id="result_box" class="" lang="en"><span class="hps">will be updated</span> <span class="hps">in real time</span><span class="hps"></span></span>, <span id="result_box" class="" lang="en"><span class="hps">this with</span> <span class="hps">the fixed value</span> </span> "<span style="font-weight: bold; font-style: italic;">/tmp/</span>" <span id="result_box" class="" lang="en"><span class="hps">followed by the value</span> <span class="hps">contained</span> <span class="hps atn">by the attribute</span> <span class="hps"></span></span>"<span style="font-weight: bold;">uid</span>", itself currently updated...<br>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline; color: rgb(204, 0, 0);">Notice:</span> <span style="font-style: italic;">why "</span><span style="font-weight: bold; font-style: italic;">%this</span><span style="font-style: italic;">" rather than "</span><span style="font-weight: bold; font-style: italic;">%uid</span><span style="font-style: italic;">" in such a definition?</span><br style="font-style: italic;">
+
+<br>Because "<span style="font-weight: bold;">%uid</span>" <span id="result_box" class="" lang="en"><span class="hps">is the value</span> <span class="hps">above</span> <span class="hps">the</span> <span class="hps">keystroke</span> <span class="hps">that caused</span> <span class="hps">the trigger to execute </span></span>(argument: "<span style="font-weight: bold; font-style: italic;">previousValue</span>"), while "<span style="font-weight: bold;">%this</span>"&nbsp; represents the value after trigger wakeup on keystroke (argument: "<span style="font-weight: bold; font-style: italic;">newValue</span>").<span style="font-style: italic;"><br>
+<br><span style="font-style: italic;">
+So, using "</span></span><span style="font-weight: bold; font-style: italic;">%uid</span><span style="font-style: italic;">" rather than "</span><span style="font-weight: bold; font-style: italic;">%this</span><span style="font-style: italic;">" </span><span style="font-style: italic;" id="result_box" class="" lang="en"><span class="hps">in the definition</span> <span class="hps">of such a</span> trigger <span class="hps">would result, for</span></span><span style="font-style: italic;"> in the attribute "</span><span style="font-weight: bold; font-style: italic;">homeDirectory</span><span style="font-style: italic;">",</span><span style="font-style: italic;" id="result_box" class="" lang="en"><span class="hps"> a</span> <span class="hps">systematic missing</span> <span class="hps">of the last character</span> <span class="hps">of the value</span> <span class="hps">being entered</span> <span class="hps atn">in the</span></span><span style="font-style: italic;"> attribute "</span><span style="font-weight: bold; font-style: italic;">uid</span><span style="font-style: italic;">" !...</span><br>
+<span style="font-style: italic;">
+</span>
+<span style="font-style: italic;"><br>
+<br>
+</span>
+Since the <span style="font-weight: bold;">version 1.8.2 (20110805) </span>of the class "<a href="Howto-3.en.html">connectWindow</a>", the character '<span style="font-weight: bold;">|</span>' (pipe) is usable in the definitions of triggers scripts, allowing the chaining of successive commands.<br>
+<br>
+<span style="text-decoration: underline; font-weight: bold;">Example définitions of triggers on editing within the GUI "</span><a href="Howto-8.en.html">personFrontend</a><span style="text-decoration: underline; font-weight: bold;">" :</span><br>
+<ul style="text-align: justify;">
+<li><span style="text-decoration: underline;">Trigger of attribute "</span><span style="font-weight: bold; text-decoration: underline;">sn</span><span style="text-decoration: underline;">" =</span> <span style="font-weight: bold;">$(%loginShell=echo /bin/sh) $(<span style="color: rgb(0, 0, 153);">%uid=echo %this | tr -s [:blank:] .</span>) $(%mail=echo %uid@$(<span style="color: rgb(0, 0, 153);">getAttribute --domain %dn --name </span></span><span style="font-weight: bold; color: rgb(0, 0, 153);">mail | sed s/^.*@//</span><span style="font-weight: bold;"><span style="color: rgb(0, 0, 153);">)</span>) $(%homeDirectory=echo /home/%uid) %description=echo %this</span></li><li><span style="text-decoration: underline;">Trigger of attribute</span><span style="text-decoration: underline;"> "<span style="font-weight: bold;">uid</span></span><span style="text-decoration: underline;">" =</span> <span style="font-weight: bold;">$(%homeDirectory=echo /home/%this) </span><span style="font-weight: bold;">%mail=echo %this@$(<span style="color: rgb(0, 0, 153);">getAttribute --domain %dn --name </span></span><span style="font-weight: bold;"><span style="color: rgb(0, 0, 153);">mail | sed s/^.*@//</span>)</span></li>
+</ul>
+<span style="text-decoration: underline; color: rgb(255, 102, 0);">Notice 1:</span> <span style="color: rgb(204, 0, 0);">The
+triggers on editing which are defined in this GUI are not recursive
+(unlike the triggers on backup); therefore, here, the change induced on
+a third attribute will not trigger its own potential triggers. This
+will allow flexibility for the operator in the edition of its different
+data values...<br>
+<br>
+</span><span style="text-decoration: underline; color: rgb(255, 102, 0);">Notice 2:</span> <span style="color: rgb(204, 0, 0);">The syntaxe of&nbsp; juxtaposed "$()" here allows to implement the ";" of the Unix shell (to concate successive commands)...</span><br>
+
+
+</div>
+
+
+</div>
+<br>
+
+
+</div>
+<h2><a href="../archives/ldapEasyAdminFrontends/sources/frontend" name="ss5.4">5.4 - The C++ source</a>
+</h2>
+
+<div style="margin-left: 40px; text-align: justify;">Latest version (<span style="font-weight: bold;">20110913</span>) <a style="font-weight: bold;" href="../archives/ldapEasyAdminFrontends/sources/frontend">here</a>.<br></div>
+<h2><a name="ss5.5">5.5 - Todo</a>
+</h2>
+
+<div style="margin-left: 40px; text-align: justify;">- <span id="result_box" class="" lang="en"><span class="hps">Implement</span> <span class="hps">multi-interface</span> <span class="hps">navigation</span> <span class="hps">when multiple</span> <span class="hps">extensions</span> <span class="hps">were</span> <span class="hps">passed as parameters</span> <span class="hps">to the interface</span> <span class="hps atn"></span></span>"<span style="font-weight: bold;">frontend</span>" <span id="result_box" class="" lang="en"><span class="hps">and, therefore</span><span>,</span> <span class="hps">are open</span> <span class="hps">in its central</span></span> "<span style="font-weight: bold;">QStackedWidget</span>" (20110518: <span id="result_box" class="" lang="en"><span class="hps">yet to</span> <span class="hps">implement</span> <span class="hps">a</span><span class=""></span></span> "<span style="font-weight: bold;">next/previous</span>"<span id="result_box" class="" lang="en"><span class="hps"> button</span></span>).<br></div>
+<br>
+<hr><a href="Howto-6.en.html">Next</a> <a href="Howto-4.en.html">Previous</a> <a href="Howto.en.html">Summary</a>
+
+
+
+
+</body></html>

@@ -1,0 +1,224 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html><head>
+
+  <meta name="GENERATOR" content="KompoZer-0.8a4"><title>LdapEasyInterface (libcppei) Mini Howto (Français)</title>
+  
+  <link href="LdapcppeiMiniHowto-1.fr.html" rel="next"></head><body>
+<a href="Howto-1.fr.html">Page suivante</a> <a href="http://gna.org/projects/ldapcppei/">Page précédente</a>
+Table des matières <a href="../miniHowto.fr.html">GNU/Ldapcppei</a> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; (<span style="font-weight: bold;">Français</span> - <a href="index.en.html">English</a>)
+<hr>
+
+<h2><a name="S1"><span style="text-decoration: underline;"></span></a>LdapEasyAdmin Frontends Howto</h2>
+
+<h3>Philippe Eychart <code>&lt;philippe.eychart@mail.pf&gt;</code><small><span style="font-weight: bold; font-style: italic;"><br>
+</span></small></h3>
+
+
+Bêta version 0.1 du 04 Avril 2010
+<br>
+<hr><em> Ce mini HOWTO présente une suite logicielle de frontaux (sous licence <a href="http://www.gnu.org/licenses/gpl-3.0.html">GNU V3</a>) écrits en C++ à l'aide de <a href="http://fr.wikipedia.org/wiki/Qt">Qt4</a> et <a href="../miniHowto.fr.html">GNULdapcppei</a> dont l'objectif et de permettre de centraliser </em><em>au sein d'annuaires LDAP </em><em>les définitions de serveurs Linux participant à la constitution de grands réseaux Intranet. </em>
+<hr><small><span style="font-weight: bold; font-style: italic;"></span></small><br>
+<h3><a name="intro1">1.</a> <a href="Howto-1.fr.html">Présentation
+du projet :<br>
+</a></h3>
+<ul>
+  <li><a href="Howto-1.fr.html#ss1.1">1.1 Qu'est-ce que
+la suite logicielle "LdapEasyAdmin Frontends" ?</a> </li>
+  <li><a href="Howto-1.fr.html#ss1.2">1.2 Exemple d'interface graphique</a> </li>
+  <li><a href="Howto-1.fr.html#ss1.3">1.3 Exemple d'interface de définition d'un paramètrage système<br>
+</a></li></ul>
+
+<h3><a name="intro2">2.</a> <a href="Howto-2.fr.html">Structure de la base LDAP :<br>
+</a></h3>
+
+<ul>
+<li><a href="Howto-2.fr.html#ss2.1">2.1 : Principe</a> </li><li><a href="Howto-2.fr.html#ss2.2">2.2 : Les contraintes minimales<br>
+</a></li>
+  <li><a href="Howto-2.fr.html#ss2.3">2.3 : L'arborescence de définition des interfaces</a></li>
+  <li><a href="Howto-2.fr.html#ss2.4">2.4 : Structure minimale de la base pour débuter</a><a href="Howto-2.fr.html#ss2.3">
+</a></li>
+
+  <li><a href="Howto-2.fr.html#ss2.5">2.5 : La définition des rôles applicatifs et droits d'accés aux données</a></li>
+  <li><a href="Howto-2.fr.html#ss2.6">2.6 : Liste des schémas LDAP utilisés</a><br>
+  </li>
+
+
+</ul>
+
+<h3><a name="intro3">3.</a> <a href="Howto-3.fr.html">La forme de connexion :<br>
+</a></h3>
+
+<ul>
+<li><a href="Howto-3.fr.html#ss3.1">3.1 : Principe de fonctionnement<br>
+</a></li><li><a href="Howto-3.fr.html#ss3.2">3.2 : Quelques fonctionnalités supplémentaires</a><br>
+</li><li><a href="Howto-3.fr.html#ss3.3">3.3 : Les sources C++</a></li>
+
+
+</ul>
+<h3><a name="intro4">4.</a> <a href="Howto-4.fr.html">L'interface de navigation :<br>
+</a></h3>
+
+<ul>
+<li><a href="Howto-4.fr.html#ss4.1">4.1 : Aperçu<br></a></li>
+<li><a href="Howto-4.fr.html#ss4.2">4.2 : Le Bureau d'accès aux interfaces d'administration<br></a></li>
+<li><a href="Howto-4.fr.html#ss4.3">4.3 : Les sources C++</a></li>
+<li><a href="Howto-4.fr.html#ss4.4">4.4 : A faire</a></li>
+</ul>
+
+<h3><a name="intro5">5.</a> <a href="Howto-5.fr.html">L'interface commune d'affichage des extensions :<br>
+</a></h3>
+<ul>
+<li><a href="Howto-5.fr.html#ss5.1">5.1 : Principe de fonctionnement<br></a></li>
+<li><a href="Howto-5.fr.html#ss5.2">5.2 : Principe des extensions</a></li>
+  <li><a href="Howto-5.fr.html#ss5.3">5.3 : Principe des déclencheurs</a><br>
+  </li>
+
+<li><a href="Howto-5.fr.html#ss5.4">5.4 : Les sources C++</a></li>
+  <li><a href="Howto-5.fr.html#ss5.5">5.5 : A faire</a><br>
+  </li>
+
+</ul>
+
+<h3><a name="intro6">6.</a> <a href="Howto-6.fr.html">L'interface de gestion des domaines LDAP :<br>
+</a></h3>
+
+<ul>
+<li><a href="Howto-6.fr.html#ss6.1">6.1 : Aperçu<br>
+</a></li><li><a href="Howto-6.fr.html#ss6.2">6.2 : Gestion des multivaleurs<br>
+</a></li><li><a href="Howto-6.fr.html#ss6.3">6.3 : Déclencheurs sur saisie<br>
+</a></li><li><a href="Howto-6.fr.html#ss6.4">6.4 : Déclencheurs sur affichage</a></li>
+  <li><a href="Howto-6.fr.html#ss6.5">6.5 : Déclencheurs sur mise à jour de l'annuaire</a></li>
+<li><a href="Howto-6.fr.html#ss6.6">6.6 : Les extensions</a></li>
+  <li><a href="Howto-6.fr.html#ss6.7">6.7 : Les sources C++</a></li>
+  <li><a href="Howto-6.fr.html#ss6.8">6.8 : A faire</a><br>
+  </li>
+
+</ul>
+
+<h3><a name="intro7">7.</a> <a href="Howto-7.fr.html">L'interface de définition des serveurs :<br>
+</a></h3>
+
+<ul>
+<li><a href="Howto-7.fr.html#ss7.1">7.1 : Aperçu<br></a>
+</li><li><a href="Howto-7.fr.html#ss7.2">7.2 : Capture d'écran</a></li><li>
+<a href="Howto-7.fr.html#ss7.3">7.3 : L'interface de paramétrage système<br></a></li>
+<li><a href="Howto-7.fr.html#ss7.4">7.4 : Les sources C++</a></li>
+  <li><a href="Howto-7.fr.html#ss7.5">7.5 : A faire</a> <br>
+  </li>
+
+
+</ul>
+<h3><a name="intro8">8.</a> <a href="Howto-8.fr.html">L'interface de gestion des utilisateurs :<br>
+</a></h3>
+
+<ul>
+<li><a href="Howto-8.fr.html#ss8.1">8.1 : Aperçu<br>
+</a></li><li><a href="Howto-8.fr.html#ss8.2">8.2 : Modification de la liste des "objectClasses"<br>
+</a></li><li><a href="Howto-8.fr.html#ss8.3">8.3 : Saisie de mots de passe</a></li><li>
+<a href="Howto-8.fr.html#ss8.4">8.4 : Contraintes d'intégrité</a><br></li>
+<li><a href="Howto-8.fr.html#ss8.5">8.5 : Les sources C++</a></li>
+<li><a href="Howto-8.fr.html#ss8.6">8.6 : A faire</a></li>
+
+</ul>
+<h3><a name="intro9">9.</a> <a href="Howto-9.fr.html">L'interface de gestion des groupes d'utilisateurs :<br>
+</a></h3>
+
+<ul>
+<li><a href="Howto-9.fr.html#ss9.1">9.1 : Aperçu<br>
+</a></li><li><a href="Howto-9.fr.html#ss9.2">9.2 : Modification de la liste des "objectClasses"<br>
+</a></li><li><a href="Howto-9.fr.html#ss9.3">9.3 : Saisie d'information "X-NOT-HUMAN-READABLE"
+</a></li><li><a href="Howto-9.fr.html#ss9.4">9.4 : Les sources C++</a><br>
+</li></ul>
+
+<h3><a name="intro10">10.</a> <a href="Howto-10.fr.html">L'interface de gestion des rôles :<br>
+</a></h3>
+
+<ul>
+<li><a href="Howto-10.fr.html#ss10.1">10.1 : Aperçu<br>
+</a></li><li><a href="Howto-10.fr.html#ss10.2">10.2 : Les sources C++</a></li>
+</ul>
+
+<h3><a name="intro11">11.</a> <a href="Howto-11.fr.html">L'interface de gestion de configuration du service SAMBA :<br>
+</a></h3>
+
+<ul>
+<li><a href="Howto-11.fr.html#ss11.1">11.1 : Définition des domaines samba - sambaDomainFrontend<br>
+</a></li><li><a href="Howto-11.fr.html#ss11.2">11.2 : Utilitaire d'aide à la saisie de l'attribut "sambaSID"<br>
+</a></li><li><a href="Howto-11.fr.html#ss11.3">11.3 : Utilitaire de saisie et hachage des mots de passe "sambaNTPassword" et "sambaLMPassword"<br>
+</a></li><li><a href="Howto-11.fr.html#ss11.4">11.4 : Utilitaire d'aide à la saisie de l'attribut "sambaAcctFlags"<br>
+</a></li><li><a href="Howto-11.fr.html#ss11.5">11.5 : Utilitaire d'aide à ne rien saisir<br>
+</a></li><li><a href="Howto-11.fr.html#ss11.6">11.6 : Déclencheurs après mise à jour<br>
+</a></li><li><a href="Howto-11.fr.html#ss11.7">11.7 : Définition des services samba<br>
+</a></li><li><a href="Howto-11.fr.html#ss11.8">11.8 : Définition des ressources samba<br>
+</a></li><li><a href="Howto-11.fr.html#ss11.9">11.9 : L'interface de paramétrage système "doSmbConf"<br>
+</a></li><li><a href="Howto-11.fr.html#ss11.10">11.10 : Les sources C++<br>
+</a></li><li><a href="Howto-11.fr.html#ss11.11">11.11 : A faire</a></li>
+</ul>
+
+<h3><a name="intro12">12.</a> <a href="Howto-12.fr.html">L'interface de gestion de configuration du service RSYNC :<br>
+</a></h3>
+
+
+<ul>
+<li><a href="Howto-12.fr.html#ss12.1">12.1 : Définition des services et ressources "RSYNC"<br>
+</a></li><li><a href="Howto-12.fr.html#ss12.2">12.2 : L'interface de paramétrage système "doRsyncdConf"<br>
+</a></li><li><a href="Howto-12.fr.html#ss12.3">12.3 : Les sources C++<br>
+</a></li>
+</ul>
+<h3><a name="intro13">13.</a> <a href="Howto-13.fr.html">L'interface de gestion de configuration du service NFS :<br>
+</a></h3>
+
+
+<ul>
+<li><a href="Howto-13.fr.html#ss13.1">13.1 : Définition des services et ressources "NFS"<br>
+</a></li><li><a href="Howto-13.fr.html#ss13.2">13.2 : L'interface de paramétrage système "doNfsdConf"</a><a href="Howto-13.fr.html#ss13.2">
+    </a></li><li><a href="Howto-13.fr.html#ss13.3">13.3 : Les sources C++<br>
+</a></li>
+</ul>
+<h3><a name="intro14">14.</a> <a href="Howto-14.fr.html">L'interface de gestion du paramétrage des DNS :<br>
+</a></h3>
+
+
+
+<ul>
+<li><a href="Howto-14.fr.html#ss14.1">14.1 : Aperçu<br>
+</a></li><li><a href="Howto-14.fr.html#ss14.2">14.2 : L'interface de paramétrage système</a><a href="Howto-14.fr.html#ss14.2">
+    </a></li><li><a href="Howto-14.fr.html#ss14.3">14.3 : Les sources C++<br>
+</a></li>
+</ul>
+<h3><a name="intro15">15.</a> <a href="Howto-15.fr.html">L'interface de gestion des daemons "cron" :<br>
+</a></h3>
+
+
+
+
+<ul>
+<li><a href="Howto-15.fr.html#ss15.1">15.1 : Aperçu<br>
+</a></li><li><a href="Howto-15.fr.html#ss15.2">15.2 : L'interface de paramétrage système</a><a href="Howto-14.fr.html#ss14.2">
+    </a></li><li><a href="Howto-15.fr.html#ss15.3">15.3 : Les sources C++<br>
+</a></li><li><a href="Howto-15.fr.html#ss15.4">15.4 : A faire<br>
+</a></li>
+</ul>
+<h3><a name="intro16">16.</a> <a href="Howto-16.fr.html">L'interface de gestion des services "netfilter" :<br>
+</a></h3>
+
+
+
+
+<ul>
+<li><a href="Howto-16.fr.html#ss16.1">16.1 : Aperçu<br>
+</a></li><li><a href="Howto-16.fr.html#ss16.2">16.2 : L'interface de paramétrage système ("doIpTables")&nbsp;</a><a href="Howto-14.fr.html#ss14.2">
+    </a></li><li><a href="Howto-16.fr.html#ss16.3">16.3 : Les sources C++<br>
+</a></li>
+</ul>
+<hr><br>
+<a href="Howto-1.fr.html">Page suivante</a> <a href="http://gna.org/projects/ldapcppei/">Page précédente</a>
+Table des matières <a href="../miniHowto.fr.html">GNU/Ldapcppei</a>
+
+
+
+
+
+
+</body></html>

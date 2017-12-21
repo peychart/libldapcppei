@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html><head>
+
+
+  <meta name="GENERATOR" content="KompoZer-0.8a4"><title>LdapEasyInterface (libcppei) Mini Howto (Français)</title>
+  
+  <link href="LdapcppeiMiniHowto-1.fr.html" rel="next"></head><body>
+<a href="Howto-2.en.html">Next</a> <a href="Howto.en.html">Previous</a> <a href="Howto.en.html">Summary</a> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; (<a href="Howto-1.fr.html"><span style="font-weight: bold;">Français</span></a> - English)
+<hr>
+<h2><a name="S1"><span style="text-decoration: underline; font-weight: bold;">1. </span><span style="text-decoration: underline; font-weight: bold;" id="result_box" class="short_text" lang="en"><span class="hps">Project presentation</span><span class="hps"></span></span><span style="text-decoration: underline; font-weight: bold;">:</span>
+</a></h2>
+<h2><a name="ss1.1">1.1 <span id="result_box" class="short_text" lang="en"><span class="hps">What is</span> <span class="hps">the software suite</span></span> "GNULdapEasyAdmin" ?</a></h2>
+<div style="margin-left: 40px;">
+<div style="text-align: justify;"><span id="result_box" class="" lang="en"><span class="hps">The objective of</span> <span class="hps">this project</span> <span class="hps">is</span> <span class="hps">to provide</span><span class="hps"></span> <span class="hps">the system administrator</span> <span class="hps">of</span> <span class="hps">an intranet</span> <span class="hps">some user-friendly tools</span> <span class="hps">to centralize</span> <span class="hps">the configuration</span> <span class="hps">of its</span> <span class="hps">server systems</span> <span class="hps">by</span> <span class="hps">consolidating their settings in a </span><span class="hps"></span> <span class="hps">LDAP</span> <span class="hps">(Lightweight Directory Access</span> <span class="hps">Protocol) database.</span></span><br>
+<br>Thus, the software (re)installation of a server will be limited to
+apply necessary packages to provide its hosting services and its
+configuration will be automatically insured at system startup,
+according to the MAC address of its first NIC recorded in the LDAP
+directory.<br>
+<br>Subsequent changes made to parameters in this directory will be
+automatically updated on each hardware platform involved (eg through the CRON daemon).<br>
+<br>
+<span id="result_box" class="short_text" lang="en"><span class="hps">Two groups</span> <span class="hps">make up</span> <span class="hps">this suite</span> <span class="hps">of</span> <span class="hps">software</span><span class="">:</span></span><br>
+
+<ul>
+<li style="text-align: justify;">graphical interfaces <span id="result_box" class="" lang="en"><span class="hps">for</span> <span class="hps">a user-friendly way</span> <span class="hps">to implement</span> <span class="hps">or</span> <span class="hps">modify the</span> <span class="hps">configuration of</span> <span class="hps">servers</span> <span class="hps">and</span> <span class="hps">managed services</span> <span class="hps">within</span> <span class="hps">the <span style="font-weight: bold;">LDAP</span> database,</span><span class=""></span></span>
+</li><li style="text-align: justify;">drivers to
+extract the information in the database directory and convert it to
+standard configuration files, <span id="result_box" class="" lang="en"><span class="hps">especially</span></span> for services whose
+configuration is not natively interfaced with<span id="result_box" class="" lang="en"> <span style="font-weight: bold;" class="hps">LDAP</span><span style="font-weight: bold;" class=""></span></span><span style="font-weight: bold;">.</span><br>
+  </li>
+</ul>
+
+<span style="text-decoration: underline; font-weight: bold; color: rgb(255, 102, 0);">Note:</span>
+A profile management allows administrator to delegate some management
+parameters to different areas of expertise like network administrators,
+system administrators, responsible for the users hotline, ...<br>
+
+</div>
+
+</div>
+<h2><a name="ss1.2">1.2 GUI Example:</a></h2>
+<div style="margin-left: 40px;">
+<div style="text-align: justify;"><span id="result_box" class="" lang="en"><span class="hps">The graphical interface</span> <span class="hps">below</span> <span class="hps">as an example is</span> <span class="hps">one that will</span> <span class="hps">define and manage</span> <span class="hps">the</span></span><span id="result_box" class="" lang="en"> <span class="hps atn">"</span><span>server</span></span><span id="result_box" class="" lang="en"><span class="hps"> entity</span><span></span><span>"</span> <span class="hps">in the</span> corporate<span class="hps"> directory.</span></span><br>
+<br>It does not set itself any network service (at most, the domain
+name of the server) but is primarily used to define the "node" (the server)
+that will be then attached to various other definitions, themselves controlled by other specific interfaces (eg: "<a href="Howto-11.en.html#ss11.7">samba</a>", "<a href="Howto-12.en.html#S12">rsyncd</a>", "<a href="Howto-13.en.html">nfsd</a>", ...).<br>
+<br><span id="result_box" class="" lang="en"><span class="hps">This server entity is therefore the root of the definition of </span></span><span id="result_box" class="" lang="en"><span class="hps">services </span></span><span id="result_box" class="" lang="en"><span class="hps"> that will be attached.</span><span class=""></span></span><br>
+</div>
+
+<br>
+<img style="width: 602px; height: 280px;" alt="images/serverFrontend.png" src="images/serverFrontend.png"><br>
+</div>
+
+<h2><a name="ss1.3">1.3 Example of a configuration driver:</a></h2>
+<div style="text-align: justify; margin-left: 40px;">
+<a href="Howto-7.en.html#ss7.3">Here</a> is an example of configurating a server from its MAC address and associated data stored in the LDAP directory.<span style="text-decoration: underline;"><br>
+</span></div><br>
+
+<hr><a href="Howto-2.en.html">Next</a> <a href="Howto.en.html">Previous</a> <a href="Howto.en.html">Summary</a>
+
+
+</body></html>

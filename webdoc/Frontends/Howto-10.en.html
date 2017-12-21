@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html><head>
+
+  <meta name="GENERATOR" content="KompoZer-0.8a4"><title>LdapEasyInterface (libcppei) Mini Howto (Français)</title>
+  
+  <link href="LdapcppeiMiniHowto-1.fr.html" rel="next"><style type="text/css">ite-space: pre-wrap; }</style></head><body><a href="Howto-11.en.html">Next</a> <a href="Howto-9.en.html">Previous</a> <a href="Howto.en.html">Summary</a> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; (<a href="Howto-10.fr.html"><span style="font-weight: bold;">Français</span></a> - English)
+<hr>
+<h2><a name="S10"><span style="text-decoration: underline;">10. The interface for managing roles :</span></a></h2>
+<h2 style="margin-left: 40px; font-weight: normal;"><small><small><span id="result_box" class="" lang="en"><span class="hps">This GUI</span> <span class="hps">can administer</span> <span class="hps">application</span> <span class="hps">roles</span> <span class="hps">defined</span> <span class="hps">in the LDAP directory</span> <span class="hps">(add /</span> <span class="hps">delete / modify</span><span class="">)</span><span class="">.</span></span></small></small></h2>
+<div style="text-align: center;"><img style="width: 1109px; height: 673px;" alt="images/organizationalRoleFrontend.png" src="images/organizationalRoleFrontend.png"><br>
+</div>
+<br>
+
+
+<h2><a name="ss10.1">10.1 Principe
+</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;">This interface shares its code with the interface "<a href="Howto-6.en.html#top">domainFrontend</a>"<span id="result_box" class="short_text" lang="en"><span class="hps">and</span><span class="">, as such</span><span>,</span> <span class="hps">has the same functionality</span></span>. The executable name must contain the string "<span style="font-weight: bold;">Frontend</span>" preceded <span id="result_box" class="" lang="en"><span class="hps">(no spaces or</span> <span class="hps">other characters</span><span class="">)</span> <span class="hps">by</span> <span class="hps">the name</span> <span class="hps atn">of</span></span> the <span id="result_box" class="" lang="en"><span class="hps">main </span></span>"<span style="font-weight: bold;">object Class</span>" of the managed entity (here: "<span style="font-weight: bold;">organizationalRole</span>").<br>
+<br><span id="result_box" class="" lang="en"><span class="hps">Such an</span> <span class="hps">executable</span> <span class="hps">may</span> <span class="hps">be called by a</span> <span class="hps">physical or symbolic</span> <span class="hps">link</span></span> ("<span style="font-weight: bold;">ln [-s]</span>") <span id="result_box" class="" lang="en"><span class="hps">that meets</span> <span class="hps">the above rule</span> <span class="hps">or</span><span class="">, failing that,</span> <span class="hps">that does not contain</span> <span class="hps atn">the string</span></span> "<a style="font-weight: bold;" href="Howto-5.en.html">Frontend</a>". <span id="result_box" class="" lang="en"><span class="hps">This rule</span> <span class="hps">is recursive</span><span class="">, and therefore operates</span> <span class="hps">on</span> <span class="hps">links</span> <span class="hps">of links</span><span class="">.</span></span><br>
+<br>
+<span style="font-weight: bold; text-decoration: underline;">The operating principle of this interface of LDAP domains management is the dynamic creation of its input mask from:</span><br>
+
+
+
+<ul>
+<li style="text-align: justify;">the list of "<span style="font-weight: bold;">object Class</span>" <span id="result_box" class="" lang="en"><span class="hps">constituting the</span> <span class="hps">domain</span> <span class="hps">being viewed</span> <span class="hps">(or</span> <span class="hps">created or modified</span></span>),<br>
+  </li><li style="text-align: justify;">and a list of their constituent attributes.</li>
+</ul>
+
+
+When the architect of the LDAP directory adds or removes one or several "<span style="font-weight: bold;">objectClasses</span>",
+this information is saved in the LDAP database. Thereafter, any
+definition of user account that will be created or modified will be be
+impacted by this new schema.<br>
+
+
+<br>
+
+Except the principle of this "<span style="font-weight: bold;">objectClasses</span>" declaration that make up a user account, the rest of the operation of this interface is the same as the interface "<a href="Howto-6.en.html#top">domainFrontend</a>".
+<small>
+</small></div><br>
+<h2><a name="ss10.2"></a>10.2 <a href="../archives/ldapEasyAdminFrontends/sources/domain.so/">The C++ source</a><br>
+
+</h2>
+<div style="text-align: justify; margin-left: 40px;">Latest version (<span style="font-weight: bold;">20120102</span>) <a href="../archives/ldapEasyAdminFrontends/sources/domain.so">here</a>.<br>
+<br>This code is shared with: "<a href="Howto-6.en.html#top">domainFrontend</a>".<br>
+<br>After compiling, the name of the executable <span id="result_box" class="" lang="en"><span class="hps">determines</span></span> the type of LDAP data managed by the GUI ("<a href="Howto-6.en.html#top">domainFrontend</a>", "<a href="Howto-8.en.html#S8">personFrontend</a>", "<a href="Howto-9.en.html#S9">posixGroupFrontend</a>", "<span style="font-weight: bold;">organizationalRoleFrontend</span>").<br>
+<br>
+<small style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">ln [-s] /usr/local/bin/libdomain.so /usr/local/bin/liborganizationalrole.so</span><br>
+</small><small style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">ln [-s] /usr/local/bin/<a href="Howto-5.en.html">frontend</a> /usr/local/bin/</span></small><small style="font-style: italic;"><span style="font-weight: bold;">organizationalRole</span></small><small style="font-style: italic;"><span style="font-weight: bold;">Frontend</span></small><br>
+<br>
+
+</div>
+<br>
+<hr><a href="Howto-11.en.html">Next</a> <a href="Howto-9.en.html">Previous</a> <a href="Howto.en.html">Summary</a>
+
+
+
+
+
+</body></html>

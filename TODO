@@ -1,0 +1,4 @@
+2011 October :
+- man5,
+- finalize ldapEasyInterface.setOption() and getOption(),
+- "result" on ldapSearch...

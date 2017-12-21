@@ -1,0 +1,154 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of BERVALUE</TITLE>
+</HEAD><BODY>
+<H1>BERVALUE</H1>
+Section: libldapcppei 3.1.0 (3)<BR>Updated: 2012-08-24<BR><A HREF="#index">Index</A>
+<A HREF="http://homepage.gna.org/ldapcppei/miniHowto-1.en.html#ss1.8">Return to Main Contents</A><HR>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+berValue --- <B>libldapcppei</B> is a C++ library under licence GNU version 3 whose topic is to provide a C++ programming interface for easy and safe use of OPENLDAP databases.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/libldapcppei/ldapBerValue.h">libldapcppei/ldapBerValue.h</A>&gt;</B>
+<P>
+
+<B>using namespace ldapcppei;</B>
+<P>
+
+<B>berValue( void );</B>
+<BR>
+
+<B>berValue( const char</B> *<I>strValue</I> <B>);</B>
+<BR>
+
+<B>berValue( const std::string &amp;</B><I>stringValue</I> <B>);</B>
+<BR>
+
+<B>berValue( size_t</B> <I>length</I><B>, const byte*</B><I>value</I> <B>);</B>
+<BR>
+
+<B>berValue( const BerValue</B> *<I>value</I> <B>);</B>
+<BR>
+
+<B>berValue( const BerValue</B> &amp;<I>value</I> <B>);</B>
+<BR>
+
+<B>berValue( const berValue</B> *<I>value</I> <B>);</B>
+<BR>
+
+<B>berValue( const berValue</B> &amp;<I>value</I> <B>);</B>
+<BR>
+
+<B>berValue( byteArea</B> <I>value</I> <B>);</B>
+<A NAME="lbAD">&nbsp;</A>
+<H2>CONFIGURATION</H2>
+
+The <B>g++</B> option &quot;<B>-std=c++0x</B>&quot; must be set when using this component: &quot;<B>g++</B> <B>-std=c++0x</B> ... file ... <B>-lldapcppei</B> <B>-lldap</B> ...&quot;
+<A NAME="lbAE">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>berValue()</B> provides LDAP data storage.
+<BR>
+
+It is the basic class of the <B>libldapcppei</B> API, which inherits from the class <B>byteArea</B>.
+<DL COMPACT>
+<DT><B>berValue( void )</B><DD>
+Creates an empty <B>berValue</B>.
+<DT><B>berValue( const char</B> *<I>strValue</I> <B>)</B><DD>
+Creates a <B>berValue</B> of the length of the C string <I>strValue</I> and containing its value.
+<DT><B>berValue( const std::string &amp;</B><I>stringValue</I> <B>)</B><DD>
+Creates a <B>berValue</B> and initializes its value with the content of the C++ string <I>stringValue</I>.
+<DT><B>berValue( const BerValue</B> *<I>value</I> <B>)</B> or <B>berValue( const BerValue</B> &amp;<I>value</I> <B>)</B><DD>
+Allows to create a <B>berValue</B> with the content of the OPENLDAP structure <B>BerValue</B>.
+<DT><B>berValue( const berValue</B> *<I>value</I> <B>)</B> or <B>berValue( const berValue</B> &amp;<I>value</I> <B>)</B><DD>
+Allows to create a <B>berValue</B> with the content of an other <B>berValue</B>.
+<DT><B>berValue( byteArea</B> <I>value</I> <B>)</B><DD>
+Allows to create a <B>berValue</B> with the content of a <B>byteArea</B> object.
+
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>PUBLIC METHODS</H2>
+
+<DL COMPACT>
+<DT>All public methods of the class &quot;<B>byteArea</B>&quot; are inherited, as well as:<DD>
+<DT><B>- const char*<TT>&nbsp;&nbsp;</TT>toStr( void ) const;</B><DD>
+Returns a pointer (const char*) to a C string which contains <B>berValue::fromUtf8().c_str()</B>.<BR>
+
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>OPERATORS</H2>
+
+All public operators of the class &quot;<B>byteArea</B>&quot; are also inherited.
+<A NAME="lbAH">&nbsp;</A>
+<H2>BUGS</H2>
+
+Bugs are bad. Avoid them. ;-) (See below the author's email...)
+<A NAME="lbAI">&nbsp;</A>
+<H2>SEE ALSO</H2>
+
+<B><A HREF="byteArea.3.html">byteArea</A></B>(3),
+<B><A HREF="attribute.3.html">attribute</A></B>(3),
+<B><A HREF="entry.3.html">entry</A></B>(3),
+<B><A HREF="ldapSet.3.html">ldapSet</A></B>(3),
+<B><A HREF="ldapEasyInterface.3.html">ldapEasyInterface</A></B>(3),
+<B><A HREF="ldap.3.html">ldap</A></B>(3).
+<P>
+
+See
+<B><A HREF="http://homepage.gna.org/ldapcppei/miniHowto.en.html">http://homepage.gna.org/ldapcppei/miniHowto.en.html</A></B>
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>AUTHORS</H2>
+
+Man page originally written by Philippe Eychart &lt;<A HREF="mailto:peychart@mail.pf">peychart@mail.pf</A>&gt;.
+
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">CONFIGURATION</A><DD>
+<DT><A HREF="#lbAE">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAF">PUBLIC METHODS</A><DD>
+<DT><A HREF="#lbAG">OPERATORS</A><DD>
+<DT><A HREF="#lbAH">BUGS</A><DD>
+<DT><A HREF="#lbAI">SEE ALSO</A><DD>
+<DT><A HREF="#lbAJ">AUTHORS</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="http://savannah.nongnu.org/projects/man2html/">man2html</A>,
+using the manual pages.<BR>
+Time: 04:47:56 GMT, September 21, 2012
+</BODY>
+</HTML>

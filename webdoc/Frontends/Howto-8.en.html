@@ -1,0 +1,221 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html><head>
+
+
+
+  <meta name="GENERATOR" content="KompoZer-0.8a4"><title>LdapEasyInterface (libcppei) Mini Howto (Français)</title>
+  
+  <link href="LdapcppeiMiniHowto-1.fr.html" rel="next"><style type="text/css">ite-space: pre-wrap; }</style></head><body><a href="Howto-9.en.html">Next</a> <a href="Howto-7.en.html">Previous</a> <a href="Howto.en.html">Summary</a> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; (<a href="Howto-8.fr.html"><span style="font-weight: bold;">Français</span></a> - English)
+<hr>
+<h2><a name="S8"><span style="text-decoration: underline;">8. The interface to manage users "personFrontend" :</span></a></h2>
+<h2 style="margin-left: 40px; font-weight: normal;"><small><small>This GUI allows to manage (creation, deletion, modification and restoration) of users within the corporate LDAP directory.</small></small></h2>
+<div style="text-align: left;"><img style="width: 887px; height: 553px;" alt="images/personFrontend.png" src="images/personFrontend.png"><br>
+</div>
+<br>
+
+
+<h2><a name="ss8.1">8.1 Overview</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;">This GUI shares its code with the three other GUIs: "<a href="Howto-6.en.html#top">domainFrontend</a>". <span id="result_box" class="" lang="en"><span class="hps">The name of</span> <span class="hps">its launch</span> <span class="hps">executable</span> <span class="hps">must therefore contain</span> <span class="hps atn">the string</span></span><span id="result_box" class="" lang="en"><span class="hps"></span><span class="hps"> </span></span>"<a style="font-weight: bold;" href="Howto-5.en.html">Frontend</a>" <span id="result_box" class="" lang="en"><span class="hps">preceded</span></span> (without space or other charactere)<span id="result_box" class="" lang="en"> <span class="hps">by the</span> <span class="hps">name of the </span></span>"<span style="font-weight: bold;">object Class</span>" <span id="result_box" class="" lang="en"><span class="hps">of the</span> <span class="hps">entity</span> <span class="hps">that it manages.</span></span> (here: "<span style="font-weight: bold;">person</span>", ie: "<span style="font-weight: bold;">personFrontend</span>").<br>
+<br><span id="result_box" class="" lang="en"><span class="hps">Such an</span> <span class="hps">executable</span> <span class="hps">may</span> <span class="hps">be called by a</span> <span class="hps">physical or symbolic</span> <span class="hps">link</span></span> ("<span style="font-weight: bold;">ln [-s]</span>") <span id="result_box" class="" lang="en"><span class="hps">that meets</span> <span class="hps">the above rule</span> <span class="hps">or</span><span class="">, failing that,</span> <span class="hps">that does not contain</span> <span class="hps atn">the string</span></span> "<a style="font-weight: bold;" href="Howto-5.en.html">Frontend</a>". <span id="result_box" class="" lang="en"><span class="hps">This rule</span> <span class="hps">is recursive</span><span class="">, and therefore operates</span> <span class="hps">on</span> <span class="hps">links</span> <span class="hps">of links</span><span class="">.<br>
+<br>
+</span></span>
+<span style="font-weight: bold; text-decoration: underline;">The operating principle of this interface of LDAP domains management is the dynamic creation of its input mask from:</span><br>
+
+<ul>
+<li style="text-align: justify;">the list of "<span style="font-weight: bold;">object Class</span>" <span id="result_box" class="" lang="en"><span class="hps">constituting the</span> <span class="hps">domain</span> <span class="hps">being viewed</span> <span class="hps">(or</span> <span class="hps">created or modified</span></span>),<br>
+  </li><li style="text-align: justify;">and a list of their constituent attributes.</li>
+</ul>
+When the architect of the LDAP directory adds or removes one or several "<span style="font-weight: bold;">objectClasses</span>",
+this information is saved in the LDAP database. Thereafter, any
+definition of user account that will be created or modified will be be
+impacted by this new schema.<br>
+<br>Except the principle of this "<span style="font-weight: bold;">objectClasses</span>" declaration that make up a user account, the rest of the operation of this interface is the same as the interface "<a href="Howto-6.en.html#top">domainFrontend</a>".
+<small>
+</small></div>
+
+
+<h2><a name="ss8.2">8.2 Editing the list of "objectClasses"</a></h2>
+<div style="margin-left: 40px;">In editing mode:<br>
+<div style="text-align: center;"><img style="width: 672px; height: 467px;" alt="images/personFrontend-addObjectClasses.png" src="images/personFrontend-addObjectClasses.png"><br>
+</div><br><span style="text-decoration: underline;">Notice:</span><br>
+<div style="margin-left: 40px; text-align: justify;">- the list of "<span style="font-weight: bold;">inheriting </span>objectClasses<span style="font-weight: bold;"></span>" (not present here because empty - <span id="result_box" class="" lang="en"><span class="hps">already include into</span> <span class="hps">the current object</span></span>) <span id="result_box" class="" lang="en"><span class="hps">is</span> <span class="hps">based on the</span></span> "<span style="font-weight: bold;">objectClasses</span>" <span id="result_box" class="" lang="en"><span class="hps">already </span></span><span id="result_box" class="" lang="en"><span class="hps">constituting</span><span class="hps"> the object.</span></span><br>
+</div>
+<br>
+<span style="font-weight: bold; text-decoration: underline;">Result:</span><br>
+<br>
+<div style="text-align: left;"><img style="width: 253px; height: 165px;" alt="images/personFrontend-new.png" src="images/personFrontend-new.png"><br>
+</div>
+
+<br>
+
+<div style="text-align: justify;"><span id="result_box" class="" lang="en"><span class="hps">To remove</span> <span class="hps">an</span></span> "<span style="font-weight: bold;">objectClass</span>", <span id="result_box" class="" lang="en"><span class="hps">just close</span> <span class="hps">its</span> <span class="hps">tab</span><span class="">;</span></span> but, the basic "<span style="font-weight: bold;">objectClass</span>" (here "<span style="font-weight: bold;">person</span>") <span id="result_box" class="" lang="en"><span class="hps">can not be deleted</span><span class="">,</span></span> as any parent "<span style="font-weight: bold;">objectClass</span>" of already selected "<span style="font-weight: bold;">objectClasses</span>" for the current entity.<br>
+
+<br>The tab order can be modified (drag &amp; drop) <span id="result_box" class="" lang="en"><span class="hps">and will be saved</span> <span class="hps">automatically</span> <span class="hps">when exiting</span> <span class="hps">the interface</span><span class="">,</span></span> provided that the role "<span style="font-weight: bold;">adminStruct</span>"&nbsp; is assigned to the login account that was used during the connection to the current session.<br>
+
+<small>
+</small></div>
+</div>
+
+<h2><a name="ss8.3">8.3 Entering passwords, pictures, membership or list of existing users</a></h2>
+<div style="margin-left: 40px; text-align: justify;"><span id="result_box" class="" lang="en"><span class="hps">This</span> <span class="hps">entry</span> <span class="hps">is based</span> <span class="hps">on the notion of</span> <span class="hps">triggers</span> described</span> <a href="Howto-6.en.html#ss6.3">here</a>... One of the utilities that can be called when specific entries is, for example: "<a href="../archives/ldapEasyAdminFrontends/sources/slappassword/">slappassword</a>".<br>
+<br>This utility of the"<a href="Howto.en.html">LdapEasyInterface</a>"  projet constitutes a graphical interface to the console command: "<span style="font-weight: bold;">slappasswd</span>" from the "<a href="http://www.openldap.org">openLdap</a>" projet. <span id="result_box" class="" lang="en"><span class="hps">It</span> <span class="hps">can also be used</span> <span class="hps">independently to</span> <span class="hps">verify</span> <span class="hps">or</span> <span class="hps">change</span> <span class="hps">a password</span> <span class="hps">in the</span></span> LDAP directory, including the connection attempt (see: "<span style="font-weight: bold;">slappassword&nbsp; --help</span>").<br>
+<br>
+<div style="text-align: center;"><img style="width: 750px; height: 386px;" alt="images/slappassword2.png" src="images/slappassword2.png"><br>
+</div>
+
+<span style="text-decoration: underline; font-weight: bold;">Syntax:</span><br><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold; font-style: italic;">slappassword&nbsp;&nbsp;</span><span style="font-weight: bold; font-style: italic;"> </span><span style="font-weight: bold; font-style: italic;"></span><span style="font-weight: bold; font-style: italic;">[ (-H/--host "hostname[:port]")&nbsp; /&nbsp; ("anIPCLdapConnectionIsActive")&nbsp; --dn "userDn"&nbsp; </span><span style="font-weight: bold; font-style: italic;"> [--update</span><span style="font-weight: bold; font-style: italic;">] ]</span><span style="font-weight: bold; font-style: italic;">&nbsp; </span><span style="font-weight: bold; font-style: italic;">[--date "</span><span style="font-weight: bold; font-style: italic;">secondesSince1970</span><span style="font-weight: bold; font-style: italic;">"]</span><span style="font-weight: bold; font-style: italic;">&nbsp; [--minLength/-m #]</span><span style="font-weight: bold; font-style: italic;">&nbsp;</span><span style="font-weight: bold; font-style: italic;"></span><span style="font-weight: bold; font-style: italic;"> [{scheme}currentHashedPassword / --stdin]</span><br>
+<ul>
+  <li>option <span style="font-weight: bold;">--host/-H</span> : allows to give the name of the server hosting the <span style="font-weight: bold;">LDAP</span> database (in case of test connection and/or with the option: "<span style="font-weight: bold;">--update</span>").
+This option is not necessary when a session is actually active in
+shared memory (when an other ldapEasyInterface interface is running and
+already connected).<br>
+</li>
+  <li>option <span style="font-weight: bold;">--dn/-d</span> : allows to give the connect <span style="font-weight: bold;">DN</span> for which we wish to verify/update the password. This option is associate to the previous one: "<span style="font-weight: bold;">-H</span>" or to the current IPC connection (shared memory).</li>
+<li style="text-align: justify;">option "<span style="font-weight: bold; font-style: italic;">--date</span><span style="font-weight: bold; font-style: italic;"></span>" allows to give reference date (format UNIX : secondes number since 1970) <span id="result_box" class="" lang="en"><span class="hps">before</span> <span class="hps">which the change</span> <span class="hps">of</span> <span class="hps">password</span> <span class="hps">will not be allowed</span></span> (see<span style="text-decoration: underline;"> </span><a href="Howto-11.en.html#ss11.3">here</a>),<br>
+  </li>
+
+  <li>option <span style="font-weight: bold;">--update</span> :<span id="result_box" class="short_text" lang="en"><span class="hps"> specifies</span> <span class="hps">that</span></span>, <span id="result_box" class="short_text" lang="en"><span class="hps">if</span> <span class="hps">the connection check</span> <span class="hps">has been successfully</span></span> (or an IPC connexion is already active)
+and a new password has been updated, then the backup of this new value
+will be tried during the return from the current interface, button: "<span style="font-weight: bold;">Ok</span>". The attribute "<span style="font-weight: bold;">userPassword</span>" will be update (as well as the LDAP permissions allow it). <span id="result_box" class="" lang="en"><span class="hps">Be careful when using</span> <span class="hps">this option</span> <span class="hps">when the interface is</span> <span class="hps">called from</span> <span class="hps">a</span> trigger of the <span class="hps">GUI</span></span> "<span style="font-weight: bold;">personFrontend</span>" or "<a href="Howto-9.en.html#S9">posixGroupFrontend</a>". Indeed, this may conflict with the update performed by the call interface itself during its validation...</li>
+  <li>The last parameter is the hach value on break (button: "<span style="font-weight: bold;">Cancel</span>"). This allows the call interface not to change the value of the input field
+(or: to replace the old value with this same value) in case of breaking.</li>
+  <li>This last parameter can be substituted with the option "<span style="font-weight: bold;">--stdin</span>" or "<span style="font-weight: bold;">-</span>"
+; <span id="result_box" class="" lang="fr"><span class="hps">in this case, the returned value of the interface is read directly from the standard input of the execution process</span></span> (useful in case of interfaces "<span style="font-weight: bold;">ldapEasyInterface</span>" as "<span style="font-weight: bold;">personnFrontend</span>".
+In this case, the length of this value is not limited, unlike the
+command line parameter - although in this case, passwords input, the
+question does not arise ...).<br>
+  </li>
+</ul>
+<small>(All these parameters are optional - usual meaning of "<span style="font-weight: bold;">[]</span>" ... ;-).</small><br>
+<br>Source of "<a href="../archives/ldapEasyAdminFrontends/sources/slappassword/">slappassword</a>" (version 0.3 - 20101006) <span style="text-decoration: underline;"></span><a href="../archives/ldapEasyAdminFrontends/sources/slappassword/">here</a>...<br>
+
+<br>
+<br>
+<span style="text-decoration: underline; font-weight: bold;"></span><span style="text-decoration: underline; font-weight: bold;">Limitation:</span> <span id="result_box" class="" lang="en"><span class="hps">As explained</span> <span class="hps">above</span><span class="">, this GUI</span> <span class="hps">uses</span> <span class="hps">to run</span> <span class="hps atn">the </span></span>"<span style="font-weight: bold;">slappasswd</span>" <span id="result_box" class="" lang="en"><span class="hps atn">utility from </span></span>the "<a href="http://www.openldap.org">OpenLdap</a>" project. So, "<a href="../archives/ldapEasyAdminFrontends/sources/slappassword/">slappassword</a>" allow to do only that what this utility can do<span style="font-weight: bold;"></span> in console mode ("<span style="font-weight: bold;">shell</span>")...<br>To date (2010/08), "<span style="font-weight: bold;">slappasswd</span>" manages the list of the following formats: "<span style="font-weight: bold;">SHA, SSHA, MD5, SMD5, CRYPT and Plain Text</span>" ; <span id="result_box" class="" lang="en"><span class="hps">it</span> <span class="hps">does not allow</span> <span class="hps">verification of</span> <span class="hps">passwords</span> <span class="hps atn">in the format</span></span> "<span style="font-weight: bold;">SSHA</span>" et "<span style="font-weight: bold;">SMD5</span>", <span id="result_box" class="" lang="en"><span class="hps">but</span> <span class="hps">only</span> <span class="hps">their definition</span> </span> (the "<span style="font-weight: bold;">Check</span>" button to the GUI "<a href="../archives/ldapEasyAdminFrontends/sources/slappassword/">slappassword</a>" will remain not valid when the current password will be in one of these two formats).<br>
+<span style="text-decoration: underline; font-weight: bold;"><br>
+Note:</span> the code of "<a href="../archives/ldapEasyAdminFrontends/sources/slappassword/">slappassword</a>" is shared with "<a href="Howto-11.en.html#ss11.3">ntpassword</a>" (see "<span style="font-weight: bold;">slappassword -help</span>"). So, the options [<span style="font-weight: bold;">-L / -N</span>] of the command "<a href="Howto-11.en.html#ss11.3">ntpassword</a><span style="font-weight: bold;"></span>" are usable with "<a href="../archives/ldapEasyAdminFrontends/sources/slappassword/">slappassword</a>", <span id="result_box" class="" lang="en"><span class="hps">operation</span> <span class="hps">resulting</span> <span class="hps">in this case</span> <span class="hps">is</span> <span class="hps">actually</span> <span class="hps">that of the command:</span></span> "<a href="Howto-11.en.html#ss11.3">ntpassword</a>".<br>
+
+<br>
+<br>
+<span style="text-decoration: underline; font-weight: bold;">Another example of calling external utility to capture specific information: "</span><small><span style="text-decoration: underline;"><a href="../archives/ldapEasyAdminFrontends/sources/imageSelector/"><big><big>imageSelector</big></big></a></span></small><span style="text-decoration: underline; font-weight: bold;">":</span><br>
+<br>
+<div style="text-align: center;"><img style="width: 758px; height: 638px;" alt="images/imageSelector.png" src="images/imageSelector.png"><br>
+</div>
+<br>
+<span style="text-decoration: underline; font-weight: bold;">Syntax:</span><span style="font-weight: bold;">&nbsp;  &nbsp;&nbsp;  &nbsp;  <span style="font-style: italic;">imageSelector [ -/--stdin ]</span><br>
+</span><br>
+<span style="text-decoration: underline; font-weight: bold;"></span><span id="result_box" class="" lang="en"><span class="hps">It works similar</span> <span class="hps">to that of</span> <span class="hps">the</span> <span class="hps">previous</span> <span class="hps">utility</span> </span> ("<a href="../archives/ldapEasyAdminFrontends/sources/slappassword/">slappassword</a>") about the "cancel" value returned through the standard input of the execution process...<br>
+<br><span id="result_box" class="" lang="en"><span class="hps">This interface</span> <span class="hps">allows you to view</span> <span class="hps">the current image</span> <span class="hps atn">(</span><span>passed</span> <span class="hps">on standard input</span><span class="">)</span> <span class="hps">or,</span> <span class="hps">to</span> <span class="hps">select a new one</span> <span class="hps">that will be sent</span> <span class="hps">to standard output</span> <span class="hps">during</span> <span class="hps">the execution process</span></span> <span id="result_box" class="" lang="en"><span class="hps">of</span> <span class="hps">validation</span> <span class="hps">by</span> <span class="hps">selecting</span> <span class="hps atn">the button </span><span></span><span class="hps atn"></span></span>"<span style="font-weight: bold;">Ok</span>"
+... <span id="result_box" class="" lang="en"><span class="hps">If</span> <span class="hps">no image is</span> <span class="hps">selected</span> <span class="hps">during the validation</span><span>,</span> <span class="hps">no image will be</span> <span class="hps">sent</span> <span class="hps atn">(</span><span class="">stdout</span> <span class="hps">is empty).</span></span> This will allow to clear the contents of the calling attribute ("<span style="font-weight: bold;">jpegPhoto</span>", for example) from the mask "<span style="font-weight: bold;">personFrontend</span>", as opposed to hitting the "<span style="font-weight: bold;">Cancel</span>"
+button which, returning "<span style="font-weight: bold;">exit 1</span>", in the end, will remain the content unchanged within the GUI appellant... )<br>
+<br>Source for "<a href="../archives/ldapEasyAdminFrontends/sources/imageSelector/">imageSelector</a>" (version 0.2 - 20100921) <a href="../archives/ldapEasyAdminFrontends/sources/imageSelector/">here</a>...<br>
+<br>
+<br>
+<span style="text-decoration: underline; font-weight: bold;">Saisie d'</span><small><span style="text-decoration: underline;"></span></small><span style="text-decoration: underline; font-weight: bold;">utilisateurs existants ou de groupes d'appartenance - utilitaire "<a href="../archives/ldapEasyAdminFrontends/sources/sambaSidSelector/">groupSelector</a>" :</span><br>
+
+<br>&nbsp;
+The utility "<span style="font-weight: bold;">groupSelector</span>" <span id="result_box" class="short_text" lang="en"><span class="hps">is obtained by</span></span>: "<span style="font-weight: bold; font-style: italic;">ln&nbsp; [-s]&nbsp; <a href="Howto-11.en.html#ss11.2">sambaSidSelector</a>&nbsp; groupeSelector</span>" ... (<span id="result_box" class="short_text" lang="en"><span class="hps">which it shares its</span> <span class="hps">source</span></span>).<br>
+<br>
+<span style="text-decoration: underline;">Syntax:</span>&nbsp;&nbsp;&nbsp; "<span style="font-style: italic; font-weight: bold;">groupSelector --domain "dnsDomainName" [--uidNumber "minUidNumber"] [--gidNumber </span><span style="font-style: italic; font-weight: bold;">"minGidNumber"</span><span style="font-style: italic; font-weight: bold;">] [-t/--type "sambaSamAccount/sambaGroupMapping/posixUser/posixGroup"]&nbsp; [--stdin /&nbsp; "currentValue"]</span>"<br>
+
+
+<ul>
+<li style="text-align: justify;">The mandatory option "<span style="font-weight: bold;">-d/--domain</span>" <span id="result_box" class="" lang="en"><span class="hps">allows to specify</span> <span class="hps">the domain name</span> <span class="hps">in which to search</span> <span class="hps">the root of the</span></span> "<span style="font-weight: bold;">SID</span>".</li><li style="text-align: justify;">The options "<span style="font-weight: bold;">--uidNumber/-u</span>" and "<span style="font-weight: bold;">--gidNumber/-g</span>" <span id="result_box" class="" lang="en"><span class="hps">allow to specify</span> <span class="hps">the</span></span> minimum value of "<span style="font-weight: bold;">id</span>" t<span id="result_box" class="short_text" lang="en"><span class="hps">hat can be</span> <span class="hps">displayed in</span> <span class="hps">the selection list</span></span>...</li>
+  <li style="text-align: justify;">The option "<span style="font-weight: bold;">-t/--type</span>" allows to fixe the first list of values (comboBox) of the editinf mask <span id="result_box" class="" lang="en"><span class="hps">to limit the</span> <span class="hps">selectable values</span> <span class="hps">&#8203;&#8203;to</span> <span class="hps">consistent information</span> <span class="hps">to</span> <span class="hps">the</span> <span class="hps">calling context</span> <span class="hps">of</span> <span class="hps">utility</span></span>...</li>
+  <li style="text-align: justify;">an initial value of "<span style="font-weight: bold;">uidNumber</span>" or "<span style="font-weight: bold;">gidNumber</span>" can be past to the command line (or: "<span style="font-weight: bold;">--stdin/-</span>" if this value must be past to the standard input of the process, like in case of the interfaces "<span style="font-weight: bold;">ldapEasyInterface-Frontend</span>") to allow the utility "<span style="font-style: italic; font-weight: bold;">groupSelector</span>" to <span id="result_box" class="short_text" lang="en"><span class="hps">suggest</span> <span class="hps">an initial value to</span> <span class="hps">the operator</span><span class="">.</span></span></li>
+</ul>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;">Note</span></span><span style="text-decoration: underline; font-weight: bold;">:</span>&nbsp; <span id="result_box" class="" lang="en"><span class="hps">This</span><span class="hps"> utility</span><span class="hps"></span><span class="hps atn"></span></span> "<span style="font-style: italic; font-weight: bold;">groupSelector</span>" <span id="result_box" class="" lang="en"><span class="hps">connects to</span> <span class="hps">the</span> <span class="hps"></span></span><span style="font-weight: bold;">LDAP</span> <span id="result_box" class="" lang="en"><span class="hps">directory</span></span><span style="font-weight: bold;"> </span>with the connect informations of the calling interface (<span style="font-weight: bold;">IPC</span>
+- <span style="font-weight: bold;">shared memory</span>).
+It can not, in fact, connect itself to the directory to search the
+information that will allow it to determine a consistent value of "<span style="font-weight: bold;">SID</span>" ; an existing session must already be active from one of the graphical interfaces "<span style="font-weight: bold;">ldapEasyInterface</span>"...<br>
+<br>
+<a href="Howto-11.en.html#ss11.2.1">Here are two examples of use in the definition of trigger of this interface managing accounts and "<span style="font-weight: bold;">posix</span>" groups...</a><br>
+<br>
+
+
+</div>
+
+
+<h2><a name="ss8.4">8.4 Integrity constraints</a></h2>
+<div style="margin-left: 40px; text-align: justify;"><span id="result_box" class="" lang="en"><span class="hps">These constraints can be</span> <span class="hps">managed directly by the</span> <span class="hps">LDAP</span> <span class="hps">directory database</span></span> (<span id="result_box" class="" lang="en"><span class="hps">some</span> <span class="hps">possibilities already exist</span> <span class="hps">within the</span></span> "<span style="font-weight: bold;">OpenLdap</span>"<span id="result_box" class="" lang="en"><span class="hps"> project</span></span>), <span id="result_box" class="" lang="en"><span class="hps">or</span></span>, <span id="result_box" class="" lang="en"><span class="hps">specific tools can</span> <span class="hps">be developed and used</span> <span class="hps">as </span></span><a href="Howto-6.en.html#ss6.3">triggers</a>, including "<a href="Howto-11.en.html#ss11.6">on update</a>"... (Examples : "<a href="Howto-11.en.html#ss11.2">sambaSidSelector</a>" or "<a href="../archives/ldapEasyAdminFrontends/sources/setAttribute/">setAttribute</a>").<br>
+<br>
+<span style="text-decoration: underline; font-weight: bold;">Example :</span> <span id="result_box" class="short_text" lang="en"><span class="hps">creation of a</span></span> posix "<span style="font-weight: bold;">uidNumber</span>" or "<span style="font-weight: bold;">gidNumber</span>", <span id="result_box" class="" lang="en"><span class="hps">unique throughout</span> <span class="hps">the directory,</span> <span class="hps">thanks to</span> <span class="hps">the utility:</span></span> "<a href="../archives/ldapEasyAdminFrontends/sources/getNewPosixUid/">getNewPosixUid</a>".<br>
+<br>
+<span style="text-decoration: underline;">Syntax:</span>&nbsp;&nbsp;&nbsp; "<span style="font-style: italic; font-weight: bold;">getNewPosixUid
+&nbsp; [-g/--group] &nbsp; [-min "minValueOfId"] &nbsp; [ --stdin /
+"theValue" ]&nbsp;&nbsp; [ -q/--quiet ]&nbsp;&nbsp; [ --onError "Value"
+]</span>"<br>
+
+
+
+<ul>
+<li style="text-align: justify;">The option "<span style="font-weight: bold;">-g/--group</span> allows to obtain an group ID ("<span style="font-weight: bold;">gidNumber</span>") rather than an "<span style="font-weight: bold;">uidNumber</span>" (<span id="result_box" class="short_text" lang="en"><span class="hps">equivalent to the command</span></span> "<span style="font-weight: bold;">getNewPosixGid</span>"). With the command "<span style="font-weight: bold;">getNewPosixGid</span>", the option "<span style="font-weight: bold;">-u/--user</span>" <span id="result_box" class="short_text" lang="en"><span class="hps">allows</span> <span class="hps">to obtain</span> <span class="hps">the behavior of the command:</span></span> "<span style="font-weight: bold;">getNewPosixUid</span>"...</li><li style="text-align: justify;">The option "<span style="font-weight: bold;">--min</span>" allows to specify a minimum value for IDs...</li>
+  <li style="text-align: justify;">The option "<span style="font-weight: bold;">--</span><span style="font-weight: bold; font-style: italic;">stdin</span><span style="font-style: italic; font-weight: bold;">/-</span> " (<span id="result_box" class="" lang="en"><span class="hps">or,</span> <span class="hps">simply</span> <span class="hps">the value</span> <span class="hps">passed as an argument</span> <span class="hps">to</span> <span class="hps">the command line</span><span>,</span> <span class="hps">in the absence of</span> <span class="hps">option name</span></span>) allows to specify an initial value. <span id="result_box" class="" lang="en"><span class="hps">If</span> <span class="hps">this value</span> <span class="hps">is consistent</span> <span class="hps">with</span> <span class="hps">the possible</span> <span class="hps">option</span></span> "<span style="font-weight: bold;">--min</span>", <span id="result_box" class="" lang="en"><span class="hps">then</span> <span class="hps">it is retained</span> <span class="hps atn">(</span><span class="">repeated</span> on the <span class="hps">standard output</span><span class="">)</span><span class=""></span></span>.<br>
+  </li>
+  <li style="text-align: justify;">The option "<span style="font-weight: bold;">-q/--quiet</span>" allows to delete the display for any error of execution.</li>
+  <li style="text-align: justify;">The option "<span style="font-weight: bold;">--onError</span>" allows to return a specific value (<span id="result_box" class="" lang="en"><span class="">passed as an argument</span> <span class="hps">of the option</span></span>) <span id="result_box" class="" lang="en"><span class="hps">on</span> <span class="hps">command failure</span><span class="">.</span></span></li>
+</ul>
+
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;">Note</span></span><span style="text-decoration: underline; font-weight: bold;">:</span>&nbsp;&nbsp;&nbsp; This utility "<span style="font-style: italic; font-weight: bold;">getNewPosixUid</span><span style="font-style: italic; font-weight: bold;"></span>" <span id="result_box" class="" lang="en"><span class="hps">connects to</span> <span class="hps">the</span></span> <span style="font-weight: bold;">LDAP</span> directory <span id="result_box" class="" lang="en"><span class="hps">with</span> <span class="hps">the login parameters of the calling</span></span> interface (<span style="font-weight: bold;">IPC</span>
+- <span style="font-weight: bold;">shared memory</span>). <span id="result_box" class="" lang="en"><span class="hps">A login session</span> <span class="hps">must already</span> <span class="hps">be</span> <span class="hps">active</span> <span class="hps">through</span></span> one of the graphical interfaces "<span style="font-weight: bold;">ldapEasyInterface</span>" ...<br>
+<br>
+<span style="text-decoration: underline;">Definition example of trigger for the interface for managing the posix users: </span><span style="text-decoration: underline;">"<a href="Howto-8.en.html#S8">personFrontend</a>" :<br>
+<br>
+</span>
+<div style="text-align: center;"><span style="text-decoration: underline;"><img style="width: 593px; height: 172px;" alt="images/triggerDefinition_getUidNumber.png" src="images/triggerDefinition_getUidNumber.png"></span><br>
+<span style="text-decoration: underline;"></span></div>
+<span style="text-decoration: underline;"><br>Definition example of trigger for the interface for managing the posix groups: "</span><a style="text-decoration: underline;" href="Howto-9.en.html#S9">posixGroupFrontend</a><span style="text-decoration: underline;">" :</span><br>
+<br>
+<div style="text-align: center;"><img style="width: 617px; height: 172px;" alt="images/triggerDefinition_getGidNumber.png" src="images/triggerDefinition_getGidNumber.png"><br>
+</div>
+<br>The option "<span style="font-weight: bold; font-style: italic;">[ -g ]</span>" <span id="result_box" class="short_text" lang="en"><span class="hps">is equivalent to</span> <span class="hps">using the</span> <span class="hps">command</span></span> "<span style="font-weight: bold;">getNewPosixGid</span>" <span id="result_box" class="short_text" lang="en"><span class="hps">obtained with</span></span>:&nbsp; "<span style="font-weight: bold; font-style: italic;">ln&nbsp; [-s]&nbsp; getNewPosixUid&nbsp; getNewPosixGid</span>" ...<br>
+<br>Source of this utility <a href="../archives/ldapEasyAdminFrontends/sources/getNewPosixUid/">here</a>...<br>
+<br>
+</div>
+<h2><a name="ss8.5"></a>8.5 <a href="../archives/ldapEasyAdminFrontends/">The C++ source</a><br>
+</h2>
+<div style="text-align: justify; margin-left: 40px;">Latest version (<span style="font-weight: bold;">20120102</span>) <a href="../archives/ldapEasyAdminFrontends/sources/domain.so">here</a>.<br>
+<br>This code is shared with the interface: "<a href="Howto-6.en.html#top">domainFrontend</a>".<br>
+<br>
+After compiling, it is the call name which define the kind of data managed with this GUI ("<a href="Howto-6.en.html#top">domainFrontend</a>", "<span style="font-weight: bold;">personFrontend</span>", "<a href="Howto-9.en.html#S9">posixGroupFrontend</a>", "<a href="Howto-10.en.html#S10">organizationalRoleFrontend</a>").<br>
+<br>
+<small style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">ln [-s] /usr/local/bin/libdomain.so /usr/local/bin/libperson.so</span><br>
+</small><small style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">ln [-s] /usr/local/bin/<a href="Howto-5.en.html">frontend</a> /usr/local/bin/</span></small><small style="font-style: italic;"><span style="font-weight: bold;">person</span></small><small style="font-style: italic;"><span style="font-weight: bold;">Frontend</span></small><br>
+
+</div>
+<br>
+<h2><a name="ss8.6">8.6 Todo</a><span style="text-decoration: underline;"></span><br>
+</h2>
+
+
+
+
+
+
+<div style="margin-left: 40px; text-align: justify;">Tests<span id="result_box" class="short_text" lang="en"><span class="hps"></span></span>...<br></div>
+
+
+<hr><a href="Howto-9.en.html#S9">Next</a> <a href="Howto-7.en.html#S7">Previous</a> <a href="Howto.en.html">Summary</a>
+
+
+
+
+
+
+
+
+</body></html>

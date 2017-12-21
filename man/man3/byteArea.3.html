@@ -1,0 +1,294 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of BYTEAREA</TITLE>
+</HEAD><BODY>
+<H1>BYTEAREA</H1>
+Section: libldapcppei 3.1.0 (3)<BR>Updated: 2012-08-22<BR><A HREF="#index">Index</A>
+<A HREF="http://homepage.gna.org/ldapcppei/miniHowto-1.en.html#ss1.8">Return to Main Contents</A><HR>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+byteArea --- <B>libldapcppei</B> is a C++ library under licence GNU version 3 whose topic is to provide a C++ programming interface for easy and safe use of OPENLDAP databases.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/libldapcppei/ldapByteArea.h">libldapcppei/ldapByteArea.h</A>&gt;</B>
+<P>
+
+<B>using namespace ldapcppei;</B>
+<P>
+
+<B>byteArea( void );</B>
+<BR>
+
+<B>byteArea( char const </B> *<I>strValue</I> <B>);</B>
+<BR>
+
+<B>byteArea( std::string const &amp;</B><I>stringValue</I> <B>);</B>
+<BR>
+
+<B>byteArea( size_t</B> <I>length</I><B>, byte const </B> *<I>value</I> <B>);</B>
+<BR>
+
+<B>byteArea( byteArea const</B> *<I>value</I> <B>);</B>
+<BR>
+
+<B>byteArea( byteArea const</B> &amp;<I>value</I> <B>);</B>
+<A NAME="lbAD">&nbsp;</A>
+<H2>CONFIGURATION</H2>
+
+The <B>g++</B> option &quot;<B>-std=c++0x</B>&quot; must be set when using this component: &quot;<B>g++</B> <B>-std=c++0x</B> ... file ... <B>-lldapcppei</B> <B>-lldap</B> ...&quot;
+<A NAME="lbAE">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>byteArea()</B> provides data objects consisting of lists of variable length bytes.
+<BR>
+
+It is the basic class of the <B>libldapcppei</B> API, which inherits the class <B>berValue</B>.
+<DL COMPACT>
+<DT><B>byteArea( void )</B><DD>
+Creates an empty <B>byteArea</B>.
+<DT><B>byteArea( const char</B> *<I>strValue</I> <B>)</B><DD>
+Creates a <B>byteArea</B> of the length of the C string <I>strValue</I> and containing its value.
+<DT><B>byteArea( std::string const &amp;</B><I>stringValue</I> <B>)</B><DD>
+Creates a <B>byteArea</B> and initializes its value with the content of the C++ string <I>stringValue</I>.
+<DT><B>byteArea( byteArea const</B> *<I>value</I> <B>)</B> or <B>byteArea( byteArea const</B> &amp;<I>value</I> <B>)</B><DD>
+Allows to create a <B>byteArea</B> with the content of an other <B>byteArea</B>.
+
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>EXAMPLE (sh test.cpp)</H2>
+
+
+<PRE>
+#define a_out /*
+if g++ -std=c++0x $0 -lldapcppei -lldap ; then ./a.out ; fi ; exit $?
+#define a_out */
+#undef a_out
+
+#include &lt;iostream&gt;
+#include &lt;<A HREF="file:///usr/include/libldapcppei/ldapByteArea.h">libldapcppei/ldapByteArea.h</A>&gt;
+using namespace <B>ldapcppei</B>;
+
+int main( void ) {
+    <B>byteArea</B>    a(&quot;text&quot;);
+    <B>byteArea</B>    *b;
+
+    b = new <B>byteArea</B>(a);
+    b-&gt;<B>replace</B>( b-&gt;<B>indexOf</B>(&quot;x&quot;), 1, &quot;s&quot; ).<B>append</B>(&quot;...&quot;);
+
+    a.<B>assign</B>(&quot;ThIz Is A&quot;); a <B>+=</B> ' ';
+    a<B>[</B>3<B>]</B> = *a<B>[</B>6<B>]</B>;       // Note the '*'... Or:
+        a<B>[</B>3<B>]</B> = ((<B>byteArea</B> const)a)<B>[</B>6<B>]</B>;
+    a<B>[</B>10000<B>]</B> = 'x';     // Does nothing, not even a memory error.
+
+    std::cout &lt;&lt; a.<B>toLower</B>( 1 ) &lt;&lt; b &lt;&lt; std::endl;
+    std::cerr &lt;&lt; &quot;size=&quot; &lt;&lt; (a<B>+</B>b).<B>size</B>() &lt;&lt; std::endl;
+
+    delete b;
+    return 0;
+}
+// sh test.cpp --&gt; Display &quot;This is a test...&quot; to stdout and &quot;size=17&quot; to stderr.
+</PRE>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>PUBLIC METHODS</H2>
+
+<DL COMPACT>
+<DT><B>- byteArea&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>clear( void );</B><DD>
+Erase the content of the <B>byteArea</B>, free its memory and returns <B>*this</B>.<BR>
+<DT><B>- byteArea&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>erase( size_t</B> <I>from </I>= 0, <B>size_t</B> <I>len</I> = -1 <B>);</B><DD>
+Remove the bytes from <I>from</I> (default: 0) to <I>from</I>+<I>len</I> (default: -1, ie to the end) and returns <B>*this</B>.<BR>
+<BR>
+
+Note: doesn't change the memory allocation of the byteArea.
+<DT><B>- byteArea&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>eraseAll( byteArea</B> <I>value</I>, size_t <I>from </I>= 0, <B>size_t</B> <I>len</I> = -1 <B>);</B><DD>
+Remove all the values <I>value</I> between <I>from</I> and <I>from</I>+<I>len</I>. Returns <B>*this</B>.<BR>
+</DL>
+<P>
+
+<DL COMPACT>
+<DT><B>- byteArea&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>setNULL( void );</B><DD>
+Clears the <B>byteArea</B> and freezes. It can no longer be affected...<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>isNULL( void );</B><DD>
+Returns true if the <B>byteArea</B> has been set to NULL, false otherwise...<BR>
+<DT><B>- byteArea&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>fill( byte const</B> <I>b</I>, <B>size_t</B> <I>from</I> = 0, <B>size_t</B> <I>len</I> = -1 <B>);</B><DD>
+Fills the <B>byteArea</B> with the <B>byte</B>/<B>char</B> <I>b</I> between <I>from</I> (default: from the beginning) and <I>from</I>+<I>len</I> (default: to the end) and returns <B>*this</B>.<BR>
+<DT><B>- byteArea&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>push_back( byte const</B> <I>b</I> <B>);</B><DD>
+Appends the <B>byte</B>/<B>char</B> <I>b</I> at the end of the <B>byteArea</B> and returns <B>*this</B>.<BR>
+<DT><B>- byte<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>pop_back( void );</B><DD>
+Returns the last <B>byte</B> of the <B>byteArea</B> (or <B>(byte)0</B>) after having erased it.<BR>
+<DT><B>- byte<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>front( void );</B><DD>
+Returns the first <B>byte</B> of the <B>byteArea</B> or <B>(byte)0</B>.<BR>
+<DT><B>- byte<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>back( void );</B><DD>
+Returns the last <B>byte</B> of the <B>byteArea</B> or <B>(byte)0</B>.<BR>
+<DT><B>- byte<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>at( size_t</B> <I>n</I> <B>);</B><DD>
+Returns the <B>byte</B> at position <I>n</I>. Warning: <I>n</I> must be &lt; to <B>size()</B> to avoid a memory addressing error.<BR>
+<DT><B>- byteArea&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>assign( byteArea</B> <I>value</I> <B>);</B><DD>
+Assigns a <I>value</I> to the <B>byteArea</B> and returns <B>*this</B>.<BR>
+<DT><B>- byteArea&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>insert( byteArea</B> <I>value</I>, <B>size_t</B> <I>pos</I> = 0 <B>);</B><DD>
+Inserts a <I>value</I> to the <B>byteArea</B> at the position <I>pos</I> (default: at the beginning) and returns <B>*this</B>.<BR>
+<DT><B>- byteArea&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>append( byteArea</B> <I>value</I> <B>);</B><DD>
+Appends a <I>value</I> at the end of the <B>byteArea</B> and returns <B>*this</B>.<BR>
+<DT><B>- byteArea&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>replace( size_t</B> <I>pos</I>, <B>size_t</B> <I>len</I>, byteArea <I>value</I> <B>);</B><DD>
+Replaces the area between <I>from</I> and <I>from</I>+<I>len</I> with the content of <I>value</I> and returns <B>*this</B>.<BR>
+<DT><B>- byteArea&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>replace( size_t</B> <I>pos</I>, <B>size_t</B> <I>len</I>, <B>size_t</B> <I>size</I>, byte const *<I>value</I> <B>);</B><DD>
+Replaces the area between <I>from</I> and <I>from</I>+<I>len</I> with the content of <B>byteArea</B>(<I>size</I>,<I>value</I>) and returns <B>*this</B>.<BR>
+<DT><B>- byteArea<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>subByteArea( size_t</B> <I>from</I> = 0, <B>size_t</B> <I>len</I> = -1 <B>);</B><DD>
+Extracts and returns a new <B>subAreaByte</B> with the values between <I>from</I> and <I>from</I>+<I>len</I>.<BR>
+<DT><B>- byteArea<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>subValue( size_t</B> <I>from</I> = 0, <B>size_t</B> <I>len</I> = -1 <B>);</B><DD>
+Synonym of <B>subByteArea</B>...<BR>
+<DT><B>- int<TT>&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>compare( byteArea</B> <I>value</I> <B>);</B><DD>
+Compares the <B>byteArea</B> with <I>value</I>.<BR>
+<DT><B>- int<TT>&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>stringEvaluate( byteArea</B> <I>value</I> <B>);</B><DD>
+Compares (case insensitive to alphanumeric characters) the <B>byteArea</B> with <I>value</I>.<BR>
+<DT><B>- size_t<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>indexOf( byteArea</B> <I>value</I>, <B>size_t</B> <I>from</I> = 0 <B>);</B><DD>
+Returns the index position (beyond <I>from</I>, default: from the beginning) of <I>value</I> in the <B>byteArea</B>, <B>(size_t)-1</B> if not found...<BR>
+<DT><B>- size_t<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>rindexOf( byteArea</B> <I>value</I>, <B>size_t</B> <I>from</I> = -1 <B>);</B><DD>
+Revers index of <I>value</I> in the <B>byteArea</B>, <B>(size_t)-1</B> if not found...<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>contains( byteArea</B> <I>value</I>, <B>size_t</B> <I>from</I> = 0 <B>);</B><DD>
+Returns <I>true</I> if the <B>byteArea</B> contains <I>value</I> beyond <I>from</I>, <I>false</I> otherwise...<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>startsWith( byteArea</B> <I>value</I> <B>);</B><DD>
+Returns <I>true</I> if the <B>byteArea</B> starts with <I>value</I>, <I>false</I> otherwise...<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>endsWith( byteArea</B> <I>value</I> <B>);</B><DD>
+Returns <I>true</I> if the <B>byteArea</B> ends with <I>value</I>, <I>false</I> otherwise...<BR>
+<DT><B>- byteArea&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>trimmed( byte const</B> <I>c</I> = '\0' <B>);</B><DD>
+Returns a new <B>byteArea</B> with all <I>c</I> (whitespaces by default) removed from the start and the end.<BR>
+<DT><B>- byteArea&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>simplified( void );</B><DD>
+Returns a new trimmed (whitespaces) <B>byteArea</B> that has all the sequences of multiple whitespaces replaced with single spaces.<BR>
+<DT><B>- byteArea<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>toUpper( size_t</B> <I>from</I> = 0, <B>size_t</B> <I>len</I> = -1 <B>);</B><DD>
+Returns a new <B>byteArea</B> with uppercase alphanumeric characters from <I>from</I> to <I>from</I>+<I>len</I>...<BR>
+<DT><B>- byteArea<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>toLower( size_t</B> <I>from</I> = 0, <B>size_t</B> <I>len</I> = -1 <B>);</B><DD>
+Returns a new <B>byteArea</B> with lowercase alphanumeric characters from <I>from</I> to <I>from</I>+<I>len</I>...<BR>
+<DT><B>- byteArea<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>toUtf8( void );</B><DD>
+Returns a new <B>byteArea</B> converted to UTF8.<BR>
+<DT><B>- byteArea<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>fromUtf8( void );</B><DD>
+Returns a new <B>byteArea</B> converted from UTF8.<BR>
+<DT><B>- byteArea&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>resize( void );</B><DD>
+Adjusts the memory size of the <B>byteArea</B> closer to the size of its content ans return <B>*this</B>.<BR>
+<DT><B>- size_t<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>size( void );</B><DD>
+Returns the size of the content of the <B>byteArea</B>.<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>empty( void );</B><DD>
+Returns <I>true</I> if <B>size()</B>==0, <I>false</I> otherwise.<BR>
+<DT><B>- byte const *<TT>&nbsp;&nbsp;</TT>area( void );</B><DD>
+Returns a pointer (byte const *) to the data area of the <B>byteArea</B> (or: nullptr if empty).<BR>
+<DT><B>- char const *<TT>&nbsp;&nbsp;</TT>data( void );</B><DD>
+Returns a pointer (char const *) to the data area of the <B>byteArea</B> (or: nullptr if empty).<BR>
+<DT><B>- char const *<TT>&nbsp;&nbsp;</TT>c_str( void );</B><DD>
+Returns a pointer (char const *) to the C string of the <B>byteArea</B> (or: an empty string - &quot;&quot;).<BR>
+
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>OPERATORS</H2>
+
+Several operators are defined for the <B>byteArea</B> class:
+<DL COMPACT>
+<DT><B>- byteArea*<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator[]( size_t</B> <I>n</I> <B>);</B><DD>
+Returns a pointer to the position <I>n</I> of the <B>byteArea</B>, <B>nullptr</B> if n&gt;=<B>size()</B>.<BR>
+<DT><B>- byte<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator[]( size_t</B> <I>n</I> <B>) const;</B><DD>
+Returns the byte at position <I>n</I> of the <B>byteArea</B>, <B>(byte)0</B> if n&gt;=<B>size()</B>.<BR>
+<DT><B>- byteArea*<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator[]( byteArea</B> <I>value</I> <B>);</B><DD>
+Returns a pointer to the index position of <I>value</I> in the <B>byteArea</B>, <B>nullptr</B> if not found.<BR>
+<DT><B>- byte<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator[]( byteArea</B> <I>value</I> <B>) const;</B><DD>
+Returns the byte at the index position of <I>value</I> in the <B>byteArea</B>, <B>(byte)0</B> if not found.<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator==( byteArea const &amp;</B><I>value</I> <B>);</B><DD>
+Returns a bool according the result of the comparison between the <B>byteArea</B> and <I>value</I>.<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator&lt;=( byteArea const &amp;</B><I>value</I> <B>);</B><DD>
+Returns a bool according the result of the comparison between the <B>byteArea</B> and <I>value</I>.<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator&lt; ( byteArea const &amp;</B><I>value</I> <B>);</B><DD>
+Returns a bool according the result of the comparison between the <B>byteArea</B> and <I>value</I>.<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator&gt;=( byteArea const &amp;</B><I>value</I> <B>);</B><DD>
+Returns a bool according the result of the comparison between the <B>byteArea</B> and <I>value</I>.<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator&gt; ( byteArea const &amp;</B><I>value</I> <B>);</B><DD>
+Returns a bool according the result of the comparison between the <B>byteArea</B> and <I>value</I>.<BR>
+<DT><B>- bool<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator!=( byteArea const &amp;</B><I>value</I> <B>);</B><DD>
+Returns a bool according the result of the comparison between the <B>byteArea</B> and <I>value</I>.<BR>
+<DT><B>- byteArea const &amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator=( byteArea const &amp;</B><I>value</I> <B>);</B><DD>
+Assigns <I>value</I> to the <B>byteArea</B>.<BR>
+<DT><B>- byteArea const &amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator+=( byteArea const &amp;</B><I>value</I> <B>);</B><DD>
+Appends <I>value</I> to the <B>byteArea</B>.<BR>
+<DT><B>- byteArea const<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator+ ( byteArea const &amp;</B><I>value</I> <B>);</B><DD>
+Returns a new <B>byteArea</B> where <I>value</I> is append.<BR>
+<DT><B>- byteArea const &amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator-=( byteArea const &amp;</B><I>value</I> <B>);</B><DD>
+Erase <I>value</I> from the <B>byteArea</B>.<BR>
+<DT><B>- byteArea const<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator- ( byteArea const &amp;</B><I>value</I> <B>);</B><DD>
+Returns a new <B>byteArea</B> which <I>value</I> is erased.<BR>
+<DT><B>- byteArea&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator&amp;=( byteArea const &amp;</B><I>value</I> <B>);</B><DD>
+Return the <B>byteArea</B> value if this is <I>value</I>, an empty value otherwise.<BR>
+<DT><B>- byteArea&amp;<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>operator|=( byteArea const &amp;</B><I>value</I> <B>);</B><DD>
+Return the <B>byteArea</B> if it not contains <I>value</I>, an empty value otherwise.<BR>
+<DT><B>- friend std::ostream&amp;<TT>&nbsp;&nbsp;</TT>operator&lt;&lt;( std::ostream&amp;</B> <I>s</I>, <B>byteArea const &amp;</B><I>value</I> <B>);</B><DD>
+Allows to stream <B>byteArea</B>.<BR>
+
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H2>BUGS</H2>
+
+Bugs are bad. Avoid them. ;-) (See below the author's email...)
+<A NAME="lbAJ">&nbsp;</A>
+<H2>SEE ALSO</H2>
+
+<B><A HREF="berValue.3.html">berValue</A></B>(3),
+<B><A HREF="attribute.3.html">attribute</A></B>(3),
+<B><A HREF="entry.3.html">entry</A></B>(3),
+<B><A HREF="ldapSet.3.html">ldapSet</A></B>(3),
+<B><A HREF="ldapEasyInterface.3.html">ldapEasyInterface</A></B>(3),
+<B><A HREF="ldap.3.html">ldap</A></B>(3).
+<P>
+
+See
+<B><A HREF="http://homepage.gna.org/ldapcppei/miniHowto.en.html">http://homepage.gna.org/ldapcppei/miniHowto.en.html</A></B>
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>AUTHORS</H2>
+
+Man page originally written by Philippe Eychart &lt;<A HREF="mailto:peychart@mail.pf">peychart@mail.pf</A>&gt;.
+
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">CONFIGURATION</A><DD>
+<DT><A HREF="#lbAE">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAF">EXAMPLE (sh test.cpp)</A><DD>
+<DT><A HREF="#lbAG">PUBLIC METHODS</A><DD>
+<DT><A HREF="#lbAH">OPERATORS</A><DD>
+<DT><A HREF="#lbAI">BUGS</A><DD>
+<DT><A HREF="#lbAJ">SEE ALSO</A><DD>
+<DT><A HREF="#lbAK">AUTHORS</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="http://savannah.nongnu.org/projects/man2html/">man2html</A>,
+using the manual pages.<BR>
+Time: 04:47:56 GMT, September 21, 2012
+</BODY>
+</HTML>

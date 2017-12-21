@@ -1,0 +1,556 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html><head>
+
+  <meta name="GENERATOR" content="KompoZer-0.8a4"><title>LdapEasyInterface (libcppei) Mini Howto (Français)</title>
+
+  <link href="LdapcppeiMiniHowto-1.fr.html" rel="next"></head><body>
+<a href="Howto-3.en.html">Next</a> <a href="Howto-1.en.html">Previous</a> <a href="Howto.en.html">Summary</a> &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; (<a href="Howto-2.fr.html"><span style="font-weight: bold;">Français</span></a> - English)
+<hr>
+<h2><a name="S2"><span style="text-decoration: underline;">2. </span><span style="text-decoration: underline;" id="result_box" class="long_text short_text" lang="en"><span class="hps">The structure of the LDAP d</span><span class="hps">atabase</span></span><span style="text-decoration: underline;">:</span><br>
+</a></h2>
+
+
+<h2><a name="ss2.1">2.1 : Overview<br>
+</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;">The main
+objective in the implementation of this suite is to force the least
+possible the tree structure with respect to the operational use of tools
+themselves, but also regarding the storage information managed by the LDAP directory. <span id="result_box" class="" lang="en"><span class="hps">It</span> <span class="hps">is</span> <span class="hps">therefore preferable</span> <span class="hps">to use the maximum</span> <span class="hps">existing</span> <span class="hps">LDAP</span> <span class="hps">schemas</span> <span class="hps atn">(</span><span>ie</span> <span class="hps">avoided</span> <span class="hps">as much as possible</span> <span class="hps">any</span> <span class="hps">specific</span> <span class="hps">schema definition</span><span>)</span><span class="">.</span></span><br>
+<br><span id="result_box" class="long_text" lang="en"><span class="hps">Of
+course, a minimum of conventions is needed so it's still possible to
+write a few functional queries without appeal to a multitude of
+predefined and specific constants to each interface...</span><span class="hps"></span> <span class="hps">But, the challenge is to leave as much freedom </span></span><span id="result_box" class="long_text" lang="en"><span class="hps">as possible </span></span><span id="result_box" class="long_text" lang="en"><span class="hps">to the administrator of the </span></span><span id="result_box" class="long_text" lang="en"><span class="hps"> </span></span><span id="result_box" class="long_text" lang="en"><span class="hps">directory </span></span><span id="result_box" class="long_text" lang="en"><span class="hps">database</span></span><span id="result_box" class="long_text" lang="en"><span class="hps"> to organize its operational data</span><span class="">.</span></span><br>
+<br><span id="result_box" class="long_text" lang="en"><span class="hps">The principle</span> <span class="hps">of</span> <span class="hps">LDAP directory</span> <span class="hps">schemas</span> <span class="hps">can</span> <span class="hps">significantly</span> <span class="hps">help</span> meat<span class="hps"> this</span> <span class="hps">dual requirement</span><span>.</span> <span class="hps">However</span><span>,</span> <span class="hps">the above objective</span> <span class="hps">must be kept</span> <span class="hps">in mind</span> <span class="hps">throughout</span> <span class="hps">the design</span> <span class="hps">of each interface</span> <span class="hps">-</span> <span class="hps">as</span> <span class="hps">easy solutions</span> <span class="hps">are often</span> <span class="hps">very tempting</span> <span class="hps">... ;-)</span></span><br>
+<small>
+</small></div>
+
+<h2><a name="ss2.2">2.2 : <span id="result_box" class="long_text short_text" lang="en"><span class="hps">The minimum requirements</span></span>
+</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;">A specific
+directory tree (but configurable - why not, for example, in the branch
+dedicated - by the administrator - to the definition of applications)
+will be reserved for setting the parameters of all the graphical
+interfaces defined. This tree will be created automatically during the
+first launch of any GUI, through the common connection form:
+"<a href="Howto-3.en.html">connectFrontend</a>".<br>
+<br>This special tree can <span id="result_box" class="" lang="en"><span class="hps">be conveniently</span></span> located in the root directory managed by interfaces "<span style="font-weight: bold;">GNU/LdapEasyInterfaces</span>" within the subtree of application settings, such as: "ou=ldapEasyInterface,<small style="font-weight: bold; font-style: italic; text-decoration: underline;">ou=ldap,ou=application,dc=myDomain</small>".<br>
+<span id="result_box" class="long_text short_text" lang="en"><span class="hps"><br>
+May be found here</span><span class="">:</span></span><br>
+<ul>
+  <li>the identification of the trash <span style="font-weight: bold;">DN</span>
+(the specific domain name where erased definitions will be stored - eg: definition of identifying a former
+user),</li>
+  <li><span id="result_box" class="long_text" lang="en"><span class="hps">Definitions of roles, classified by interface name</span><span class="hps atn"> (</span><span></span></span><span id="result_box" class="short_text" lang="en"><span class="hps">setting</span> <span class="hps">permissions to create</span><span class="">, delete, modify</span><span class=""></span></span><span id="result_box" class="long_text" lang="en"><span></span><span>,</span> <span class="hps">...</span><span>)</span><span class="">,</span></span></li>
+  
+  <li><span id="result_box" class="long_text short_text" lang="en"><span class="hps">various other</span> <span class="hps">specific notions</span></span> (eg: the definition of shortcuts to launch other GUIs within the control
+interface, the definition masks for some configurable interfaces such
+as "<a href="Howto-11.en.html#ss11.7.1">smbConfigFrontend</a>"...)<br>
+  </li>
+  <li>...<br>
+  </li>
+</ul><a href="#ss2.3.2">A specific "<span style="font-weight: bold;">object Class</span>"</a>
+will be defined in order to differenciate (during the formation of LDAP
+queries) the specific data of the directory database used by the "<span style="font-weight: bold;">GNU/LdapEasyInterface</span>" suite.<br>
+<small>
+</small></div>
+
+<h2><a name="ss2.3">2.3 : <span id="result_box" class="long_text short_text" lang="en"><span class="hps">Detail</span> <span class="hps">of</span> the interfaces <span class="hps"></span><span class="hps">setup</span> <span class="hps">tree</span></span>
+</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;"><span id="result_box" class="" lang="en"><span class="hps">It</span> can be<span class="hps"> updated</span> <span class="hps">during the</span> <span class="hps">execution</span> <span class="hps">of any graphical interface,</span></span> <span id="result_box" class="" lang="en"><span class="hps">according to one</span> <span class="hps">of two ways:</span><span class=""></span></span>
+<ul>
+  <li><span style="font-weight: bold; text-decoration: underline;">either:</span> <span id="result_box" class="long_text" lang="en"><span class="hps">automatically</span> <span class="hps">during initial launch</span> <span class="hps">of</span> <span class="hps">one of these</span> <span class="hps">interfaces </span></span> (<span style="font-weight: bold;">see:</span> <a href="Howto-3.en.html#ss3.1">principle of the
+connection form</a>); the information is <span id="result_box" class="long_text" lang="en">find<span class="hps"> by</span> <span class="hps">querying</span> <span class="hps">the operator</span></span> - to be identified as administrator of the database and must have appropriate permissions to update the LDAP database<span id="result_box" class="" lang="en"><span class="hps"></span></span>,</li>
+  <li><span style="font-weight: bold; text-decoration: underline;">either</span><span style="text-decoration: underline; font-weight: bold;">:</span> <span id="result_box" class="long_text" lang="en"><span class="hps">during</span> the routing<span class="hps"> use of</span> <span class="hps">these</span> <span class="hps">interfaces</span></span> (<span style="text-decoration: underline;">example :</span> <span id="result_box" class="long_text" lang="en"><span class="">creation</span></span>/<span id="result_box" class="long_text" lang="en"><span class="hps">deletion</span></span>/modification <span id="result_box" class="long_text" lang="en"><span class="hps">of links</span></span>, <span id="result_box" class="long_text" lang="en"><span class="hps">desktop </span></span><span id="result_box" class="long_text" lang="en"><span class="hps">shortcuts</span> to <span class="hps">launch</span><span class="hps"> other</span> <span class="hps">interfaces - see</span></span> "<a href="Howto-4.en.html#ss4.2">controlFrontend</a>" - or <span id="result_box" class="long_text" lang="en"><span class="hps">when adding</span> <span class="hps">or</span> <span class="hps">removing fields</span> <span class="hps">in</span> <span class="hps">customizable</span> <span class="hps">masks</span></span>,...), <span id="result_box" class="long_text" lang="en"><span class="hps">the user</span> <span class="hps">must</span> <span class="hps">possess,</span> as a <span class="hps">connection profile</span><span>,</span> <span class="hps">the rights to</span> modify <span class="hps">the</span> <span class="hps">corresponding data</span>.</span>
+  </li>
+</ul>
+<big><span style="text-decoration: underline; font-weight: bold;"><br><span style="text-decoration: underline; font-weight: bold;">
+2.3.1 : </span></span></big><span style="text-decoration: underline; font-weight: bold;" id="result_box" class="long_text short_text" lang="en"><span class="hps">The</span> <span class="hps">root of the tree</span> <span class="hps">setup</span> <span class="hps">interfaces</span></span>
+<div style="text-align: left;"><big><span style="text-decoration: underline; font-weight: bold;"></span></big></div>
+<big><span style="text-decoration: underline; font-weight: bold;">
+</span><small><br>It may be </small></big><big><small>(created by the first execution of any GUI) as follows:</small></big><big><small><br>
+<br>
+</small><span style="text-decoration: underline; font-weight: bold;">
+</span></big>
+<div style="margin-left: 40px;"><small><span style="font-style: italic;">dn: </span><span style="font-style: italic;">ou=</span><span style="font-style: italic;">LdapEasyInterface</span><span style="font-style: italic;">,</span><span style="font-style: italic;"><small>ou=ldap,ou=application</small>,dc=mydomain</span><br style="font-style: italic;">
+
+<span style="font-style: italic;">objectClass: organizationalUnit</span><span style="font-style: italic;"><br>
+objectClass: </span><span style="font-style: italic;">LdapEasyInterface</span><span style="font-style: italic;"></span><br style="font-style: italic;">
+
+<span style="font-style: italic;">objectClass: top</span><br style="font-style: italic;">
+
+<span style="font-style: italic;">ou: LdapFrontend</span><br style="font-style: italic;">
+
+<span style="font-style: italic;">description: Definition of the
+parameters GNU/LdapEasyInterface</span><br>
+
+</small></div>
+<br>
+The format of this "<span style="font-weight: bold;">DN</span>" is: "<span style="font-style: italic;">ou=</span><span style="font-style: italic;">LdapEasyInterface</span><span style="font-style: italic;"><span style="font-weight: bold;">(,(^dc)=*)</span></span><span style="font-style: italic;"><span style="font-weight: bold;">{1,}</span></span><span style="font-style: italic;"><span style="font-weight: bold;">(,dc=*){1,}</span>"<br>
+</span>
+<ul>
+  
+  <li>the fixed part ("<span style="font-weight: bold;">ou=</span><span style="font-style: italic; font-weight: bold;">LdapEasyInterface</span>") <span id="result_box" class="long_text" lang="en"><span class="hps">is defined</span> <span class="hps">from the name</span> <span class="hps atn">of the specific </span></span>object Class <span style="font-weight: bold;">"</span><small><span style="font-weight: bold;"><big>LdapEasyInterface"</big></span></small> created for all graphical interfaces of the "<span style="font-weight: bold;">GNU/LdapEasyInterface</span>" suite,</li>
+
+  <li>the "<span style="font-weight: bold;">dc</span>" part defines the sub-root of the administrated domain : <span style="font-weight: bold;">rootEntry</span>,</li>
+  <li><span id="result_box" class="long_text" lang="en"><span class="hps">between this two part</span><span>s,</span> <span class="hps">there is what</span> <span class="hps">the</span> <span class="hps">directory administrator</span> <span class="hps">wants</span></span>...</li>
+</ul>
+<br>
+<ul>
+</ul>
+<big><span style="text-decoration: underline; font-weight: bold;"><a name="ss2.3.2"></a>2.3.2 : The specific object class
+"LdapEasyInterface"</span></big><br>
+<br>The validity of any rule (<a href="#ss2.1">2.1</a>) being measured by its
+exceptions allowed, here is the specific object class of the management
+interfaces "<span style="font-weight: bold;">GNU/LdapEasyInterface</span>" which will be defined as follows (file: "<span style="font-weight: bold;">ldapEasyInterface.schema</span>")
+:<br>
+<span style="text-decoration: underline;"></span><br>
+<div style="margin-left: 80px; font-style: italic;"><small><span style="font-weight: bold;">objectclass ( 1.3.6.1.4.1.65530.2.1.1 NAME
+'LdapEasyInterface'</span><br style="font-weight: bold;">
+
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SUP top</span><br style="font-weight: bold;">
+
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+AUXILIARY</span><br style="font-weight: bold;">
+
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DESC 'LdapFrontend - GnuLdapEasyInterface applications'</span><br style="font-weight: bold;">
+
+<span style="font-weight: bold;">)</span><br>
+
+</small></div>
+<br>As shown above, the definition of this "<span style="font-weight: bold;">object Class</span>" contains nothing (no attributes). Indeed, this "<span style="font-weight: bold;">object Class</span>" is<span id="result_box" class="long_text" lang="en"><span class="hps"> only used to</span> <span class="hps">mark certain</span> <span class="hps">entries</span> <span class="hps">in the directory</span> <span class="hps">to distinguish them from</span> <span class="hps">others.</span></span>..<br>
+<br>
+<span id="result_box" class="long_text" lang="en"><span class="hps">Therefore</span><span class=""></span></span>, this <a href="#ss2.6">schema</a> <span id="result_box" class="long_text" lang="en"><span class="hps">must</span> <span class="hps">first be</span> <span class="hps">integrated into the</span> <span class="hps">LDAP server configuration</span></span> (file: "<span style="font-weight: bold;">slapd.conf</span>" or directory: "<span style="font-weight: bold;">slapd.d</span>").<br>
+<br>
+<big><span style="text-decoration: underline; font-weight: bold;">2.3.3
+: Detail of the interfaces setup tree</span></big><br>
+<br><span id="result_box" class="long_text short_text" lang="en"><span class="hps">This</span> <span class="hps">tree contains</span><span class="">:</span></span><br>
+<br>
+&nbsp;&nbsp;&nbsp; <span style="text-decoration: underline;"><a name="ss2.3.3.1"></a>2.3.3.1 : The trash declaration:</span><br>
+<br>
+<div style="margin-left: 80px; font-style: italic;"><small><small>dn:
+cn=trash,ou=LdapEasyInterface,ou=ldap,ou=application</small>,dc=mydomain<br>
+
+description: Trash definition<br>
+
+objectClass: LdapEasyInterface<br>
+
+objectClass: applicationProcess<br>
+
+objectClass: top<br>
+
+seeAlso: dc=_deleted,dc=mydomain<br>
+
+cn: trash</small><br>
+</div>
+<br>This statement defines the location of the domain in the
+database directory that will serve to bring together all the deleted entries from
+the directory. The domain name associated with this trash must also be <a href="#ss2.4.3">set</a> ...<br>
+<br>Such trash will eventually allow the reactivation of previously deleted
+data, and secondly, will keep certain information that must not be
+reused with active data, such as, for example, the identifiers of
+the former users that must be taken into account when creating new users
+(thus avoiding the risk of involuntary reassignment of <span id="result_box" class="" lang="en"><span class="hps">rights</span> <span class="hps">untimely</span> <span class="hps">and unfortunate</span> <span class="hps">on</span> <span class="hps">some existing resources</span></span> - shared folders,
+mailboxes,...).<br>
+<br>In summary, the attribute "<span style="font-weight: bold;">seeAlso</span>"
+of the trash declaration will be settled (via GUI) by the administrator of the during the first connection to any of the GUIs; <span id="result_box" class="long_text" lang="en"><span class="hps">otherwise</span></span>, <span id="result_box" class="long_text" lang="en"><span class="hps">all profiles</span> <span class="hps">that allow</span> <span class="hps">the deletion</span> <span class="hps">of</span> <span class="hps">objects</span> <span class="hps">in the different</span> <span class="hps">interfaces will be</span> <span class="hps">temporarily</span> <span class="hps">disabled until</span> <span class="hps">the</span> <span class="hps">actual</span> setting </span>(ie <a href="#ss2.3.3.1">the declaration of the trash</a> and <a href="Howto-2.en.html#ss2.4.3">the definition of the corresponding domain</a>) during a<span id="result_box" class="long_text" lang="en"> <span class="hps">subsequent connection</span><span class="">.</span></span><br>
+<br>
+&nbsp;&nbsp; <span style="text-decoration: underline;">2.3.3.2 : </span><span style="text-decoration: underline;" id="result_box" class="long_text" lang="en"><span class="hps">The definition</span> <span class="hps">of</span> <span class="hps">parameters</span> <span class="hps">specific</span> <span class="hps">to each of the</span></span><span style="text-decoration: underline;"> "<span style="font-weight: bold;">LdapEasyInterface</span>"</span><span style="text-decoration: underline;" id="result_box" class="long_text" lang="en"> <span class="hps">GUIs</span></span><span style="text-decoration: underline;">:</span><br>
+<br>
+<div style="margin-left: 80px;"><small><span style="font-style: italic;">dn:
+ou=<small>GUI_name</small>,ou=LdapEasyInterface,<small>ou=ldap,ou=application</small>,dc=mydomain</span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: top</span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: organizationalUnit</span><br style="font-style: italic;">
+<span style="font-style: italic;">ou: role</span><br style="font-style: italic;">
+<span style="font-style: italic;">description: GUI description</span></small>
+
+
+
+<br style="font-style: italic;">
+</div>
+<br>This tree is created automatically during the first run of the GUI concerned. <span id="result_box" class="" lang="en"><span class="hps">So</span> <span class="hps">what</span> <span class="hps">will</span> <span class="hps">set</span> <span class="hps">specific parameters</span><span>,</span> <span class="hps">including</span><span class="">:</span></span>
+<ul>
+  <li>&nbsp;the roles
+(<span id="result_box" class="long_text" lang="en"><span class="">authorized shares</span><span class=""></span></span>), and dynamic <span style="font-weight: bold;">ACL</span>s (in the "<span style="font-weight: bold;">description</span>" attribute) allowing the administrator to define the data authorizations for every roles of the domain management,</li>
+  <li>locating directory for the data managed by the interface,</li>
+  <li><span id="result_box" class="long_text" lang="en"><span class="hps">the name of the</span> <span class="hps">attribute defining</span> <span class="hps">the</span> <span class="hps">managed entity</span> <span class="hps atn">(</span><span class="hps">default: "<span style="font-weight: bold;">ou</span>"</span><span class="hps">),</span></span>
+  </li>
+
+  <li>and all other parameters specific to the interface (for example, the definition of application shortcuts on the desktop of "<a href="Howto-4.en.html#ss4.2">controlFrontend</a>", the definition of masks for "<a href="Howto-11.en.html#ss11.7">sambaFrontend</a>" or "<a href="Howto-13.en.html">nfsFrontend</a>"...).<br>
+  </li>
+</ul><span id="result_box" class="long_text" lang="en"><span class="hps">The detailed</span> <span class="hps">definition of these</span> <span class="hps">roles</span> <span class="hps">is</span> <span class="hps">discussed</span></span> <a href="Howto-2.en.html#ss2.5">below (2.5)</a>...<br>
+<br>
+<span style="text-decoration: underline; font-weight: bold;">Example of definition (</span><span style="text-decoration: underline;">interface "<a href="Howto-7.en.html">serverFrontend</a>"</span><span style="text-decoration: underline; font-weight: bold;">) :</span><br style="text-decoration: underline; font-weight: bold;">
+<span style="font-style: italic;"><br>
+</span>
+<div style="margin-left: 80px;"><small><span style="font-style: italic;">dn:
+ou=</span><span style="font-weight: bold; font-style: italic;">server</span><span style="font-style: italic;">,ou=domain,ou=LdapEasyInterface,</span><small style="font-style: italic;">ou=ldap,ou=application</small><span style="font-style: italic;">,dc=mydomain</span><br style="font-style: italic;">
+<span style="font-style: italic;">description: serverFrontend application parameters</span><br style="font-style: italic;">
+<span style="font-style: italic;"></span></small><small><span style="font-style: italic;">objectClass: top<br>
+</span></small><small><span style="font-style: italic;">objectClass: organizationalUnit</span><br style="font-style: italic;">
+<span style="font-style: italic;"></span></small><small><span style="font-style: italic;">objectClass: bootableDevice&nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp; <span style="color: rgb(204, 0, 0);">#
+The presence of this particular "objectClass" is used to declare, bound
+for the GUI "controlFrontend", that specific entity (here "server")
+will - or should not - appear in the display </span></span></small><small><span style="font-style: italic;"><span style="color: rgb(204, 0, 0);">(with the presence or not of a specific subfolder of representation)</span></span></small><small><span style="font-style: italic;"><span style="color: rgb(204, 0, 0);">...</span></span></small><br style="font-style: italic;">
+<small>
+<span style="font-style: italic;">seeAlso: </span><span style="font-weight: bold; font-style: italic;">ou=server,ou=computer</span><br style="font-style: italic;">
+<br style="font-style: italic;">
+<span style="font-style: italic;">dn: ou=role,ou=</span><span style="font-weight: bold; font-style: italic;">server</span><span style="font-style: italic;">,ou=domain,ou=LdapEasyInterface,</span><small style="font-style: italic;">ou=ldap,ou=application</small><span style="font-style: italic;">,dc=mydomain</span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: top</span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: organizationalUnit</span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: LdapEasyInterface</span><br style="font-style: italic;">
+<span style="font-style: italic;">description: roles definition</span><br style="font-style: italic;">
+<br style="font-style: italic;">
+</small>
+
+
+
+
+
+
+
+
+
+
+<span style="font-style: italic;"><small>
+...<br>
+# <span style="color: rgb(204, 0, 0);">Note: this value is not subject to a specific setting in the setup initialization phase of an interface
+(see object "connectFrontend") but is controlled (deleted from the tree parameter when necessary</span></small></span><span style="font-style: italic;"><small><span style="color: rgb(204, 0, 0);"></span></small></span><span style="font-style: italic;"><small><span style="color: rgb(204, 0, 0);">) within each of the interfaces involved (calling the method "connectFrontend::setNotBootableDevice()") ;
+example with the extension "netfilter" whose concept is directly related to the entity</span></small></span><span style="font-style: italic;"><small><span style="color: rgb(204, 0, 0);">
+"server" and doesn't need a specific representation -subfolder- in the
+display... Ditto for the entities "sambaDomain" or "bins9domain"
+remaining "properties" of their primary entity "domain"...</span><br>
+</small>
+</span>
+</div>
+<div style="margin-left: 40px;">
+<div style="margin-left: 40px;"><span style="font-style: italic;"></span></div>
+<span style="font-style: italic;">
+</span></div>
+<br>The attribute "<span style="font-weight: bold;">seeAlso</span>" specifies the <span style="font-weight: bold;">RDN</span> <span id="result_box" class="long_text" lang="en"><span class="hps">of the definition</span> <span class="hps">of data managed by</span> <span class="hps">the interface</span> <span class="hps">within</span> <span class="hps">the directory</span> <span class="hps atn">(</span><span>here:</span> <span class="hps">the definition</span> <span class="hps">of</span> <span class="hps">servers</span><span>)</span><span>,</span> <span class="hps">that for</span> <span class="hps">each of the areas</span> <span class="hps">of belonging</span></span>; the corresponding <span style="font-weight: bold;">DN</span> (for the given example) is therefore of the form: "<span style="font-style: italic;">ou=server,ou=computer<span style="font-weight: bold;">(,dc=.+){1,}</span>".</span><br>
+<br><span id="result_box" class="long_text" lang="en"><span class="hps">In summary</span><span>,</span> <span class="hps">this</span> <span class="hps">tree</span> <span class="hps">setting</span><span>,</span> <span class="hps">specific to each</span> <span class="hps">GUI,</span> <span class="hps">is</span> <span class="hps">automatically</span> <span class="hps">created</span> <span class="hps">during the</span> <span class="hps">execution of said</span> <span class="hps">first</span> <span class="hps">management interface</span><span class="">.</span></span><br>
+</div>
+
+<h2><a name="ss2.4">2.4 : Minimal structure of the database to start<br>
+</a></h2>
+
+
+<div style="margin-left: 40px; text-align: justify;"><span style="font-weight: bold; text-decoration: underline;">2.4.1 : The root directory:</span><br>
+<br><span id="result_box" class="" lang="fr"><span class="hps">The minimal structure is quite simple as it can for example be represented by this sample of root directory.</span><span class=""></span></span><br>
+<br>
+<span style="text-decoration: underline;">Example :</span><br>
+<div style="margin-left: 80px; font-style: italic;"><small>dn:
+dc=mydomain<br>
+
+objectClass: top<br>
+
+objectClass: domain<br>
+
+objectClass: dcObject<br>
+
+objectClass: qmailUser<br>
+
+description: My directory of system management<br>
+
+postalAddress: Yavin<br>
+
+o: My area network<br>
+
+mail: myMail@myDomain<br>
+
+l: My domain<br>
+
+</small></div>
+<br>
+Therefore, only the definition of the root directory, without any
+particular specificity for the interfaces, is necessary for the first
+performance of an Admin GUI.<span id="result_box" class="long_text" lang="en"><span></span></span><br>
+<br><span id="result_box" class="long_text" lang="en"><span class="hps">As
+seen above, the setup trees eventually required for each GUI will be
+created by the operator (if possible, therefore, the database
+administrator) during the first launch of each.</span><span class="hps"></span></span><br>
+<br>
+<br>
+<span style="font-weight: bold; text-decoration: underline;"><a name="ss2.4.2"></a>2.4.2 : The definition of profiles</span><br>
+<br><span id="result_box" class="long_text" lang="en"><span class="hps">Below is</span> <span class="hps">an example of setting</span></span> ("<span style="font-weight: bold;">LDIFF</span>" format) which, when added  (during the first execution of the GUI "<a href="Howto-10.en.html#S10">organizationalroleFrontend</a>") in the directory root <a href="#ss2.4">shown above by way of example</a>, will make an initial <span id="result_box" class="long_text short_text" lang="en"><span class="hps">accreditation</span></span> for the LDAP administrator "<span style="font-weight: bold;">cn=Manager</span>,$(<span style="font-weight: bold;"><span style="font-style: italic;">rootDN</span>)"</span>, previously defined in the database configuration directory: file "<span style="font-weight: bold;">slapd.conf</span>"
+or directory "<span style="font-weight: bold;">slapd.d</span>"...<br>
+<span style="font-style: italic;"><br>
+</span>
+<div style="margin-left: 80px;"><small><span style="font-style: italic;">dn: <small style="font-weight: bold;">ou=role</small>,dc=mydomain</span><span style="font-style: italic;"></span><br>
+
+<span style="font-style: italic;">objectClass: top</span><span style="font-style: italic;"></span><br>
+
+<span style="font-style: italic;">objectClass: organizationalUnit</span><span style="font-style: italic;"></span><br>
+
+<span style="font-style: italic;">ou: <small style="font-weight: bold;">role</small></span><span style="font-style: italic;"></span><br>
+
+<span style="font-style: italic;">description: </span><span style="font-style: italic;">Role definition</span><span style="font-style: italic;"></span><br>
+
+<span style="font-style: italic;"></span><br>
+
+<span style="font-style: italic;">dn: cn=<span style="font-weight: bold;">ldapAdminCentral</span>,<small><span style="font-weight: bold;">ou=</span></small></span><small><span style="font-style: italic; font-weight: bold;">role</span><span style="font-style: italic;">,dc=mydomain</span></small><span style="font-style: italic;"></span><br>
+
+<span style="font-style: italic;">objectClass: top</span><span style="font-style: italic;"></span><br>
+
+<span style="font-style: italic;">objectClass: </span><span style="font-style: italic;">organizationalRole</span><span style="font-style: italic;"></span><br>
+
+<span style="font-style: italic;">cn: <span style="font-weight: bold;">ldapAdminCentral</span></span><span style="font-style: italic;"></span><span style="font-style: italic;"></span><span style="font-style: italic;"></span><br>
+
+<span style="font-style: italic;">description: group of central
+administrators</span><span style="font-style: italic;"></span><br>
+
+<span style="font-style: italic;">roleOccupant: </span><span style="font-style: italic; font-weight: bold;">cn=Manager,dc=mydomain</span><span style="font-style: italic;"></span><br>
+
+<span style="font-style: italic;"></span><br>
+
+<span style="font-style: italic;">dn: cn=<span style="font-weight: bold;">ldapHotline</span>,<small><span style="font-weight: bold;">ou=</span></small></span><small><span style="font-style: italic; font-weight: bold;">role</span><span style="font-style: italic;">,dc=mydomain</span></small><span style="font-style: italic;"></span><br>
+
+<span style="font-style: italic;">objectClass: top</span><span style="font-style: italic;"></span><br>
+
+<span style="font-style: italic;">objectClass: </span><span style="font-style: italic;">organizationalRole</span><span style="font-style: italic;"></span><br>
+
+<span style="font-style: italic;">cn: <span style="font-weight: bold;">ldapHotline</span></span><span style="font-style: italic;"></span><span style="font-style: italic;"></span><br>
+
+<span style="font-style: italic;">description: group of hotline administrators</span><span style="font-style: italic;"></span><br>
+
+<span style="font-style: italic;">roleOccupant: </span><span style="font-style: italic; font-weight: bold;">cn=Manager,dc=mydomain</span></small></div>
+<div style="margin-left: 40px;"><small>
+</small></div>
+<br><span id="result_box" class="long_text" lang="en"><span class="hps">This definition</span> <span class="hps">is also related</span></span> (by the "<span style="font-weight: bold;">cn</span>" attribute) <span id="result_box" class="long_text" lang="en"><span class="hps">to </span><span class="hps">role definitions</span> <span class="hps">provided in the</span> <span class="hps">help menus</span></span> <span id="result_box" class="long_text" lang="en"><span class="hps">of each</span> <span class="hps">GUI</span></span> (see the "<span style="font-weight: bold;">About Roles</span>" in GUIs)<span id="result_box" class="long_text" lang="en"><span class="hps"></span>,<span class="hps"></span></span> <span id="result_box" class="long_text" lang="en"><span class="hps">which </span><span class="hps">can</span> <span class="hps">be directly</span> <span class="hps">integrated</span></span> (see the man page for the "<span style="font-weight: bold;">ldapadd</span>" cmd) with<span id="result_box" class="long_text" lang="en"><span class="hps"> the managed LDAP directory (according its root)</span><span class="hps"></span><span class="hps"></span></span>...<br>
+<br>
+Le <span style="font-weight: bold;">RDN</span> shown<span id="result_box" class="long_text" lang="en"> <span class="hps">here</span></span> ("<small style="font-style: italic;"><span style="font-weight: bold;">ou=role</span></small>") <span id="result_box" class="long_text" lang="en"><span class="hps">is</span> <span class="hps">actually</span> <span class="hps">defined by</span> <span class="hps">the administrator during</span> <span class="hps">the first execution of</span> <span class="hps">the</span></span> GUI: "<a href="Howto-10.en.html#S10">organizationalRoleFrontend</a>" ...<br>
+<br>
+<br style="text-decoration: underline; font-weight: bold;">
+<span style="text-decoration: underline; font-weight: bold;"><a name="ss2.4.3"></a>2.4.3 : The "trash" domain</span><br>
+<br><span id="result_box" class="long_text" lang="en"><span class="hps">Here is an example</span> <span class="hps">of</span> <span class="hps">a defining the</span></span> "<span style="font-weight: bold;">trash</span>" domain created, why not, using the GUI: "<a href="Howto-6.en.html">domainFrontend</a>"...<br>
+<br>
+<div style="margin-left: 80px; font-style: italic;"><small>dn:
+dc=_deleted,dc=mydomain<br>
+
+objectClass: top<br>
+
+objectClass: organization<br>
+
+objectClass: dcObject<br>
+
+objectClass: qmailUser<br>
+
+mail: mySecondyMail@mail.myDomain<br>
+
+mailHost: mail.myDomain<br>
+
+uid: _deleted<br>
+
+description: host tree for logical deletions <br>
+
+o: my organization</small><br>
+</div>
+<br>
+</div>
+
+<h2><a name="ss2.5">2.5 : Definition of roles and access permissions to data<br>
+</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;">The roles of "<span style="font-weight: bold;">LdapEasyInterface</span>"
+GUIs allow to define, within each, the possible and prohibited
+actions with respect to each connection profiles defined by the
+database administrator.<br>
+<br><span id="result_box" class="long_text" lang="en"><span class="hps">These roles</span> <span class="hps">are specific to</span> <span class="hps">each interface</span><span>,</span> althrough<span class="hps"> the concepts</span> <span class="hps">they represent</span> <span class="hps">are indeed</span> <span class="hps">often very</span> <span class="hps">similar</span><span>.<br>
+<br>
+</span></span><span id="result_box" class="long_text" lang="en"><span class="hps">These roles</span> <span class="hps">are </span><span class="hps">grouped by</span> <span class="hps">profile</span> <span class="hps atn">(</span><span>group</span> <span class="hps">membership</span><span>)</span> <span class="hps">by</span> <span class="hps">the</span> <span class="hps">directory administrator</span><span>,</span> <span class="hps">depending on the</span> <span class="hps">fineness</span> <span class="hps">of</span> <span class="hps">detail</span> <span class="hps">desired</span><span>,</span> <span class="hps">and within the</span></span> <span id="result_box" class="long_text" lang="en"><span class="">expertise domain</span></span><span id="result_box" class="long_text" lang="en"> </span>(<span style="font-weight: bold;">dc=...</span>)<span id="result_box" class="long_text" lang="en"><span class=""></span> <span class="hps">desired</span><span class=""></span></span>.<br>
+<br>The profiles thus formed (by merging roles) will be available for
+allocation to users or user groups (or groups of groups), according to
+the responsibilities of the areas <span id="result_box" class="" lang="en"><span class="hps">that the system administrator</span> <span class="hps">wants to see</span> </span><span id="result_box" class="" lang="en"><span class="hps">implemented.</span><span class=""></span></span><br>
+<br style="font-weight: bold; text-decoration: underline;">
+<span style="font-weight: bold; text-decoration: underline;" id="result_box" class="long_text short_text" lang="en"><span class="hps">Example from the</span> <span class="hps">online help</span></span><span style="text-decoration: underline; font-weight: bold;"> "About Roles" (</span><span style="font-weight: bold; text-decoration: underline;" id="result_box" class="long_text short_text" lang="en"><span class="hps">requires</span> <span class="hps">the</span> <span class="hps">actual connection</span> <span class="hps">to the directory</span></span><span style="text-decoration: underline; font-weight: bold;">) of the GUI "<a href="Howto-4.en.html">controlFrontend</a>" - definition of roles for managing shortcuts (GUI icons):</span><br style="text-decoration: underline;">
+<br>
+<div style="margin-left: 40px; text-align: left;"><span style="font-style: italic;"></span><small><span style="font-style: italic;">dn:
+cn=adminCreateLink,ou=role,ou=controlFrontend,ou=LdapEasyInterface,ou=ldap,ou=application,dc=mydomain</span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: top</span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: posixGroup</span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: LdapEasyInterface</span><br style="font-style: italic;">
+<span style="font-style: italic;">cn: adminCreateSrvLink</span><br style="font-style: italic;">
+<span style="font-style: italic;">description: to
+dn.subtree="ou=linksList,ou=serversFrontend,ou=frontend,ou=lda</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;p,ou=application,dc=mydomain"
+by this =rwx</span><br style="font-style: italic;">
+<span style="font-style: italic;">memberUid: <span style="font-weight: bold;">ldapAdminCentral</span></span><br style="font-style: italic;">
+<span style="font-style: italic;">gidNumber: -1</span><br style="font-style: italic;">
+<br style="font-style: italic;">
+<span style="font-style: italic;"></span><span style="font-style: italic;">dn:
+cn=adminModifyLink,ou=role,ou=controlFrontend,ou=LdapEasyInterface,ou=ldap,ou=application,dc=mydomain</span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: top</span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: posixGroup</span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: LdapEasyInterface</span><br style="font-style: italic;">
+<span style="font-style: italic;">cn: adminModifySrvLink</span><br style="font-style: italic;">
+<span style="font-style: italic;">description: to
+dn.subtree="ou=linksList,ou=serversFrontend,ou=frontend,ou=lda</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;p,ou=application,dc=mydomain"
+by this =rwx</span><br style="font-style: italic;">
+<span style="font-style: italic;">memberUid: <span style="font-weight: bold;">ldapAdminCentral</span></span><br style="font-style: italic;">
+<span style="font-style: italic;">gidNumber: -1</span><br style="font-style: italic;">
+<br style="font-style: italic;">
+<span style="font-style: italic;"></span><span style="font-style: italic;">dn:
+cn=adminDeleteLink,ou=role,ou=controlFrontend,ou=LdapEasyInterface,ou=ldap,ou=application,dc=mydomain</span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: top</span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: posixGroup</span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: LdapEasyInterface</span><br style="font-style: italic;">
+<span style="font-style: italic;">cn: adminDeleteSrvLink</span><br style="font-style: italic;">
+<span style="font-style: italic;">description: to
+dn.subtree="ou=linksList,ou=serversFrontend,ou=frontend,ou=lda</span><br style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;p,ou=application,dc=mydomain"
+by this =rwx</span><br style="font-style: italic;">
+<span style="font-style: italic;">memberUid: <span style="font-weight: bold;">ldapAdminCentral</span></span><br style="font-style: italic;">
+<span style="font-style: italic;">gidNumber: -1</span><br style="font-style: italic;">
+<br>
+<span style="font-style: italic;">dn: cn=adminRead,ou=role,ou=</span><span style="font-style: italic;">controlFrontend</span><span style="font-style: italic;"></span><span style="font-style: italic;">,ou=LdapEasyInterface,ou=ldap,ou=application,dc=mydomain&nbsp;&nbsp;  <span style="color: rgb(51, 204, 0);">// default role...</span></span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: top</span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: posixGroup</span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: LdapEasyInterface</span><br style="font-style: italic;">
+<span style="font-style: italic;">cn: adminRead</span><br style="font-style: italic;">
+<span style="font-style: italic;">description: to
+dn.subtree="ou=server,ou=computer[,dc=.+]{1,}" by this =rx</span><br style="font-style: italic;">
+<span style="font-style: italic;">description: to
+dn.subtree="ou=link,ou=controlFrontend,ou=LdapEasyInterface,ou=ldap,ou=application,dc=mydomain"
+by this =rx</span><br style="font-style: italic;">
+<span style="font-style: italic;">memberUid: <span style="font-weight: bold;">ldapHelpDesk</span></span><br style="font-style: italic;">
+<span style="font-style: italic;">memberUid: <span style="font-weight: bold;">ldapAdminCentral</span></span><br style="font-style: italic;">
+<span style="font-style: italic;">gidNumber: -1</span></small>
+
+<span style="font-style: italic;"></span><br>
+</div>
+<br>
+<span style="font-weight: bold; text-decoration: underline;" id="result_box" class="long_text short_text" lang="en"><span class="hps">Example from the</span> <span class="hps">online help</span></span><span style="text-decoration: underline; font-weight: bold;"> (menu "About Role") of the GUI "<a href="Howto-7.en.html">serverFrontend</a>" - roles definition for servers management:<br>
+</span><br style="font-style: italic;">
+<div style="margin-left: 40px;"><small><span style="font-style: italic;">dn:
+cn=adminCreate,ou=role,ou=serverFrontend,ou=LdapEasyInterface,ou=ldap,o</span><span style="font-style: italic;">u=application,dc=mydomain</span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: top</span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: posixGroup</span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: LdapEasyInterface</span><br style="font-style: italic;">
+<span style="font-style: italic;">cn: adminCreateSrv</span><br style="font-style: italic;">
+<span style="font-style: italic;">description: to
+dn.subtree="ou=server,ou=computer[,dc=.+]{1,}" by this =rwx</span><br style="font-style: italic;">
+<span style="font-style: italic;">description: to
+dn.subtree="ou=computer[,dc=.+]{1,}" ou:dn:=samba by this =rwx</span><br style="font-style: italic;">
+<span style="font-style: italic;">memberUid: <span style="font-weight: bold;">ldapAdminCentral</span></span><br style="font-style: italic;">
+<span style="font-style: italic;">gidNumber: -1</span><br style="font-style: italic;">
+<br>
+<span style="font-style: italic;">dn: cn=adminModify,ou=role,ou=</span><span style="font-style: italic;">serverFrontend</span><span style="font-style: italic;">,ou=LdapEasyInterface,ou=ldap,ou=application,dc=mydomain</span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: top</span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: posixGroup</span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: LdapEasyInterface</span><br style="font-style: italic;">
+<span style="font-style: italic;">cn: adminModifySrv</span><br style="font-style: italic;">
+<span style="font-style: italic;">description: to
+dn.subtree="ou=server,ou=computer[,dc=.+]{1,}" by this =rwx</span><br style="font-style: italic;">
+<span style="font-style: italic;">memberUid: <span style="font-weight: bold;">ldapAdminCentral</span></span><br style="font-style: italic;">
+<span style="font-style: italic;">gidNumber: -1</span><br style="font-style: italic;">
+<br style="font-style: italic;">
+<span style="font-style: italic;"></span><span style="font-style: italic;">dn: cn=adminDelete,ou=role,ou=</span><span style="font-style: italic;">serverFrontend</span><span style="font-style: italic;">,ou=LdapEasyInterface,ou=ldap,ou=application,dc=mydomain</span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: top</span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: posixGroup</span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: LdapEasyInterface</span><br style="font-style: italic;">
+<span style="font-style: italic;">cn: adminDeleteSrv</span><br style="font-style: italic;">
+<span style="font-style: italic;">description: to
+dn.subtree="ou=server,ou=computer[,dc=.+]{1,}" by this =rwx</span><br style="font-style: italic;">
+<span style="font-style: italic;">memberUid: <span style="font-weight: bold;">ldapAdminCentral</span></span><br style="font-style: italic;">
+<span style="font-style: italic;">gidNumber: -1</span><br style="font-style: italic;">
+<br style="font-style: italic;">
+<span style="font-style: italic;"></span><span style="font-style: italic;">dn: cn=adminRead,ou=role,ou=</span><span style="font-style: italic;">serverFrontend</span><span style="font-style: italic;">,ou=LdapEasyInterface,ou=ldap,ou=application,dc=mydomain</span><span style="font-style: italic;">&nbsp;&nbsp;  <span style="color: rgb(51, 204, 0);">// default role...</span></span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: top</span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: posixGroup</span><br style="font-style: italic;">
+<span style="font-style: italic;">objectClass: LdapEasyInterface</span><br style="font-style: italic;">
+<span style="font-style: italic;">cn: adminRead</span><br style="font-style: italic;">
+<span style="font-style: italic;">description: to
+dn.subtree="ou=server,ou=computer[,dc=.+]{1,}" by this =rx</span><br style="font-style: italic;">
+<span style="font-style: italic;">description: to
+dn.subtree="ou=link,ou=controlFrontend,ou=LdapEasyInterface,ou=ldap,ou=application,dc=mydomain"
+by this =rx</span><br style="font-style: italic;">
+<span style="font-style: italic;">memberUid: <span style="font-weight: bold;">ldapHelpDesk</span></span><br style="font-style: italic;">
+<span style="font-style: italic;">memberUid: <span style="font-weight: bold;">ldapAdminCentral</span></span><br style="font-style: italic;">
+<span style="font-style: italic;">gidNumber: -1</span></small>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+</div>
+<small>(</small><span id="result_box" class="long_text" lang="en"><span class="hps">This</span> <span class="hps">format description</span> - <span class="hps">LDIFF -</span> <span class="hps">can be</span> <span class="hps">obtained</span> <span class="hps">for each GUI:</span></span><small> "<span style="font-weight: bold;">menu - help/menu - About Roles</span>".)</small><br>
+
+
+<br>For each role definition, the "<span style="font-weight: bold;">memberUid</span>" attribute defines a list of profiles
+"<span style="font-style: italic; font-weight: bold;">(&amp;(objectclass=posixGroup)(objectClass=LdapEasyInterface))</span>" having this role.<br>
+<br>
+<span style="text-decoration: underline;">NOTE :</span> The ACL definitions (attribute: "<span style="font-weight: bold;">description</span>") remain to be refined - <span style="color: red;">beta release May 2010</span>.
+They will be subject to further study and should be useful also to
+restrict physical access to data from the directory based on the roles
+assigned to each user. Nevertheless, the principle is retained: it
+meets the definition of dynamic ACLs that will be applied automatically
+by a specific interface for automatic processing which remains to be
+defined ...<br>
+</div>
+
+<h2><a name="ss2.6">2.6 : <span id="result_box" class="long_text short_text" lang="en"><span class="hps">List of</span> <span class="hps">LDAP schemas</span> <span class="hps">currently</span> <span class="hps">used by this project</span></span>
+</a></h2>
+
+<div style="margin-left: 40px; text-align: justify;">Listed below are the different schemas used by the graphical interfaces currently operational:<br>
+<ul>
+  <li>core.schema (standard OpenLDAP),</li>
+  <li>cosine.schema (standard OpenLDAP),</li>
+  <li>nis.schema (standard OpenLDAP),</li>
+  <li>inetorgperson.schema (standard OpenLDAP),</li>
+  <li><a href="../archives/schema/qmail.schema">qmail.schema</a> (optionnel - standard QMAIL),<br>
+  </li>
+  <li><a href="../archives/schema/ldapEasyInterface.schema">ldapEasyInterface.schema</a>,</li>
+  <li><a href="../archives/schema/dNSZone.schema">dNSZone.schema</a> (LDAP sdb back-end for BIND 9),</li>
+  <li><a href="../archives/schema/samba.schema">samba.schema</a> (standard SAMBA).<br>
+  </li>
+</ul>
+These schemas will therefore be declared by the administrator of
+the LDAP directory in either the file "slapd.conf" or directory
+"slapd.d/" (according the old or new configuration method used).<br>
+</div>
+
+<br>
+
+<hr><a href="Howto-3.en.html">Next</a> <a href="Howto-1.en.html">Previous</a> <a href="Howto.en.html">Summary</a>
+
+
+</body></html>
