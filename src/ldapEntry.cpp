@@ -5,7 +5,7 @@ namespace ldapcppei
 // ******************************************** (Cons/Des)tructors:
 entry::entry ( void ) : m_iter(m_values.end()) {
 }
-entry::entry ( char const *dn ) : m_identifier(dn?dn:nullptr), m_iter(m_values.end()) {
+entry::entry ( char const *dn ) : m_identifier(dn), m_iter(m_values.end()) {
 }
 entry::entry ( std::string const &dn ) : m_identifier(dn), m_iter(m_values.end()) {
 }
