@@ -5,7 +5,7 @@ namespace ldapcppei
 // ******************************************** (Cons/Des)tructors:
 attribute::attribute( void ) : m_mod_op(LDAP_MOD_BVALUES), m_iter(m_values.end()) {
 }
-attribute::attribute( char const *dn ) : m_identifier(dn), m_mod_op(LDAP_MOD_BVALUES), m_iter(m_values.end()) {
+attribute::attribute( char const *dn ) : m_identifier(dn?*dn:(char)0), m_mod_op(LDAP_MOD_BVALUES), m_iter(m_values.end()) {
 }
 attribute::attribute( std::string const &dn ) : m_identifier(dn), m_mod_op(LDAP_MOD_BVALUES), m_iter(m_values.end()) {
 }
