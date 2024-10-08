@@ -19,7 +19,7 @@
   <meta name="GENERATOR" content="KompoZer-0.8a4"><title>LdapEasyInterface (libcppei) Mini Howto (English)</title>
   
   <link href="LdapcppeiMiniHowto-1.fr.html" rel="next"></head><body>
-<a href="miniHowto-2.en.html">Next</a> <a href="miniHowto.en.html">Previous</a> <a href="miniHowto.en.html">Summary</a> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; (<a href="miniHowto-1.fr.html"><span style="font-weight: bold;">Français</span></a> - <span style="font-weight: bold;">Anglais</span>)
+<a href="miniHowto-2.en.html">Next</a> <a href="miniHowto.en.html">Previous</a> <a href="miniHowto.en.html">Summary</a> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; (<a href="miniHowto-1.fr.html"><span style="font-weight: bold;">FranÃ§ais</span></a> - <span style="font-weight: bold;">Anglais</span>)
 <hr>
 <h2><a name="S1"><span style="text-decoration: underline;">1. What is GNU/ldapcppei API:</span>
 </a></h2>
@@ -296,7 +296,7 @@ ldapDesc.errNo();<br>
 <span style="font-style: italic; color: rgb(51, 204, 0);">The next tool must give a (rather - with dn sorted) similar result to :<br>
 &nbsp; ldapsearch -x -LLL -h "ldap" -D "cn=Manager,dc=myDomain" -w "password" -b "dc=myDomain"<br>
 </span><span style="font-style: italic; color: rgb(51, 204, 0);">**************************************************************************************************/</span><span style="font-style: italic; color: rgb(51, 204, 0);"></span><br style="font-style: italic; color: rgb(51, 204, 0);">
-<span style="font-style: italic;">#include &lt;ldapcppei/</span><span style="color: rgb(255, 102, 0); font-style: italic;">ldapEasyInterface.h</span><span style="font-style: italic;">&gt;</span><br style="font-style: italic;">
+<span style="font-style: italic;">#include &lt;libldapcppei/</span><span style="color: rgb(255, 102, 0); font-style: italic;">ldapEasyInterface.h</span><span style="font-style: italic;">&gt;</span><br style="font-style: italic;">
 <span style="font-style: italic;">#include &lt;iostream&gt;</span><br style="font-style: italic;">
 <span style="font-style: italic;">#include &lt;sstream&gt;</span><br style="font-style: italic;">
 
@@ -476,7 +476,7 @@ will be added to "e1" or, if already present, will replace those of "e1"</span><
 + e2".</span><span style="font-style: italic;"><br>
 
 </span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; e1 += &amp;e2;</span>&nbsp; &nbsp;  <span style="color: rgb(0, 153, 0);">//
-exactly the same résult as before (ie "e1 += e2"), as for all the
+exactly the same rÃ©sult as before (ie "e1 += e2"), as for all the
 following examples, ie: pointers on second operands are allowed...<br>
 </span>
 
@@ -672,7 +672,7 @@ These GUIs are related to <a href="./Frontends/Howto-12.en.html#ss12.2">configur
 version 3 (<span id="result_box" class="short_text" lang="en"><span class="hps">partially</span> <span class="hps">interfaced</span> <span class="hps">LDAP</span></span> - <span id="result_box" class="" lang="en"><span class="hps">user identification</span><span>,</span> <span class="hps">not</span> <span class="hps">on</span> <span class="hps">the definition</span> <span class="hps">of shared resources</span></span>),</li>
   <li style="text-align: justify;"><a href="./Frontends/Howto-14.en.html"><span style="font-weight: bold;">bind</span></a> (<span id="result_box" class="" lang="en"><span class="hps">interfaced</span> <span class="hps">with a patch</span><span>,</span> <span class="hps">but</span> <span class="hps">involving</span> <span class="hps">severe restrictions</span> <span class="hps">of features</span></span>),</li>
   <li style="text-align: justify;"><span id="result_box" class="" lang="en"><span class="hps">users</span> <span class="hps">and</span> <span class="hps">groups</span><span>,</span> <span class="hps">mail </span></span><span id="result_box" class="" lang="en"><span class="hps">and</span></span><span id="result_box" class="" lang="en"><span class="hps"></span> <span class="hps">proxy</span> <span class="hps atn">(</span><span>almost completely</span> <span class="hps">interfaced</span> <span class="hps">LDAP</span> <span class="hps">-</span> <span class="hps">across implementations</span><span>)</span><span class="">,</span></span></li>
-  <li style="text-align: justify;">the LDAP directory server itself (début d'interfaçage ldap de la configuration d'OpenLDAP),<br>
+  <li style="text-align: justify;">the LDAP directory server itself (dÃ©but d'interfaÃ§age ldap de la configuration d'OpenLDAP),<br>
   </li>
   <li style="text-align: justify;"><span id="result_box" class="" lang="en"><span class="hps">The definition</span> <span class="hps">of</span> <span class="hps">roles</span> <span class="hps">of</span> <span class="hps">specific</span> <span class="hps">management applications</span></span> (<span id="result_box" class="short_text" lang="en"><span class="hps">interfaced</span> <span class="hps">sometimes</span><span>,</span> <span class="hps">sometimes</span> <span class="hps">not</span><span class="hps">...</span></span>), such as for example the interfaces of this project itself (<a href="./Frontends/Howto.en.html"><span style="font-weight: bold; text-decoration: underline;">ldapEasyAdmin</span></a>).<br>
   </li>
