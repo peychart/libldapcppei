@@ -15,35 +15,35 @@
 
 
 
-  <meta name="GENERATOR" content="KompoZer-0.8a4"><title>LdapEasyInterface (libcppei) Mini Howto (Français)</title>
+  <meta name="GENERATOR" content="KompoZer-0.8a4"><title>LdapEasyInterface (libcppei) Mini Howto (FranÃ§ais)</title>
   
   <link href="LdapcppeiMiniHowto-1.fr.html" rel="next"></head><body><a href="miniHowto-2.fr.html">Page suivante</a>
-<a href="miniHowto.fr.html">Page précédente</a>
-<a href="miniHowto.fr.html">Table des matières</a>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; (<span style="font-weight: bold;">French</span> - <a style="font-weight: bold;" href="miniHowto-1.en.html">English</a>)
+<a href="miniHowto.fr.html">Page prÃ©cÃ©dente</a>
+<a href="miniHowto.fr.html">Table des matiÃ¨res</a>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; (<span style="font-weight: bold;">French</span> - <a style="font-weight: bold;" href="miniHowto-1.en.html">English</a>)
 
 <hr>
-<h2><a name="S1"><span style="text-decoration: underline;">1. Présentation de GNU/ldapcppei :</span></a></h2>
+<h2><a name="S1"><span style="text-decoration: underline;">1. PrÃ©sentation de GNU/ldapcppei :</span></a></h2>
 
 
 <h2><a name="ss1.1">1.1 Qu'est-ce que OpenLDAP ?</a></h2>
 <div style="margin-left: 40px;">
 <div style="text-align: justify;"><a href="http://www.openldap.org/">OpenLdap</a>
-est une implémentation libre du protocole LDAP (Lightweight Directory
-Access Protocol). Ce protocole permet la mise à jour et la consultation
+est une implÃ©mentation libre du protocole LDAP (Lightweight Directory
+Access Protocol). Ce protocole permet la mise Ã  jour et la consultation
 de services d'annuaires.<br>
 
-OpenLdap implémente la dernière version du protocole : <span style="font-weight: bold;">LDAPv3</span> . Cet implémentation libre est développée et distribuée sous licence : <a href="http://www.openldap.org/software/release/license.html">OpenLDAP Public Licence</a> ; quatre parties la composent :<br>
+OpenLdap implÃ©mente la derniÃ¨re version du protocole : <span style="font-weight: bold;">LDAPv3</span> . Cet implÃ©mentation libre est dÃ©veloppÃ©e et distribuÃ©e sous licence : <a href="http://www.openldap.org/software/release/license.html">OpenLDAP Public Licence</a> ; quatre parties la composent :<br>
 
-</div><ul><li style="text-align: justify;">le démon <span style="font-weight: bold;">slapd</span> qui reçoit et traite les requêtes d'interrogation et de mise à jour de l'annuaire.</li><li style="text-align: justify;">le démon <span style="font-weight: bold;">slurpd</span>, outil de gestion des réplications, qui permet de
-répliquer et/ou distribuer la base de données hébergeant les informations de
-l'annuaire sur différentes autres bases, offrant ainsi une
-sécurité accrue des informations stockées et/ou une optimisation des temps de
-réponse aux requêtes clientes. Un autre outil de réplication plus
-récent permet maintenant de réaliser cela de façon plus performante au
-sein même du démon serveur (<span style="font-weight: bold;">slapd</span>) par utilisation d'une couche logicielle additionnelle (<span style="font-style: italic;">cf.: replication</span>).<br>
+</div><ul><li style="text-align: justify;">le dÃ©mon <span style="font-weight: bold;">slapd</span> qui reÃ§oit et traite les requÃªtes d'interrogation et de mise Ã  jour de l'annuaire.</li><li style="text-align: justify;">le dÃ©mon <span style="font-weight: bold;">slurpd</span>, outil de gestion des rÃ©plications, qui permet de
+rÃ©pliquer et/ou distribuer la base de donnÃ©es hÃ©bergeant les informations de
+l'annuaire sur diffÃ©rentes autres bases, offrant ainsi une
+sÃ©curitÃ© accrue des informations stockÃ©es et/ou une optimisation des temps de
+rÃ©ponse aux requÃªtes clientes. Un autre outil de rÃ©plication plus
+rÃ©cent permet maintenant de rÃ©aliser cela de faÃ§on plus performante au
+sein mÃªme du dÃ©mon serveur (<span style="font-weight: bold;">slapd</span>) par utilisation d'une couche logicielle additionnelle (<span style="font-style: italic;">cf.: replication</span>).<br>
 
-  </li><li style="text-align: justify;">les bibliothèques offrant des interfaces de programmation, notamment pour le langage C.</li><li style="text-align: justify;">des outils et utilitaires permettant de manipuler les données
-d'annuaires, par exemple à partir de commandes "Shell" sur GNULinux (<span style="font-style: italic;">cf.: ldapsearch, ldapadd, ldapmodify, ...</span>).<br>
+  </li><li style="text-align: justify;">les bibliothÃ¨ques offrant des interfaces de programmation, notamment pour le langage C.</li><li style="text-align: justify;">des outils et utilitaires permettant de manipuler les donnÃ©es
+d'annuaires, par exemple Ã  partir de commandes "Shell" sur GNULinux (<span style="font-style: italic;">cf.: ldapsearch, ldapadd, ldapmodify, ...</span>).<br>
 
   </li></ul>
 Le projet qui suit, <span style="font-weight: bold;">GNU/Ldapcppei</span>, s'appuie sur l'<span style="font-weight: bold;">API C</span> du projet <a href="http://www.openldap.org/">OpenLdap</a>.<br>
@@ -51,37 +51,37 @@ Le projet qui suit, <span style="font-weight: bold;">GNU/Ldapcppei</span>, s'app
 </div>
 <h2><a name="ss1.2">1.2 Qu'est-ce que GNU/ldapcppei ?</a></h2>
 
-<div style="margin-left: 40px; text-align: justify;"><a href="./miniHowto-1.fr.html">GNU/ldapcppei</a> est une bibliothèque sous licence <a href="http://www.gnu.org/licenses/">GNU version 3</a> écrite en C++ dont l'objectif est d'offrir aux programmeurs une interface simple et sûre d'utilisation des annuaires LDAP.<br>
-Cette bibliothèque, en son état actuel de développement (mars 2010),
-nécessite l'installation du paquet logiciel <a href="http://www.openldap.org/">OpenLdap</a>
-(la partie cliente suffit) pour être utilisée (notamment lors de
-l'édition de liens - statiques ou dynamiques - du code objet qui
+<div style="margin-left: 40px; text-align: justify;"><a href="./miniHowto-1.fr.html">GNU/ldapcppei</a> est une bibliothÃ¨que sous licence <a href="http://www.gnu.org/licenses/">GNU version 3</a> Ã©crite en C++ dont l'objectif est d'offrir aux programmeurs une interface simple et sÃ»re d'utilisation des annuaires LDAP.<br>
+Cette bibliothÃ¨que, en son Ã©tat actuel de dÃ©veloppement (mars 2010),
+nÃ©cessite l'installation du paquet logiciel <a href="http://www.openldap.org/">OpenLdap</a>
+(la partie cliente suffit) pour Ãªtre utilisÃ©e (notamment lors de
+l'Ã©dition de liens - statiques ou dynamiques - du code objet qui
 l'utilise).<br>
 </div>
 
 <h2><a name="ss1.3">1.3 Pourquoi GNU/ldapcppei ?</a></h2>
 
 
-<div style="margin-left: 40px;">Comme évoqué ci-dessus, il s'agit
-d'offrir une interface simple et sûre d'utilisation à destination des
+<div style="margin-left: 40px;">Comme Ã©voquÃ© ci-dessus, il s'agit
+d'offrir une interface simple et sÃ»re d'utilisation Ã  destination des
 programmeurs C++ de codes sous licence GNU :<br>
 <ul><li style="text-align: justify;">simple d'utilisation, car regroupant les principes de la
 programmation objet et parce qu'intuitive (ou, tout au moins, dont les
-principes seront rapidement acquis par le programmeur C++),</li><li style="text-align: justify;">sûre,
-c'est-à-dire propice à peu d'erreurs de programmation dans
-son utilisation : pas de gestion mémoire à supporter (avec ses
-conséquences souvent bien connues des débordements de tampons, des
-oublis de dés-allocation d'espaces mémoires, ...) tout en supprimant la contrainte
-d'apprentissage du nombre important de fonctions C spécifiques au
+principes seront rapidement acquis par le programmeur C++),</li><li style="text-align: justify;">sÃ»re,
+c'est-Ã -dire propice Ã  peu d'erreurs de programmation dans
+son utilisation : pas de gestion mÃ©moire Ã  supporter (avec ses
+consÃ©quences souvent bien connues des dÃ©bordements de tampons, des
+oublis de dÃ©s-allocation d'espaces mÃ©moires, ...) tout en supprimant la contrainte
+d'apprentissage du nombre important de fonctions C spÃ©cifiques au
 protocole LDAP, de la connaissance de leurs syntaxes respectives et des
-règles qui prévalent à leur enchaînement ...<br>
+rÃ¨gles qui prÃ©valent Ã  leur enchaÃ®nement ...<br>
   </li></ul>
 <div style="text-align: justify;">
-L'objectif de cette interface de programmation est donc de simplifier l'intégration des
-services d'annuaires LDAP au sein de sources C++, cela en réduisant le
-nombre de fonctions (en l'occurrence, il conviendra plutôt de parler de
-"méthodes") nécessaires à l'écriture des règles de gestion que le programmeur souhaite voir
-réalisées par son programme.<br>
+L'objectif de cette interface de programmation est donc de simplifier l'intÃ©gration des
+services d'annuaires LDAP au sein de sources C++, cela en rÃ©duisant le
+nombre de fonctions (en l'occurrence, il conviendra plutÃ´t de parler de
+"mÃ©thodes") nÃ©cessaires Ã  l'Ã©criture des rÃ¨gles de gestion que le programmeur souhaite voir
+rÃ©alisÃ©es par son programme.<br>
 
 </div>
 
@@ -91,20 +91,20 @@ réalisées par son programme.<br>
 
 
 <div style="margin-left: 40px;">
-<div style="text-align: justify;">Outre les objectifs précédemment
-exposés, cette interface offre quelques outils supplémentaires qui facilitent d'autant
-la programmation et réduisent ainsi le code source résultant :<br>
+<div style="text-align: justify;">Outre les objectifs prÃ©cÃ©demment
+exposÃ©s, cette interface offre quelques outils supplÃ©mentaires qui facilitent d'autant
+la programmation et rÃ©duisent ainsi le code source rÃ©sultant :<br>
 
 </div>
-<ul><li style="text-align: justify;">tampon d'entrée et tampon de sortie permettant de stocker la
-liste des "entrées d'annuaire" soit pour leur prochain traitement, soit en réception du résultat de la dernière requête ; ces
-tampons sont des conteneurs qui, en outre, maintiennent classées les
-entrées qui y sont stockées,</li><li style="text-align: justify;">un tampon de stockage temporaire qui va permettre au
-programmeur de stocker, pour un temps, le résultat d'une requête
-intermédiaire pour un traitement ultérieur,</li><li style="text-align: justify;">la
-possibilité de permutation des deux tampons entrée/sortie pour, par exemple,
-re-soumettre à un nouveaux traitements le résultat de la dernière requête
-effectuée,</li><li style="text-align: justify;">&nbsp;...<br>
+<ul><li style="text-align: justify;">tampon d'entrÃ©e et tampon de sortie permettant de stocker la
+liste des "entrÃ©es d'annuaire" soit pour leur prochain traitement, soit en rÃ©ception du rÃ©sultat de la derniÃ¨re requÃªte ; ces
+tampons sont des conteneurs qui, en outre, maintiennent classÃ©es les
+entrÃ©es qui y sont stockÃ©es,</li><li style="text-align: justify;">un tampon de stockage temporaire qui va permettre au
+programmeur de stocker, pour un temps, le rÃ©sultat d'une requÃªte
+intermÃ©diaire pour un traitement ultÃ©rieur,</li><li style="text-align: justify;">la
+possibilitÃ© de permutation des deux tampons entrÃ©e/sortie pour, par exemple,
+re-soumettre Ã  un nouveaux traitements le rÃ©sultat de la derniÃ¨re requÃªte
+effectuÃ©e,</li><li style="text-align: justify;">&nbsp;...<br>
   </li></ul>
 
 </div>
@@ -112,34 +112,34 @@ effectuée,</li><li style="text-align: justify;">&nbsp;...<br>
 
 <h2><a name="ss1.5">1.5 Principes de GNU/ldapcppei ?</a></h2>
 
-<div style="margin-left: 40px;">Six classes sont définies :<br>
+<div style="margin-left: 40px;">Six classes sont dÃ©finies :<br>
 
 <ol><li style="text-align: justify;">La classe "<a href="archives/libldapcppei/man/man3/byteArea.3.html"><span style="font-weight: bold;">byteArea</span></a>"
 qui propose un espace (variable) de stockage ainsi que les fonctions de
 traitement de son contenu (assign, append, insert, replace, erase,
 fill, compare, stringEvaluate, (r)indexOf, startsWith, contains, ends,
 trimmed, toLower/Upper, to/fromUtf8, operateurs "+", "-=", "&lt;",
-"[]", "&lt;&lt;", ... et bien d'autres...),<br></li><li style="text-align: justify;">la classe "<a href="archives/libldapcppei/man/man3/byteArea.3.html"><span style="font-weight: bold;">berValue</span></a>" qui dérive de la classe "<a href="archives/libldapcppei/man/man3/byteArea.3.html"><span style="font-weight: bold;">byteArea</span></a>" et qui permet d'instancier l'objet de base "donnée d'annuaire", à savoir une suite d'octets de longueur connue (<span style="font-weight: bold; text-decoration: underline;">note :</span> à l'instar d'une "<span style="font-weight: bold;">BerValue</span>" <span style="font-weight: bold;">d'OpenLDAP</span> mais à ne pas confondre avec la structure C "<span style="font-weight: bold;"><span style="text-decoration: underline;">B</span>erValue</span>" elle-même),</li><li style="text-align: justify;">la classe "<a href="archives/libldapcppei/man/man3/attribute.3.html"><span style="font-weight: bold;">attribute</span></a>" qui permet d'instancier des objets "attributs d'annuaire" composés d'un nom d'identification associé à une ou plusieurs "<span style="font-weight: bold;">berValue</span>" (certains attributs d'annuaires pouvant en effet être multivalués ; à l'image de : "<span style="font-weight: bold;">memberUid</span>"),</li><li style="text-align: justify;">la classe "<a href="archives/libldapcppei/man/man3/entry.3.html"><span style="font-weight: bold;">entry</span></a>" permettant d'instancier l'objet "entrée d'annuaire" composée d'un "<span style="font-weight: bold;">dn</span>" (<span style="font-style: italic;">distinguish name</span>) et de ses <span style="font-weight: bold;">attributs</span> attachés,</li><li style="text-align: justify;">la classe "<a href="archives/libldapcppei/man/man3/ldapSet.3.html"><span style="font-weight: bold;">ldapSet</span></a>" qui permet d'instancier une liste d'entrées classées par "<span style="font-weight: bold;">dn</span>" croissants (cf. "<span style="font-weight: bold;">std::set</span>"),<br>
-  </li><li style="text-align: justify;">et, enfin, la classe "<a href="archives/libldapcppei/man/man3/ldapEasyInterface.3.html"><span style="font-weight: bold;">ldapEasyInterface</span></a>", conteneur d'entrées d'annuaire et des paramètres de la connexion à son annuaire <span style="font-weight: bold;">LDAP</span>.<br>
+"[]", "&lt;&lt;", ... et bien d'autres...),<br></li><li style="text-align: justify;">la classe "<a href="archives/libldapcppei/man/man3/byteArea.3.html"><span style="font-weight: bold;">berValue</span></a>" qui dÃ©rive de la classe "<a href="archives/libldapcppei/man/man3/byteArea.3.html"><span style="font-weight: bold;">byteArea</span></a>" et qui permet d'instancier l'objet de base "donnÃ©e d'annuaire", Ã  savoir une suite d'octets de longueur connue (<span style="font-weight: bold; text-decoration: underline;">note :</span> Ã  l'instar d'une "<span style="font-weight: bold;">BerValue</span>" <span style="font-weight: bold;">d'OpenLDAP</span> mais Ã  ne pas confondre avec la structure C "<span style="font-weight: bold;"><span style="text-decoration: underline;">B</span>erValue</span>" elle-mÃªme),</li><li style="text-align: justify;">la classe "<a href="archives/libldapcppei/man/man3/attribute.3.html"><span style="font-weight: bold;">attribute</span></a>" qui permet d'instancier des objets "attributs d'annuaire" composÃ©s d'un nom d'identification associÃ© Ã  une ou plusieurs "<span style="font-weight: bold;">berValue</span>" (certains attributs d'annuaires pouvant en effet Ãªtre multivaluÃ©s ; Ã  l'image de : "<span style="font-weight: bold;">memberUid</span>"),</li><li style="text-align: justify;">la classe "<a href="archives/libldapcppei/man/man3/entry.3.html"><span style="font-weight: bold;">entry</span></a>" permettant d'instancier l'objet "entrÃ©e d'annuaire" composÃ©e d'un "<span style="font-weight: bold;">dn</span>" (<span style="font-style: italic;">distinguish name</span>) et de ses <span style="font-weight: bold;">attributs</span> attachÃ©s,</li><li style="text-align: justify;">la classe "<a href="archives/libldapcppei/man/man3/ldapSet.3.html"><span style="font-weight: bold;">ldapSet</span></a>" qui permet d'instancier une liste d'entrÃ©es classÃ©es par "<span style="font-weight: bold;">dn</span>" croissants (cf. "<span style="font-weight: bold;">std::set</span>"),<br>
+  </li><li style="text-align: justify;">et, enfin, la classe "<a href="archives/libldapcppei/man/man3/ldapEasyInterface.3.html"><span style="font-weight: bold;">ldapEasyInterface</span></a>", conteneur d'entrÃ©es d'annuaire et des paramÃ¨tres de la connexion Ã  son annuaire <span style="font-weight: bold;">LDAP</span>.<br>
 
   </li></ol>
 <div style="text-align: justify;">
 
 Le principe de base de cette interface de programmation est la
-définition (au sein de la classe d'interface "<a href="archives/libldapcppei/man/man3/ldapEasyInterface.3.html"><span style="font-weight: bold;">ldapEasyInterface</span></a>") d'un tampon
-d'entrée "<span style="font-weight: bold;">(ldapset*)getInputSet()</span>" qui va recevoir les paramètres (c'est-à-dire la liste des entrées d'annuaire) des
-requêtes à soumettre ainsi que d'un tampon de sortie "<span style="font-weight: bold;">(ldapset*)getOutputSet()</span>" qui va recevoir
-après traitement l'ensemble des résultats (sous forme d'une liste triée des entrées résultantes) des requêtes
+dÃ©finition (au sein de la classe d'interface "<a href="archives/libldapcppei/man/man3/ldapEasyInterface.3.html"><span style="font-weight: bold;">ldapEasyInterface</span></a>") d'un tampon
+d'entrÃ©e "<span style="font-weight: bold;">(ldapset*)getInputSet()</span>" qui va recevoir les paramÃ¨tres (c'est-Ã -dire la liste des entrÃ©es d'annuaire) des
+requÃªtes Ã  soumettre ainsi que d'un tampon de sortie "<span style="font-weight: bold;">(ldapset*)getOutputSet()</span>" qui va recevoir
+aprÃ¨s traitement l'ensemble des rÃ©sultats (sous forme d'une liste triÃ©e des entrÃ©es rÃ©sultantes) des requÃªtes
 de consultation, notamment ...<br>
 
 
 <br>
 
 
-Les paramètres en question sont effectivement des "entrées d'annuaire"
-qui sont classées automatique (cf.: notion de "<span style="font-weight: bold;">std::set</span>" de la bibliothèque standard <span style="font-weight: bold;">C++</span>) lors de leur insertion dans leur tampon
-de destination et qui, lorsqu'il s'agit du tampon d'entrée, permettent
-notamment le chaînage de requêtes successives (par exemple : insertions ou suppressions par lots).<br>
+Les paramÃ¨tres en question sont effectivement des "entrÃ©es d'annuaire"
+qui sont classÃ©es automatique (cf.: notion de "<span style="font-weight: bold;">std::set</span>" de la bibliothÃ¨que standard <span style="font-weight: bold;">C++</span>) lors de leur insertion dans leur tampon
+de destination et qui, lorsqu'il s'agit du tampon d'entrÃ©e, permettent
+notamment le chaÃ®nage de requÃªtes successives (par exemple : insertions ou suppressions par lots).<br>
 
 </div>
 </div>
@@ -232,7 +232,7 @@ std::cerr &lt;&lt; ldapDesc.getErrorString() &lt;&lt; std::endl;<br>
 &nbsp;&nbsp;&nbsp; &nbsp; for ( attribute **at=attr; *at; at++ )<br>
 &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  delete *at;<br>
 &nbsp;&nbsp;&nbsp; &nbsp; attr[0] = nullptr;<br>
-</span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;"></span><br style="color: black;"><span style="color: black;"><span style="font-weight: bold;"></span><span style="text-decoration: underline; font-weight: bold;"></span></span><span style="font-style: italic; color: black;"></span><span style="color: black;"><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="text-decoration: underline; font-weight: bold;"><span style="color: rgb(153, 51, 153);">ou, plus court (et plus sécurisé) :</span><br>
+</span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;"></span><br style="color: black;"><span style="color: black;"><span style="font-weight: bold;"></span><span style="text-decoration: underline; font-weight: bold;"></span></span><span style="font-style: italic; color: black;"></span><span style="color: black;"><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="text-decoration: underline; font-weight: bold;"><span style="color: rgb(153, 51, 153);">ou, plus court (et plus sÃ©curisÃ©) :</span><br>
 </span></span><span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp; &nbsp; if ( ! ldapDesc.doAddEntry(&nbsp; <span style="font-weight: bold; color: rgb(51, 204, 0);">new</span> entry ( </span><span style="font-style: italic; color: black;">"<span style="font-weight: bold;">ou=test,dc=myDomain</span>",&nbsp; (attribute *[]) {<br>
 
 &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  <span style="font-weight: bold; color: red;">new</span> </span><span style="font-style: italic; color: black;">attribute</span><span style="font-style: italic; color: black;">("<span style="font-weight: bold;">objectClass</span>", <span style="font-weight: bold;">LDAP_MOD_ADD</span>, (char </span><span style="font-style: italic; color: black;">const </span><span style="font-style: italic; color: black;"> *[]){ "<span style="font-weight: bold;">top</span>",
@@ -252,7 +252,7 @@ std::cerr &lt;&lt; ldapDesc.getErrorString() &lt;&lt; std::endl;<br>
 <small style="font-weight: bold;">(*) In fact, this's not really a delete but a direct integration within the object and its memory space...</small></span><span style="font-style: italic; color: black;"><br>
 </span><span style="color: black;"><span style="font-weight: bold;"><br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="text-decoration: underline; font-weight: bold; color: rgb(153, 51, 153);">ou, (sans besoin de gestion de la mémoire) :</span></span><br style="font-style: italic; color: black;">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="text-decoration: underline; font-weight: bold; color: rgb(153, 51, 153);">ou, (sans besoin de gestion de la mÃ©moire) :</span></span><br style="font-style: italic; color: black;">
 
 
 <span style="font-style: italic; color: black;">
@@ -302,7 +302,7 @@ ldapDesc.errNo();<br>
 
 <span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ldapDesc.doSearchScopeBase( "<span style="font-weight: bold;">dc=myDomain</span>" ); &nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: rgb(51, 204, 0);">// Pour tous les attributs de l'entrée ...</span></span><span style="color: black; font-weight: bold;"><br>
+&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: rgb(51, 204, 0);">// Pour tous les attributs de l'entrÃ©e ...</span></span><span style="color: black; font-weight: bold;"><br>
 </span><span style="font-style: italic; color: black;"></span><span style="color: black; font-weight: bold;"><br>
 </span><span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="text-decoration: underline; font-weight: bold; color: rgb(153, 51, 153);" id="result_box" class="short_text" lang="en"><span class="hps">suivi de l'affichage </span><span class="hps"></span></span><span style="color: rgb(153, 51, 153); font-weight: bold;"><span style="text-decoration: underline;">:</span></span><br style="font-style: italic; color: black;">
 
@@ -312,7 +312,7 @@ ldapDesc.errNo();<br>
 
 <span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if ( ! </span><span style="font-style: italic; color: black;">ldapDesc.find( "<span style="font-weight: bold;"></span></span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;"><span style="font-weight: bold;">dc=test,dc=myDomain</span></span><span style="font-style: italic; color: black;">" ).end()</span><span style="font-style: italic; color: black;">
 )&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp; &nbsp;&nbsp; <span style="color: rgb(51, 204, 0);">// recherche de l'entrée avec ce dn.</span><br>
+&nbsp;&nbsp; &nbsp;&nbsp; <span style="color: rgb(51, 204, 0);">// recherche de l'entrÃ©e avec ce dn.</span><br>
 &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;</span><span style="font-style: italic; color: black;"> &nbsp;&nbsp;&nbsp;&nbsp; if ( ! </span><span style="font-style: italic; color: black;">ldapDesc.getEntry()-&gt;find( "<span style="font-weight: bold;">description</span>" ).end() )</span><span style="font-style: italic; color: black;">&nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp; <span style="color: rgb(51, 204, 0);">// positionnement sur cet attribut.</span></span><span style="font-style: italic; color: black;"><br></span><span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; std::cout &lt;&lt; </span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;"></span><span style="font-style: italic; color: black;">ldapDesc.getEntry()-&gt;getAttribute()-&gt;name() &lt;&lt; "<span style="font-weight: bold;">: </span>" <br>
 &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;
@@ -351,7 +351,7 @@ ldapDesc.errNo();<br>
 
 <span style="font-style: italic; color: black;">&nbsp;</span><span style="font-style: italic; color: black;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-<span style="color: rgb(51, 204, 0);">// L'entrée racine "entryDn" ne sera pas ré-insérée (pas de duplication d'entités possible dans le std::set !...).</span><br>
+<span style="color: rgb(51, 204, 0);">// L'entrÃ©e racine "entryDn" ne sera pas rÃ©-insÃ©rÃ©e (pas de duplication d'entitÃ©s possible dans le std::set !...).</span><br>
 </span><span style="color: black; font-weight: bold;"></span><span style="font-style: italic; color: black;"><br></span><br><big><big><span style="text-decoration: underline; color: black; font-weight: bold;"><a name="ss1.6.3"></a></span></big></big> <big><big><span style="text-decoration: underline; color: black; font-weight: bold;"></span></big></big><big style="color: rgb(204, 153, 51);"><big><span style="text-decoration: underline; font-weight: bold;">Lectures :</span></big></big><span style="font-weight: bold;"><br>
 </span>
 <pre wrap=""># define out /*<br>  out=`basename $0|sed -e 's/.[^.]*$//'`<br>  echo "g++ $0 -o $out -std=c++0x -lldap -lldapcppei"<br>  g++ $0 -o $out -std=c++0x -lldap -lldapcppei &amp;&amp; strip $out &amp;&amp; chmod 755 $out<br>  exit $?<br># */<br># undef out</pre>
@@ -360,7 +360,7 @@ ldapDesc.errNo();<br>
 <span style="font-style: italic; color: rgb(51, 204, 0);">The next tool must give a (rather - with dn sorted) similar result to :<br>
 &nbsp; ldapsearch -x -LLL -h "ldap" -D "cn=Manager,dc=myDomain" -w "password" -b "dc=myDomain"<br>
 </span><span style="font-style: italic; color: rgb(51, 204, 0);">**************************************************************************************************/</span><br style="font-style: italic; color: rgb(51, 204, 0);">
-<span style="font-style: italic;">#include &lt;ldapcppei/<span style="color: rgb(255, 102, 0);">ldapEasyInterface.h</span>&gt;</span><br style="font-style: italic;">
+<span style="font-style: italic;">#include &lt;libldapcppei/<span style="color: rgb(255, 102, 0);">ldapEasyInterface.h</span>&gt;</span><br style="font-style: italic;">
 
 <span style="font-style: italic;">#include &lt;iostream&gt;<br>
 </span><span style="font-style: italic;">#include &lt;sstream&gt;</span><br style="font-style: italic;">
@@ -562,7 +562,7 @@ ldapDesc.getEntry()-&gt;getAttribute()-&gt;getBerValue()-&gt;c_str()
 
 &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; printf ( "\n" );<br>
 &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</span><span style="font-style: italic;">
-&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: rgb(0, 153, 0);">// (à éviter, toutefois, en termes de perfomance ...)</span></span><br>
+&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: rgb(0, 153, 0);">// (Ã  Ã©viter, toutefois, en termes de perfomance ...)</span></span><br>
 <span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  ...<br><span style="color: rgb(0, 153, 0);"></span><br>
 
 <br></span><span style="font-style: italic;"></span><span style="color: black; font-weight: bold;">&nbsp; &nbsp; <span style="text-decoration: underline; color: rgb(153, 51, 153);">ou encore, la version pour les vrais "mecs" ... :</span></span><br>
@@ -591,30 +591,30 @@ ldapDesc.getEntry()-&gt;getAttribute()-&gt;getBerValue()-&gt;c_str()
 
 </span><span style="font-style: italic;"><span style="color: rgb(0, 153, 0);"></span><br>
 </span><span style="font-style: italic;"><br>
-</span><span style="font-style: italic;"><br>&nbsp;</span><big><big><span style="text-decoration: underline; color: black; font-weight: bold;"><a name="ss1.6.4"></a></span><span style="color: black; font-weight: bold;"> </span><span style="text-decoration: underline; color: rgb(204, 153, 51); font-weight: bold;">Opérateurs de traitement :</span></big></big><br>
+</span><span style="font-style: italic;"><br>&nbsp;</span><big><big><span style="text-decoration: underline; color: black; font-weight: bold;"><a name="ss1.6.4"></a></span><span style="color: black; font-weight: bold;"> </span><span style="text-decoration: underline; color: rgb(204, 153, 51); font-weight: bold;">OpÃ©rateurs de traitement :</span></big></big><br>
 <span style="font-style: italic;"><br>
 </span><span style="font-style: italic;"><span style="font-weight: bold; text-decoration: underline;"></span></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; entry e1 = ... , e2 = ... , e3;<br>
 &nbsp;&nbsp;&nbsp; attribute attr1 = ... , attr2=...;<br>
 <br>
 </span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; e1 += e2;</span>&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;  <span style="color: rgb(0, 153, 0);">//
 si( e1.dn().compare( e2.dn() ) == 0 ), ou plus simplement si( </span><span style="color: rgb(0, 153, 0);">e1.isDn( </span><span style="color: rgb(0, 153, 0);">e2.dn()</span><span style="color: rgb(0, 153, 0);"> )</span><span style="color: rgb(0, 153, 0);"> ), alors tous les attributs (et/ou valeurs) de "e2"
-seront ajoutés à "e1" ou, si déjà présents, remplaceront ceux de
-"e1"</span><span style="color: rgb(0, 153, 0);">. Equivalent à : "e1 = e1
+seront ajoutÃ©s Ã  "e1" ou, si dÃ©jÃ  prÃ©sents, remplaceront ceux de
+"e1"</span><span style="color: rgb(0, 153, 0);">. Equivalent Ã  : "e1 = e1
 + e2".</span><span style="font-style: italic;"><br>
 
 
 </span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; e1 += &amp;e2;</span>&nbsp;&nbsp;  <span style="color: rgb(0, 153, 0);">//
-même résultat que "e1 += e2", comme pour toutes les syntaxes qui
-suivent, c'est à dire avec des pointeurs sur entités en second membre...<br>
+mÃªme rÃ©sultat que "e1 += e2", comme pour toutes les syntaxes qui
+suivent, c'est Ã  dire avec des pointeurs sur entitÃ©s en second membre...<br>
 </span>
 
 </div>
 
 <div style="margin-left: 120px;"><span style="color: rgb(0, 153, 0);">(Nota:&nbsp;&nbsp;
-si&nbsp; "entry *e1, *e2;"&nbsp; alors, la syntaxe devra être :&nbsp;
+si&nbsp; "entry *e1, *e2;"&nbsp; alors, la syntaxe devra Ãªtre :&nbsp;
 
 "*e1 += e2;" ou "*e1 += *e2"- sinon, il s'agirait d'une tentative d'affectation
-d'adresse mémoire, bien évidemment !...).</span><span style="font-style: italic;"></span><br>
+d'adresse mÃ©moire, bien Ã©videmment !...).</span><span style="font-style: italic;"></span><br>
 </div>
 
 <div style="margin-left: 40px;">
@@ -624,109 +624,109 @@ d'adresse mémoire, bien évidemment !...).</span><span style="font-style: italic;
 <span style="font-style: italic;">
 </span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; e1 -= e2;</span>&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp; <span style="color: rgb(0, 153, 0);">//
 si( e1.dn() == e2.dn() )</span><span style="color: rgb(0, 153, 0);">,
-toutes les valeurs des attributs de "e2" présentes dans des attributs de
-même noms de "e1" seront retirées de "e1". Les attributs restant vides de
-"e1" seront ensuite supprimés. </span><span style="color: rgb(0, 153, 0);"></span><span style="color: rgb(0, 153, 0);">Equivalent à : "e1 = e1 - e2", ou "e1 -= &amp;e2" ou bien "e1 = e1 - &amp;e2").</span><br>
+toutes les valeurs des attributs de "e2" prÃ©sentes dans des attributs de
+mÃªme noms de "e1" seront retirÃ©es de "e1". Les attributs restant vides de
+"e1" seront ensuite supprimÃ©s. </span><span style="color: rgb(0, 153, 0);"></span><span style="color: rgb(0, 153, 0);">Equivalent Ã  : "e1 = e1 - e2", ou "e1 -= &amp;e2" ou bien "e1 = e1 - &amp;e2").</span><br>
 
 <span style="font-style: italic;"></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; e1 &amp;= e2;</span>&nbsp;&nbsp;  &nbsp;  <span style="color: rgb(0, 153, 0);">// si( e1</span><span style="color: rgb(0, 153, 0);">.dn()
-== e2.dn() )</span><span style="color: rgb(0, 153, 0);">, alors</span><span style="color: rgb(0, 153, 0);"> "e1" contiendra uniquement ses</span><span style="color: rgb(0, 153, 0);"> </span><span style="color: rgb(0, 153, 0);">valeurs d'attributs </span><span style="color: rgb(0, 153, 0);">et</span><span style="color: rgb(0, 153, 0);"> attributs initiaux</span><span style="color: rgb(0, 153, 0);"> présents </span><span style="color: rgb(0, 153, 0);">dans "e2". Equivalent à "e1 = e1 &amp; e2".</span><br>
+== e2.dn() )</span><span style="color: rgb(0, 153, 0);">, alors</span><span style="color: rgb(0, 153, 0);"> "e1" contiendra uniquement ses</span><span style="color: rgb(0, 153, 0);"> </span><span style="color: rgb(0, 153, 0);">valeurs d'attributs </span><span style="color: rgb(0, 153, 0);">et</span><span style="color: rgb(0, 153, 0);"> attributs initiaux</span><span style="color: rgb(0, 153, 0);"> prÃ©sents </span><span style="color: rgb(0, 153, 0);">dans "e2". Equivalent Ã  "e1 = e1 &amp; e2".</span><br>
 
 
-<span style="font-style: italic;"></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; e1 |= e2;</span>&nbsp;&nbsp; &nbsp;   <span style="color: rgb(0, 153, 0);"></span><span style="color: rgb(0, 153, 0);">// </span><span style="color: rgb(0, 153, 0);">si( e1</span><span style="color: rgb(0, 153, 0);">.dn() == e2.dn() )</span><span style="color: rgb(0, 153, 0);">, alors</span><span style="color: rgb(0, 153, 0);"> </span><span style="color: rgb(0, 153, 0);">tous les attributs de "e2" non présents dans "e1" seront ajoutés à
-"e1", ceux présents dans "e1" seront complétés</span><span style="color: rgb(0, 153, 0);">. Equivalent à : "e1 = e1 | e2"</span><span style="color: rgb(0, 153, 0);">, ...</span><br>
+<span style="font-style: italic;"></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; e1 |= e2;</span>&nbsp;&nbsp; &nbsp;   <span style="color: rgb(0, 153, 0);"></span><span style="color: rgb(0, 153, 0);">// </span><span style="color: rgb(0, 153, 0);">si( e1</span><span style="color: rgb(0, 153, 0);">.dn() == e2.dn() )</span><span style="color: rgb(0, 153, 0);">, alors</span><span style="color: rgb(0, 153, 0);"> </span><span style="color: rgb(0, 153, 0);">tous les attributs de "e2" non prÃ©sents dans "e1" seront ajoutÃ©s Ã 
+"e1", ceux prÃ©sents dans "e1" seront complÃ©tÃ©s</span><span style="color: rgb(0, 153, 0);">. Equivalent Ã  : "e1 = e1 | e2"</span><span style="color: rgb(0, 153, 0);">, ...</span><br>
 
 <span style="font-style: italic;"></span><span style="font-style: italic;"></span><span style="font-style: italic;"></span><span style="font-style: italic;"><br>
 
-&nbsp;</span><span style="font-style: italic;">&nbsp;&nbsp; e1 = e2;&nbsp;  &nbsp;  &nbsp;&nbsp; </span><span style="color: rgb(0, 153, 0);">// Il s'agit d'une simple affectation inconditionnelle. Equivalent à : a1 = nullptr !... ;-)</span><span style="color: rgb(0, 153, 0);"></span><br>
+&nbsp;</span><span style="font-style: italic;">&nbsp;&nbsp; e1 = e2;&nbsp;  &nbsp;  &nbsp;&nbsp; </span><span style="color: rgb(0, 153, 0);">// Il s'agit d'une simple affectation inconditionnelle. Equivalent Ã  : a1 = nullptr !... ;-)</span><span style="color: rgb(0, 153, 0);"></span><br>
 
 <br>
 <span style="font-style: italic;">&nbsp;&nbsp;&nbsp; e1++;&nbsp;  &nbsp; &nbsp;&nbsp;  &nbsp; &nbsp;  </span><span style="color: rgb(0, 153, 0);">// </span><span style="color: rgb(0, 153, 0);">La
-position courante dans l'entrée "e1" sera incrémentée
-(attribut suivant - selon le classement alphabétique des "dn"
-d'annuaires LDAP) - équivalent à e1.gotoNext().</span><span style="color: rgb(0, 153, 0);"> En </span><span style="color: rgb(0, 153, 0);">extrémité</span><span style="color: rgb(0, 153, 0);"> de liste, la position courante vaudra "e1.end()", cad: attribut nul, à l'instar de : "e1.gotoEnd()".<br>
+position courante dans l'entrÃ©e "e1" sera incrÃ©mentÃ©e
+(attribut suivant - selon le classement alphabÃ©tique des "dn"
+d'annuaires LDAP) - Ã©quivalent Ã  e1.gotoNext().</span><span style="color: rgb(0, 153, 0);"> En </span><span style="color: rgb(0, 153, 0);">extrÃ©mitÃ©</span><span style="color: rgb(0, 153, 0);"> de liste, la position courante vaudra "e1.end()", cad: attribut nul, Ã  l'instar de : "e1.gotoEnd()".<br>
 
 &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
 &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
 &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; (Nota:&nbsp; si "entry *e1;"
-alors, la syntaxe devra bien évidemment être : "(*e1)++;" avec, il n'est évidemment pas besoin de préciser, (e != nullptr)... ).<br>
+alors, la syntaxe devra bien Ã©videmment Ãªtre : "(*e1)++;" avec, il n'est Ã©videmment pas besoin de prÃ©ciser, (e != nullptr)... ).<br>
 
 </span>
 
 
 
 <span style="font-style: italic;">&nbsp;&nbsp;&nbsp; e1--;&nbsp;  &nbsp; &nbsp;&nbsp;  &nbsp; &nbsp;&nbsp;&nbsp;  </span><span style="color: rgb(0, 153, 0);">// </span><span style="color: rgb(0, 153, 0);">La
-position courante dans l'entrée e1 sera décrémentée d'une position
-(attribut précédent - selon le classement alphabétique des "dn"
-d'annuaires LDAP) - équivalent à e1.gotoPrevious(). En extrémité de liste, la
-position courante vaudra "e1.begin()", premier attribut, à l'instar de :
+position courante dans l'entrÃ©e e1 sera dÃ©crÃ©mentÃ©e d'une position
+(attribut prÃ©cÃ©dent - selon le classement alphabÃ©tique des "dn"
+d'annuaires LDAP) - Ã©quivalent Ã  e1.gotoPrevious(). En extrÃ©mitÃ© de liste, la
+position courante vaudra "e1.begin()", premier attribut, Ã  l'instar de :
 "e1.gotoBegin()".</span><br>
 
 
 
 <span style="font-style: italic;"></span><span style="font-style: italic;"><br>
-&nbsp;&nbsp;&nbsp; e1["name"];&nbsp;  &nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;&nbsp; </span><span style="color: rgb(0, 153, 0);">// </span><span style="color: rgb(0, 153, 0);">La position courante dans l'entrée "e1" sera positionnée sur l'attribut de nom "<span style="font-style: italic;">nam</span>e" - s'il existe, sinon sur : "e1.end()" ...</span><br>
+&nbsp;&nbsp;&nbsp; e1["name"];&nbsp;  &nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;&nbsp; </span><span style="color: rgb(0, 153, 0);">// </span><span style="color: rgb(0, 153, 0);">La position courante dans l'entrÃ©e "e1" sera positionnÃ©e sur l'attribut de nom "<span style="font-style: italic;">nam</span>e" - s'il existe, sinon sur : "e1.end()" ...</span><br>
 
 
-&nbsp;&nbsp;&nbsp; e2 += <span style="font-style: italic;">e1["name"];&nbsp;&nbsp; </span><span style="font-style: italic;"></span><span style="color: rgb(0, 153, 0);">//&nbsp; </span><span style="color: rgb(0, 153, 0);">L'attribut de nom "<span style="font-style: italic;">name</span>", s'il existe dans "e1", sera rajouté à "e2".</span><span style="font-style: italic;"><br>
+&nbsp;&nbsp;&nbsp; e2 += <span style="font-style: italic;">e1["name"];&nbsp;&nbsp; </span><span style="font-style: italic;"></span><span style="color: rgb(0, 153, 0);">//&nbsp; </span><span style="color: rgb(0, 153, 0);">L'attribut de nom "<span style="font-style: italic;">name</span>", s'il existe dans "e1", sera rajoutÃ© Ã  "e2".</span><span style="font-style: italic;"><br>
 
 <br>
 Exemple possible :<br>
 &nbsp;&nbsp;&nbsp; e3 += entry(e1 | e2)["name"];&nbsp;&nbsp; </span><span style="color: rgb(0, 153, 0);">// </span><span style="color: rgb(0, 153, 0);">L'attribut de nom "<span style="font-style: italic;">nam</span>e",
-constitué des valeurs éventuellement contenues dans "e1" ou "e2" sera
-ajouté à "e3", "e1" et "e2" restant eux-mêmes inchangées ...</span><br>
+constituÃ© des valeurs Ã©ventuellement contenues dans "e1" ou "e2" sera
+ajoutÃ© Ã  "e3", "e1" et "e2" restant eux-mÃªmes inchangÃ©es ...</span><br>
 <span style="font-style: italic;"><br>
-Entre types d'objets différents :<br>
+Entre types d'objets diffÃ©rents :<br>
 </span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; e1 += attr1;&nbsp;&nbsp;  </span><span style="color: rgb(0, 153, 0);">// </span><span style="color: rgb(0, 153, 0);">L'attribut
-"attr1" sera ajouté (sauf s'il est nul) à la liste des attributs de "e1"
-ou, s'il y existait déjà, ses valeurs différentes le complèteront ; équivalent à : "e1 = e1 + attr1".</span><br>
+"attr1" sera ajoutÃ© (sauf s'il est nul) Ã  la liste des attributs de "e1"
+ou, s'il y existait dÃ©jÃ , ses valeurs diffÃ©rentes le complÃ¨teront ; Ã©quivalent Ã  : "e1 = e1 + attr1".</span><br>
 
 
 
-<span style="font-style: italic;"></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; e1 -= attr1;&nbsp;&nbsp;&nbsp;  </span><span style="color: rgb(0, 153, 0);">// </span><span style="color: rgb(0, 153, 0);">L'attribut "attr1" sera soustrait à l'attribut de même nom dans "e1" et ce dernier sera supprimé s'il s'avère au final vide ...</span><br>
+<span style="font-style: italic;"></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; e1 -= attr1;&nbsp;&nbsp;&nbsp;  </span><span style="color: rgb(0, 153, 0);">// </span><span style="color: rgb(0, 153, 0);">L'attribut "attr1" sera soustrait Ã  l'attribut de mÃªme nom dans "e1" et ce dernier sera supprimÃ© s'il s'avÃ¨re au final vide ...</span><br>
 
 <span style="font-style: italic;"></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; e1 &amp;= attr1;&nbsp; </span><span style="color: rgb(0, 153, 0);">// </span><span style="color: rgb(0, 153, 0);">L'attribut "*(e1-&gt;getAttribute())"</span><span style="color: rgb(0, 153, 0);"> de nom "attr1.name()"</span><span style="color: rgb(0, 153, 0);">
 
-sera complété de la liste des valeurs contenues dans "attr1", seulement
-s'il existait déjà ; équivalent à : "if ( e1.find ( attr1.name() )
+sera complÃ©tÃ© de la liste des valeurs contenues dans "attr1", seulement
+s'il existait dÃ©jÃ  ; Ã©quivalent Ã  : "if ( e1.find ( attr1.name() )
 *(e1.getAttribute()) += attr1;" ...</span><br>
 
 
 <span style="font-style: italic;"></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; e1 |= attr1;&nbsp;&nbsp; </span><span style="color: rgb(0, 153, 0);">// </span><span style="color: rgb(0, 153, 0);">L'attribut
-de nom "attr1.name()" sera ajouté (avec ses valeurs) à l'entrée "e1"
-seulement s'il n'y était pas déjà présent ; équivalent à : "if ( !
+de nom "attr1.name()" sera ajoutÃ© (avec ses valeurs) Ã  l'entrÃ©e "e1"
+seulement s'il n'y Ã©tait pas dÃ©jÃ  prÃ©sent ; Ã©quivalent Ã  : "if ( !
 e1.find( attr1.name() ) e1 += attr1;"...</span><br>
 
 <span style="font-style: italic;"></span><span style="font-style: italic;"><br>
-</span><span style="text-decoration: underline; font-weight: bold;"></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; std::cout/cerr &lt;&lt; e1&nbsp;&nbsp;  </span><span style="color: rgb(0, 153, 0);">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // </span><span style="color: rgb(0, 153, 0);"><span style="font-style: italic;">Affiche sur le flux de sortie standard (ou erreur) le dn() de l'entrée.<br>
+</span><span style="text-decoration: underline; font-weight: bold;"></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; std::cout/cerr &lt;&lt; e1&nbsp;&nbsp;  </span><span style="color: rgb(0, 153, 0);">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // </span><span style="color: rgb(0, 153, 0);"><span style="font-style: italic;">Affiche sur le flux de sortie standard (ou erreur) le dn() de l'entrÃ©e.<br>
 </span></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; std::cout &lt;&lt; e1[""] &nbsp;  </span><span style="color: rgb(0, 153, 0);">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; // </span><span style="color: rgb(0, 153, 0);"><span style="font-style: italic;">Affiche
-sur le flux de sortie standard l'identifiant de l'attribut courant, à
+sur le flux de sortie standard l'identifiant de l'attribut courant, Ã 
 savoir : e1.getAttribute()-&gt;name() (type std::string)...<br>
 
-</span></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; std::cout &lt;&lt; e1[2] &nbsp;  </span><span style="color: rgb(0, 153, 0);">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; // </span><span style="color: rgb(0, 153, 0);"><span style="font-style: italic;">Affiche sur le flux de sortie standard le name() de l'attribut de rang 2 dans l'entrée "e1" (ou : "" s'il n'existe pas).<br>
+</span></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; std::cout &lt;&lt; e1[2] &nbsp;  </span><span style="color: rgb(0, 153, 0);">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; // </span><span style="color: rgb(0, 153, 0);"><span style="font-style: italic;">Affiche sur le flux de sortie standard le name() de l'attribut de rang 2 dans l'entrÃ©e "e1" (ou : "" s'il n'existe pas).<br>
 </span></span><span style="font-style: italic;"></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; std::cout &lt;&lt; (*e1[""])[""] &nbsp; &nbsp;  </span><span style="color: rgb(0, 153, 0);">// </span><span style="color: rgb(0, 153, 0);"><span style="font-style: italic;">Affiche
 sur le flux de sortie standard la valeur courante (de type : char*,
-utf8 encodé) de l'attribut courant, à savoir :
+utf8 encodÃ©) de l'attribut courant, Ã  savoir :
 e1.getAttribute()-&gt;getStrValue() ...</span></span><br>
 
 
 <span style="font-style: italic;"></span><span style="font-style: italic;"><br>
-</span><span style="font-style: italic;">Cet "arithmétique" sera
-similaire (sous réserve de sens - ou bien de nouvelle suggestion faite à l'auteur ... ;-)
+</span><span style="font-style: italic;">Cet "arithmÃ©tique" sera
+similaire (sous rÃ©serve de sens - ou bien de nouvelle suggestion faite Ã  l'auteur ... ;-)
 pour les objets de type "<span style="font-weight: bold;">attribute</span>" et "<span style="font-weight: bold;">berValue</span>" ...<br>
 <br>
 </span><span style="font-style: italic;"></span><br>
 <big><big><span style="text-decoration: underline; color: black; font-weight: bold;"></span><span style="color: black; font-weight: bold;"><a name="ss1.6.5"></a>&nbsp; </span><span style="text-decoration: underline; color: black; font-weight: bold;"><span style="color: rgb(204, 153, 51);">TAMPONS :</span><br>
 </span><small><span style="text-decoration: underline; color: black;"></span><span style="color: black;"><br></span></small></big></big>
 <div style="text-align: justify;"><big><big><small><span style="color: black;">
-Les tampons permettent de sauvegarder un context</span></small></big></big><big><big><small><span style="color: black;">e (liste d'<span style="font-weight: bold;">entrées</span> LDAP)</span></small></big></big><big><big><small><span style="color: black;">
-de requêtes ou de résultats intermédiaires au sein, par défaut, d'une
+Les tampons permettent de sauvegarder un context</span></small></big></big><big><big><small><span style="color: black;">e (liste d'<span style="font-weight: bold;">entrÃ©es</span> LDAP)</span></small></big></big><big><big><small><span style="color: black;">
+de requÃªtes ou de rÃ©sultats intermÃ©diaires au sein, par dÃ©faut, d'une
 pile (Last In First Out) ou alors, individuellement, dans des tampons
-nommés.</span></small></big></big><br>
+nommÃ©s.</span></small></big></big><br>
 <big><big><small><span style="color: black;"></span></small></big></big></div>
 
 <big><big><small><span style="color: black;">
 <br style="text-decoration: underline;">
-<span style="text-decoration: underline;">Méthodes de la classe "</span><span style="font-weight: bold; text-decoration: underline;">ldapEasyInterface</span><span style="text-decoration: underline;">" :</span><br>
+<span style="text-decoration: underline;">MÃ©thodes de la classe "</span><span style="font-weight: bold; text-decoration: underline;">ldapEasyInterface</span><span style="text-decoration: underline;">" :</span><br>
 <br>
 <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; - doSave</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">In</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">Entries</span>(),<br>
 </span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; - </span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">doSave</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">In</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">Entries</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;"></span>("<span style="font-style: italic;">NomDuTampon</span>"),<br>
@@ -735,7 +735,7 @@ nommés.</span></small></big></big><br>
 </span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; - </span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">doSave</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">Out</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">Entries</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;"></span>(</span></small></big></big><big><big><small><span style="color: black;">"<span style="font-style: italic;">NomDuTampon</span>"</span></small></big></big><big><big><small><span style="color: black;">).<br>
 
 <span style="text-decoration: underline;"><br>
-</span>Et, pour restaurer ces sauvegardes en entrée ou en sortie :<br>
+</span>Et, pour restaurer ces sauvegardes en entrÃ©e ou en sortie :<br>
 </span></small></big></big><big><big><small><span style="color: black;"><br>
 &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; - <span style="font-weight: bold;">doRestore</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">In</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">Entries</span>(),<span style="font-weight: bold;"><br>
 </span></span></small></big></big><big><big><small><span style="color: black;">
@@ -747,13 +747,13 @@ nommés.</span></small></big></big><br>
 &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; - <span style="font-weight: bold;"></span></span></small></big></big><big style="font-weight: bold;"><big><small><span style="color: black;">do</span></small></big></big><big style="font-weight: bold;"><big><small><span style="color: black;">Restore</span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">Out</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;">Entries</span></span></small></big></big><big><big><small><span style="color: black;"><span style="font-weight: bold;"></span>(</span></small></big></big><big><big><small><span style="color: black;">"<span style="font-style: italic;">NomDuTampon</span>"</span></small></big></big><big><big><small><span style="color: black;">).<br>
 
 </span></small></big></big><br>
-<span style="text-decoration: underline; font-weight: bold;">Nota :</span> les positions courantes des objets sauvegardés sont conservées (<span style="font-weight: bold;">entrée LDAP</span> courante, <span style="font-weight: bold;">attribut</span> courant et <span style="font-weight: bold;">valeur</span> courante...) durant ces opérations.<br>
+<span style="text-decoration: underline; font-weight: bold;">Nota :</span> les positions courantes des objets sauvegardÃ©s sont conservÃ©es (<span style="font-weight: bold;">entrÃ©e LDAP</span> courante, <span style="font-weight: bold;">attribut</span> courant et <span style="font-weight: bold;">valeur</span> courante...) durant ces opÃ©rations.<br>
 <br>
 <big><big><small><span style="color: black;"></span></small><span style="text-decoration: underline; color: black; font-weight: bold;"></span></big></big><span style="font-weight: bold;"></span><span style="font-weight: bold;"><span style="text-decoration: underline;"></span></span>
 </div>
 
 
-<h2><a href="Frontends/Howto.fr.html" name="ss1.7"></a><a href="archives/libldapcppei/man/">1.7 La docuementation complète du projet</a><br>
+<h2><a href="Frontends/Howto.fr.html" name="ss1.7"></a><a href="archives/libldapcppei/man/">1.7 La docuementation complÃ¨te du projet</a><br>
 </h2>
 
 
@@ -779,8 +779,8 @@ nommés.</span></small></big></big><br>
 
 <div style="margin-left: 40px;">
 <span style="text-decoration: underline;">Certainement que des tests
-plus poussés devraient être menés mais, en première approche, voici un
-estimatif sur 90 entrées d'annuaire :</span><br style="text-decoration: underline;">
+plus poussÃ©s devraient Ãªtre menÃ©s mais, en premiÃ¨re approche, voici un
+estimatif sur 90 entrÃ©es d'annuaire :</span><br style="text-decoration: underline;">
 <br>
 <div style="margin-left: 40px;">time ldapsearch -x -LLL -h ldap &gt;/dev/null<br>
 real&nbsp;&nbsp;&nbsp; 0m0.065s<br>
@@ -829,30 +829,30 @@ sys&nbsp;&nbsp;&nbsp; 0m0.000s<br>
 
 
  <div style="margin-left: 40px;"><div style="text-align: justify;">Il s'agit d'un ensemble <a href="Frontends/Howto-7.fr.html#ss7.2">d'interfaces
-graphiques</a> (<a href="Frontends/Howto-13.fr.html">frontends</a>) de diverses gestions regroupées au sein d'un
-annuaire LDAP pour le paramétrage de serveurs répartis au sein de
+graphiques</a> (<a href="Frontends/Howto-13.fr.html">frontends</a>) de diverses gestions regroupÃ©es au sein d'un
+annuaire LDAP pour le paramÃ©trage de serveurs rÃ©partis au sein de
 domaines
-réseaux et/ou organisationnels.<br>
+rÃ©seaux et/ou organisationnels.<br>
 
 <br>
 
-Ces GUIs sont associées
-à des <a href="./Frontends/Howto-12.fr.html#ss12.2">utilitaires de génération de configurations</a> utilisant les
+Ces GUIs sont associÃ©es
+Ã  des <a href="./Frontends/Howto-12.fr.html#ss12.2">utilitaires de gÃ©nÃ©ration de configurations</a> utilisant les
 informations contenues dans la base d'annuaire pour constituer les
-fichiers de configuration de certains sous-systèmes (notamment lorsque
-ces derniers ne sont effectivement pas directement interfacés avec le
+fichiers de configuration de certains sous-systÃ¨mes (notamment lorsque
+ces derniers ne sont effectivement pas directement interfacÃ©s avec le
 protocole LDAP).<br>
 </div>
 
 <br>
-<span style="text-decoration: underline;">Exemple de tels sous-systèmes :</span><br>
-<ul><li style="text-align: justify;"><a href="./Frontends/Howto-12.fr.html"><span style="font-weight: bold;">rsyncd</span></a> (non interfacé, en standard, avec LDAP)<br>
+<span style="text-decoration: underline;">Exemple de tels sous-systÃ¨mes :</span><br>
+<ul><li style="text-align: justify;"><a href="./Frontends/Howto-12.fr.html"><span style="font-weight: bold;">rsyncd</span></a> (non interfacÃ©, en standard, avec LDAP)<br>
 </li><li style="text-align: justify;"><a href="./Frontends/Howto-11.fr.html#ss11.7"><span style="font-weight: bold;">samba</span></a>
-version 3 (partiellement interfacé LDAP - sur l'identification des
-utilisateurs, pas sur la définition des ressources partagées),</li><li style="text-align: justify;"><a href="./Frontends/Howto-14.fr.html"><span style="font-weight: bold;">bind</span></a> (interfacé par patch, mais impliquant des restrictions sévères de fonctionnalités),</li><li style="text-align: justify;">utilisateurs et groupes, messagerie et proxy (presque totalement interfacés LDAP - selon les implémentations),</li><li style="text-align: justify;">le serveur d'annuaire LDAP lui-même (début d'interfaçage ldap de la configuration d'OpenLDAP),<br>
-  </li><li style="text-align: justify;">définition des rôles applicatifs sur des applications de gestion
-spécifiques (parfois interfacées, souvent pas ...), telles que par
-exemple les interfaces elles-mêmes du projet <a href="./Frontends/Howto.fr.html"><span style="font-weight: bold; text-decoration: underline;">ldapEasyAdmin</span>,</a><br>
+version 3 (partiellement interfacÃ© LDAP - sur l'identification des
+utilisateurs, pas sur la dÃ©finition des ressources partagÃ©es),</li><li style="text-align: justify;"><a href="./Frontends/Howto-14.fr.html"><span style="font-weight: bold;">bind</span></a> (interfacÃ© par patch, mais impliquant des restrictions sÃ©vÃ¨res de fonctionnalitÃ©s),</li><li style="text-align: justify;">utilisateurs et groupes, messagerie et proxy (presque totalement interfacÃ©s LDAP - selon les implÃ©mentations),</li><li style="text-align: justify;">le serveur d'annuaire LDAP lui-mÃªme (dÃ©but d'interfaÃ§age ldap de la configuration d'OpenLDAP),<br>
+  </li><li style="text-align: justify;">dÃ©finition des rÃ´les applicatifs sur des applications de gestion
+spÃ©cifiques (parfois interfacÃ©es, souvent pas ...), telles que par
+exemple les interfaces elles-mÃªmes du projet <a href="./Frontends/Howto.fr.html"><span style="font-weight: bold; text-decoration: underline;">ldapEasyAdmin</span>,</a><br>
   </li><li style="text-align: justify;">etc ...</li></ul>
 Plus tout ce que l'imagination d'un administrateur d'intranet sera capable de concevoir ...<br>
 <br>
@@ -861,6 +861,6 @@ Ce projet est <a href="Frontends/Howto.fr.html"><span style="font-weight: bold;"
 </div>
 
 <hr><a href="miniHowto-2.fr.html">Page suivante</a>
-<a href="miniHowto.fr.html">Page précédente</a>
-<a href="miniHowto.fr.html">Table des matières</a>
+<a href="miniHowto.fr.html">Page prÃ©cÃ©dente</a>
+<a href="miniHowto.fr.html">Table des matiÃ¨res</a>
 </body></html>
