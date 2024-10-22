@@ -70,9 +70,9 @@ Enjoy... ;-)
 
  ![](doc/images/personFrontend.png)
 
- ![](doc/images/bind9DomainFrontend.png)
+ ![](doc/images/bind9DomainFrontend2.png)
 
- ![](doc/images/sambaFrontend.png)
+ ![](doc/images/sambaConfigFrontend.png)
 
  ![](doc/images/nfsFrontend.png)
 
