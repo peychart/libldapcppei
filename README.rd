@@ -66,9 +66,14 @@ Enjoy... ;-)
 
 ## USE EXEMPLE (ldapEasyAdminFrontends) :
 
-![](doc/images/connectForm.png)
-![](doc/images/personFrontend.png)
-![](doc/images/bind9DomainFrontend.png)
-![](doc/images/sambaFrontend.png)
-![](doc/images/nfsFrontend.png)
-![](doc/images/crontabFrontend.png)
+ ![](doc/images/connectForm.png)
+
+ ![](doc/images/personFrontend.png)
+
+ ![](doc/images/bind9DomainFrontend.png)
+
+ ![](doc/images/sambaFrontend.png)
+
+ ![](doc/images/nfsFrontend.png)
+
+ ![](doc/images/crontabFrontend.png)
