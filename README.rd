@@ -63,3 +63,12 @@ Enjoy... ;-)
     I hope this first work could be usefull for other
     people.
 
+
+## USE EXEMPLE (ldapEasyAdminFrontends) :
+
+![](doc/images/connectForm.png)
+![](doc/images/personFrontend.png)
+![](doc/images/bind9DomainFrontend.png)
+![](doc/images/sambaFrontend.png)
+![](doc/images/nfsFrontend.png)
+![](doc/images/crontabFrontend.png)
